@@ -1,0 +1,20 @@
+{
+  "projectId": "agent-desk",
+  "orgId": "salambot",
+  "settings": {
+    "framework": "vite",
+    "devCommand": "nx serve agent-desk",
+    "buildCommand": "nx build agent-desk",
+    "outputDirectory": "dist/apps/agent-desk",
+    "rootDirectory": ".",
+    "directoryListing": false,
+    "regions": ["cdg1"],
+    "installCommand": "pnpm install"
+  },
+  "env": {
+    "VITE_API_URL": "https://api.salambot.app",
+    "VITE_FIREBASE_API_KEY": "${FIREBASE_API_KEY}",
+    "VITE_FIREBASE_PROJECT_ID": "${FIREBASE_PROJECT_ID}",
+    "VITE_FIREBASE_AUTH_DOMAIN": "${FIREBASE_PROJECT_ID}.firebaseapp.com"
+  }
+}

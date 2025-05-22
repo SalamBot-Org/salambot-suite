@@ -1,0 +1,44 @@
+/**
+ * @file        Styles globaux pour le widget web SalamBot.
+ * @author      SalamBot Team (contact: salam@chebakia.com)
+ * @created     2025-05-21
+ * @updated     2025-05-21
+ * @project     SalamBot - AI CRM for Moroccan SMEs
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles spécifiques pour les langues RTL */
+.rtl-text {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Styles pour les animations de chargement */
+.loading-dots:after {
+  content: '.';
+  animation: dots 1.5s steps(5, end) infinite;
+}
+
+@keyframes dots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60% { content: '...'; }
+  80%, 100% { content: ''; }
+}
+
+/* Styles pour les transitions de langue */
+.lang-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Styles spécifiques par langue */
+.lang-fr {
+  font-family: 'Roboto', sans-serif;
+}
+
+.lang-ar, .lang-ar-ma {
+  font-family: 'Noto Sans Arabic', 'Amiri', sans-serif;
+}

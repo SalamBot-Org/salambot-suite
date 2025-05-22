@@ -1,0 +1,25 @@
+/**
+ * @file        Configuration TypeScript pour le service Cloud Run de SalamBot.
+ * @author      SalamBot Team (contact: info@salambot.ma)
+ * @created     2025-05-21
+ * @updated     2025-05-21
+ * @project     SalamBot - AI CRM for Moroccan SMEs
+ */
+
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "strict": true,
+    "outDir": "dist",
+    "sourceMap": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+}

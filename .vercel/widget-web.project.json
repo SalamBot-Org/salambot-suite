@@ -1,0 +1,17 @@
+{
+  "projectId": "widget-web",
+  "orgId": "salambot",
+  "settings": {
+    "framework": "nextjs",
+    "devCommand": "nx serve widget-web",
+    "buildCommand": "nx build widget-web",
+    "outputDirectory": "dist/apps/widget-web",
+    "rootDirectory": ".",
+    "directoryListing": false,
+    "regions": ["cdg1"],
+    "installCommand": "pnpm install"
+  },
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://api.salambot.app"
+  }
+}
