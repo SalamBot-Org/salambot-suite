@@ -1,0 +1,9 @@
+{
+  "name": "agent-desk-agent-desk",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/agent-desk/agent-desk/src",
+  "projectType": "application",
+  "tags": ["scope:agent-desk", "type:app"],
+  "// targets": "to see all targets run: nx show project agent-desk-agent-desk --web",
+  "targets": {}
+}

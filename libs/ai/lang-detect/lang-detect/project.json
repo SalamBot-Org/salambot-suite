@@ -1,0 +1,9 @@
+{
+  "name": "ai-lang-detect-lang-detect",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ai/lang-detect/lang-detect/src",
+  "projectType": "library",
+  "tags": ["scope:ai", "type:feature"],
+  "// targets": "to see all targets run: nx show project ai-lang-detect-lang-detect --web",
+  "targets": {}
+}
