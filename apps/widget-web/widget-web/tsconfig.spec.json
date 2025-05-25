@@ -1,0 +1,40 @@
+/**
+ * @file        Configuration TypeScript pour les tests de widget-web
+ * @author      SalamBot Team (contact: info@salambot.ma)
+ * @created     2025-05-25
+ * @updated     2025-05-25
+ * @project     SalamBot - AI CRM for Moroccan SMEs
+ */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "module": "commonjs",
+    "types": ["jest", "node"]
+  },
+  "files": [
+    "pages/index.tsx"
+  ],
+  "include": [
+    "jest.config.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.tsx",
+    "src/**/*.test.js",
+    "src/**/*.spec.js",
+    "src/**/*.test.jsx",
+    "src/**/*.spec.jsx",
+    "src/**/*.d.ts",
+    "pages/**/*.test.ts",
+    "pages/**/*.spec.ts",
+    "pages/**/*.test.tsx",
+    "pages/**/*.spec.tsx",
+    "pages/**/*.test.js",
+    "pages/**/*.spec.js",
+    "pages/**/*.test.jsx",
+    "pages/**/*.spec.jsx",
+    "pages/**/*.d.ts",
+    "pages/**/*.tsx"
+  ]
+}

@@ -1,0 +1,43 @@
+/**
+ * @file        Configuration ESLint pour la bibliothèque Lang Detect
+ * @author      SalamBot Team (contact: info@salambot.ma)
+ * @created     2025-05-25
+ * @updated     2025-05-25
+ * @project     SalamBot - AI CRM for Moroccan SMEs
+ */
+{
+  "extends": [
+    "plugin:@nx/typescript", // Utiliser typescript car c'est une lib TS
+    "../../../../.eslintrc.json"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
+      "parserOptions": {
+        "project": [
+          "libs/ai/lang-detect/lang-detect/tsconfig(.*)?.json"
+        ]
+      },
+      "rules": {}
+    },
+    {
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "rules": {}
+    },
+    {
+      "files": [
+        "*.js",
+        "*.jsx"
+      ],
+      "rules": {}
+    }
+  ]
+}

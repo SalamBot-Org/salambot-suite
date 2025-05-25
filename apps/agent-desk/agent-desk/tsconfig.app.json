@@ -1,0 +1,28 @@
+/**
+ * @file        Configuration TypeScript pour agent-desk (build)
+ * @author      SalamBot Team (contact: info@salambot.ma)
+ * @created     2025-05-25
+ * @updated     2025-05-25
+ * @project     SalamBot - AI CRM for Moroccan SMEs
+ */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "types": ["node"]
+  },
+  "files": [
+    "src/index.ts"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx"
+  ],
+  "exclude": [
+    "jest.config.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts"
+  ]
+}

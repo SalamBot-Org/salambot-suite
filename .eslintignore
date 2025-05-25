@@ -1,0 +1,6 @@
+# Ignorer les dossiers de build et dépendances
+node_modules
+dist
+tmp
+.nx
+coverage
