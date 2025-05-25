@@ -1,10 +1,8 @@
-/**
- * @file        Configuration CI/CD pour le monorepo SalamBot
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-25
- * @updated     2025-05-25
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
+# @file        Configuration CI/CD pour le monorepo SalamBot
+# @author      SalamBot Team (contact: info@salambot.ma)
+# @created     2025-05-25
+# @updated     2025-05-25
+# @project     SalamBot - AI CRM for Moroccan SMEs
 
 name: SalamBot CI
 
