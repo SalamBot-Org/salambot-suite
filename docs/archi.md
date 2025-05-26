@@ -1,11 +1,3 @@
-/**
- * @file        Diagramme d'architecture du monorepo SalamBot
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-25
- * @updated     2025-05-25
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
-
 ```mermaid
 graph TD
     subgraph "Apps"
@@ -22,3 +14,4 @@ graph TD
         F[libs/ai/lang-detect]
     end
 ```
+
