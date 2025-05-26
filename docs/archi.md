@@ -14,4 +14,3 @@ graph TD
         F[libs/ai/lang-detect]
     end
 ```
-
