@@ -1,5 +1,13 @@
+/**
+ * @file        Configuration ESLint racine pour le monorepo SalamBot
+ * @author      SalamBot Team (contact: info@salambot.ma)
+ * @created     2025-05-25
+ * @updated     2025-05-25
+ * @project     SalamBot - AI CRM for Moroccan SMEs
+ */
 {
   "root": true,
+  "ignorePatterns": ["node_modules", "dist", "tmp", ".nx", "coverage"],
   "plugins": ["@nx"],
   "overrides": [
     {

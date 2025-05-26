@@ -1,0 +1,19 @@
+{
+  "name": "ai-lang-detect",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ai/lang-detect/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/ai/lang-detect",
+        "main": "libs/ai/lang-detect/src/index.ts",
+        "tsConfig": "libs/ai/lang-detect/tsconfig.lib.json",
+        "assets": ["libs/ai/lang-detect/*.md"]
+      }
+    }
+  }
+}

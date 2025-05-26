@@ -15,11 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@./ai/lang-detect/lang-detect": [
-        "libs/ai/lang-detect/lang-detect/src/index.ts"
-      ],
-      "@./auth/auth": ["libs/auth/auth/src/index.ts"],
-      "@./ui/ui": ["libs/ui/ui/src/index.ts"]
+      "@./ai/lang-detect/lang-detect": ["libs/ai/lang-detect/src/index.ts"],
+      "@./auth/auth": ["libs/auth/src/index.ts"],
+      "@./ui/ui": ["libs/ui/src/index.ts"],
+      "@salambot/ai/lang-detect": ["libs/ai/lang-detect/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
