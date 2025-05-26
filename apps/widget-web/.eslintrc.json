@@ -2,7 +2,7 @@
  * @file        Configuration ESLint pour l'application Widget Web
  * @author      SalamBot Team (contact: info@salambot.ma)
  * @created     2025-05-25
- * @updated     2025-05-25
+ * @updated     2025-05-26
  * @project     SalamBot - AI CRM for Moroccan SMEs
  */
 {
@@ -14,7 +14,12 @@
   ],
   "ignorePatterns": [
     "!**/*",
-    ".next/**/*"
+    ".next/**/*",
+    "dist/**/*",
+    "node_modules/**/*",
+    "public/**/*",
+    "jest.config.ts",
+    "next.config.js"
   ],
   "overrides": [
     {
