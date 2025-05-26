@@ -19,5 +19,9 @@ export default {
   setupFilesAfterEnv: ['<rootDir>/src/jest-setup.ts'],
   // Ajout pour aider à la résolution des modules dans l'environnement CI
   moduleDirectories: ['node_modules', '<rootDir>/src'], 
+  // Ajout pour mapper les imports absolus depuis src/
+  moduleNameMapper: {
+    '^src/(.*)$': '<rootDir>/src/$1'
+  }
 };
 
