@@ -2,7 +2,7 @@
  * @file        Configuration Jest pour widget-web
  * @author      SalamBot Team (contact: info@salambot.ma)
  * @created     2025-05-25
- * @updated     2025-05-25
+ * @updated     2025-05-27
  * @project     SalamBot - AI CRM for Moroccan SMEs
  */
 
@@ -18,3 +18,4 @@ export default {
   coverageDirectory: '../../coverage/apps/widget-web',
   setupFilesAfterEnv: ['<rootDir>/src/jest-setup.ts']
 };
+
