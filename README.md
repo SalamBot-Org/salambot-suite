@@ -1,96 +1,106 @@
-# 
+# SalamBot - AI CRM pour PME Marocaines
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub issues](https://img.shields.io/github/issues/SalamBot-Org/salambot-suite)](https://github.com/SalamBot-Org/salambot-suite/issues)
+[![GitHub forks](https://img.shields.io/github/forks/SalamBot-Org/salambot-suite)](https://github.com/SalamBot-Org/salambot-suite/network)
+[![GitHub stars](https://img.shields.io/github/stars/SalamBot-Org/salambot-suite)](https://github.com/SalamBot-Org/salambot-suite/stargazers)
+[![CI Status](https://github.com/SalamBot-Org/salambot-suite/actions/workflows/ci.yml/badge.svg)](https://github.com/SalamBot-Org/salambot-suite/actions/workflows/ci.yml)
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## Présentation
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+SalamBot est une solution CRM (Customer Relationship Management) intelligente conçue spécifiquement pour les besoins des Petites et Moyennes Entreprises (PME) au Maroc. Notre objectif est de fournir aux entreprises marocaines des outils puissants et accessibles pour gérer leurs interactions clients, automatiser les tâches répétitives et améliorer leur efficacité commerciale grâce à l'intelligence artificielle.
 
-## Run tasks
+SalamBot intègre des fonctionnalités avancées de traitement du langage naturel (NLP) pour comprendre et interagir avec les clients en **Français**, **Arabe Classique** et **Darija Marocaine**, offrant ainsi une expérience client personnalisée et culturellement adaptée.
 
-To run tasks with Nx use:
+### Vision
 
-```sh
-npx nx <target> <project-name>
-```
+Devenir la plateforme CRM de référence pour les PME au Maroc, en démocratisant l'accès à l'IA pour améliorer la relation client et stimuler la croissance des entreprises locales.
 
-For example:
+### Objectifs Clés
 
-```sh
-npx nx build myproject
-```
+*   **Gestion centralisée des clients :** Offrir une vue à 360 degrés des interactions clients.
+*   **Automatisation Intelligente :** Automatiser les réponses aux questions fréquentes, la qualification des leads et le suivi client via des agents conversationnels.
+*   **Support Multilingue :** Communiquer efficacement en Français, Arabe et Darija.
+*   **Intégration Facile :** Se connecter aux canaux de communication populaires (WhatsApp, Web, etc.).
+*   **Analyse et Reporting :** Fournir des insights exploitables sur les performances commerciales et la satisfaction client.
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+## Stack Technique Principale
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+SalamBot est construit sur une architecture moderne et évolutive utilisant les technologies suivantes :
 
-## Add new projects
+*   **Frontend (Agent Desk & Widget Web) :** React, TypeScript, Next.js, Tailwind CSS
+*   **Backend & AI Flows :** Node.js, TypeScript, Genkit (pour l'orchestration AI), Google Gemini, Llama (via API ou local)
+*   **Infrastructure :** Google Cloud Platform (Cloud Functions, Vertex AI), Vercel (pour le déploiement frontend)
+*   **Base de données :** Firestore / PostgreSQL (à définir selon les besoins)
+*   **Monorepo Management :** Nx, pnpm
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+## Roadmap Projet (Phases)
 
-To install a new plugin you can use the `nx add` command. Here's an example of adding the React plugin:
-```sh
-npx nx add @nx/react
-```
+*   **Phase 1 (Terminée - v0.2.0) :**
+    *   Mise en place des flows Genkit pour la détection de langue (FR/AR/Darija) et la génération de réponses basiques.
+    *   Développement d'un widget web v0.1 avec API mock pour la simulation.
+    *   Configuration initiale CI/CD.
+*   **Phase 2 (En cours) :**
+    *   Développement du socle de l'Agent Desk (interface opérateur).
+    *   Mise en place d'une gateway WebSocket pour la communication temps réel.
+    *   Création d'un connecteur WhatsApp Business API.
+    *   Développement d'une librairie d'orchestration pour gérer les conversations multi-tours.
+*   **Phase 3 (À venir) :**
+    *   Intégration CRM (gestion contacts, historique).
+    *   Fonctionnalités avancées de l'Agent Desk (transfert, escalade).
+    *   Amélioration des capacités NLU (reconnaissance d'intention, extraction d'entités).
+    *   Tableaux de bord et reporting.
+*   **Phase 4 (Vision Long Terme) :**
+    *   Connecteurs additionnels (Email, SMS, réseaux sociaux).
+    *   Fonctionnalités proactives (campagnes marketing ciblées).
+    *   Personnalisation avancée et marketplace d'extensions.
 
-Use the plugin's generator to create new projects. For example, to create a new React app or library:
+## Commandes de Développement Courantes
 
-```sh
-# Genenerate an app
-npx nx g @nx/react:app demo
+Ce projet utilise `pnpm` comme gestionnaire de paquets et `Nx` pour la gestion du monorepo.
 
-# Generate a library
-npx nx g @nx/react:lib some-lib
-```
+*   **Installer les dépendances :**
+    ```bash
+    pnpm install
+    ```
+*   **Lancer tous les tests :**
+    ```bash
+    pnpm test
+    # ou
+    pnpm nx run-many --target=test --all
+    ```
+*   **Lancer les tests pour un projet spécifique (ex: widget-web) :**
+    ```bash
+    pnpm nx test widget-web
+    ```
+*   **Lancer le linting pour tous les projets :**
+    ```bash
+    pnpm lint
+    # ou
+    pnpm nx run-many --target=lint --all
+    ```
+*   **Lancer le linting pour un projet spécifique :**
+    ```bash
+    pnpm nx lint functions-run
+    ```
+*   **Builder tous les projets pour la production :**
+    ```bash
+    pnpm nx run-many --target=build --all --configuration=production
+    ```
+*   **Builder un projet spécifique pour la production :**
+    ```bash
+    pnpm nx build widget-web --configuration=production
+    ```
+*   **Lancer une application en mode développement (ex: agent-desk) :**
+    ```bash
+    pnpm nx serve agent-desk
+    ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## Contribution
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Les contributions sont les bienvenues ! Veuillez consulter les [directives de contribution](CONTRIBUTING.md) (à créer) et le [code de conduite](CODE_OF_CONDUCT.md) (à créer) avant de commencer.
 
-## Set up CI!
+## Licence
 
-### Step 1
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
-```
-
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
-```
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)

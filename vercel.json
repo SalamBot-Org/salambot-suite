@@ -1,16 +1,6 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "apps/agent-desk/package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "../../dist/apps/agent-desk" }
-    },
-    {
-      "src": "apps/widget-web/package.json",
-      "use": "@vercel/next",
-      "config": { "distDir": "../../dist/apps/widget-web/.next" }
-    }
-  ]
+  "buildCommand": "pnpm nx build agent-desk --configuration=production",
+  "outputDirectory": "dist/apps/agent-desk",
+  "framework": null
 }
 
