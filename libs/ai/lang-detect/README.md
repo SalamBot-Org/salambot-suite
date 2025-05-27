@@ -1,11 +1,30 @@
-# ai-lang-detect
+/**
+ * @file        Librairie pour la détection de langue (Français, Arabe, Darija)
+ * @author      SalamBot Team (contact: info@salambot.ma)
+ * @created     2025-05-25
+ * @updated     2025-05-27
+ * @project     SalamBot - AI CRM for Moroccan SMEs
+ */
 
-This library was generated with [Nx](https://nx.dev).
+# Librairie AI - Détection de Langue
 
-## Building
+Cette librairie contient la logique Genkit pour la détection automatique de la langue des messages entrants (Français, Arabe Classique, Darija Marocaine).
 
-Run `nx build ai-lang-detect` to build the library.
+## Fonctionnalités
 
-## Running unit tests
+- Utilise CLD3 pour une détection rapide.
+- Fallback sur un modèle LLM (Gemini) pour améliorer la précision, notamment pour le Darija.
+- Configurable via `flows.config.ts`.
 
-Run `nx test ai-lang-detect` to execute the unit tests via [Jest](https://jestjs.io).
+## Commandes utiles
+
+*   **Lancer les tests :**
+    ```bash
+    pnpm nx test ai-lang-detect
+    ```
+*   **Builder la librairie (si applicable) :**
+    ```bash
+    # Généralement, les libs sont buildées via les apps qui les consomment
+    # pnpm nx build ai-lang-detect --configuration=production 
+    ```
+

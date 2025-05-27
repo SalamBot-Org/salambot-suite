@@ -9,3 +9,18 @@
 # Bibliothèque UI
 
 Design system partagé pour les applications SalamBot.
+
+
+
+## Commandes utiles
+
+*   **Lancer les tests :**
+    ```bash
+    pnpm nx test ui
+    ```
+*   **Builder la librairie (si applicable, souvent non nécessaire pour les libs UI pures) :**
+    ```bash
+    # Généralement, les libs UI sont consommées directement sans build dédié
+    # pnpm nx build ui --configuration=production 
+    ```
+

@@ -9,3 +9,18 @@
 # Bibliothèque Auth
 
 Hooks et logique d'authentification Firebase pour SalamBot.
+
+
+
+## Commandes utiles
+
+*   **Lancer les tests :**
+    ```bash
+    pnpm nx test auth
+    ```
+*   **Builder la librairie (si applicable) :**
+    ```bash
+    # Généralement, les libs sont buildées via les apps qui les consomment
+    # pnpm nx build auth --configuration=production 
+    ```
+
