@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import ChatBox from '../../components/ChatBox';
+import ChatBox from '../components/ChatBox';
 
 // Mock de fetch pour simuler les appels API
 global.fetch = jest.fn();
