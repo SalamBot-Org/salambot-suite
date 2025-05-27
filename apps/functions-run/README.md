@@ -9,3 +9,17 @@
 # Application Functions Run
 
 API Genkit pour les fonctions backend et l'intelligence artificielle.
+
+
+
+## Commandes utiles
+
+*   **Lancer les tests :**
+    ```bash
+    pnpm nx test functions-run
+    ```
+*   **Builder l'application :**
+    ```bash
+    pnpm nx build functions-run --configuration=production
+    ```
+
