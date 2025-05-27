@@ -6,8 +6,8 @@
  * @project     SalamBot - AI CRM for Moroccan SMEs
  */
 
-// Utilisation des globals Jest sans require/import
-const { detectLanguage } = require('../lang-detect-flow');
+// Import du module à tester
+import { detectLanguage } from '../lang-detect-flow';
 
 // Mock de CLD3
 jest.mock('cld3', () => {

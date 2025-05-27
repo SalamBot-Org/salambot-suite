@@ -16,6 +16,9 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/widget-web',
-  setupFilesAfterEnv: ['<rootDir>/src/jest-setup.ts']
+  setupFilesAfterEnv: ['<rootDir>/src/jest-setup.ts'],
+  // Ajout pour aider Jest à trouver les modules depuis la racine src/
+  modulePaths: ['<rootDir>/src']
 };
+
 

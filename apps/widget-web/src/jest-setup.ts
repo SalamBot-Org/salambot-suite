@@ -9,7 +9,7 @@
 import '@testing-library/jest-dom';
 
 // Mock pour scrollIntoView qui n'est pas implémenté dans JSDOM
-window.HTMLElement.prototype.scrollIntoView = function() {};
+window.HTMLElement.prototype.scrollIntoView = function() { /* Mock for JSDOM */ };
 
 // Mock pour fetch global
 global.fetch = jest.fn();

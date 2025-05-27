@@ -6,9 +6,10 @@
  * @project     SalamBot - AI CRM for Moroccan SMEs
  */
 
-// Utilisation des globals Jest sans require/import
-const { generateReply } = require('../reply-flow');
-const { SupportedLanguage } = require('../types');
+// Import des modules à tester
+import { generateReply } from '../reply-flow';
+// Note: SupportedLanguage est importé mais utilisé implicitement via les types
+import { GeminiModel } from 'genkit-vertexai';
 
 // Mock de GeminiModel
 jest.mock('genkit-vertexai', () => {
@@ -93,7 +94,7 @@ describe('Flow de génération de réponse', () => {
   it('devrait gérer les erreurs et fournir une réponse de secours', async () => {
     // Simuler une erreur en remplaçant temporairement l'implémentation du mock
     const mockGeminiGenerate = jest.fn().mockRejectedValue(new Error('Erreur simulée'));
-    jest.mocked(require('genkit-vertexai').GeminiModel).mockImplementationOnce(() => ({
+    jest.mocked(GeminiModel).mockImplementationOnce(() => ({
       generate: mockGeminiGenerate
     }));
     
