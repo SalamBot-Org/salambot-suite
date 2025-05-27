@@ -1,11 +1,3 @@
-/**
- * @file        Diagramme d'architecture du monorepo SalamBot
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-25
- * @updated     2025-05-27
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
-
 # Architecture du Monorepo SalamBot
 
 Ce diagramme illustre la structure générale et les dépendances entre les différentes applications et librairies du monorepo SalamBot.
