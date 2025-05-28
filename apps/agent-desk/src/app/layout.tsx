@@ -1,6 +1,6 @@
 /**
  * @file        Layout racine pour l'application Agent Desk
- * @author      SalamBot Team (contact: info@salambot.ma)
+ * @author      SalamBot Team contact: info@salambot.ma
  * @created     2025-05-28
  * @updated     2025-05-28
  * @project     SalamBot - AI CRM for Moroccan SMEs
@@ -10,11 +10,6 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-
-export const metadata: Metadata = {
-  title: 'SalamBot Agent Desk',
-  description: 'Interface agent pour SalamBot CRM',
-};
 
 export async function generateMetadata({
   params: { locale }
