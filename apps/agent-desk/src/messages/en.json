@@ -1,0 +1,12 @@
+{
+  "AgentDesk": {
+    "title": "SalamBot Agent Desk",
+    "subtitle": "Agent interface for SalamBot CRM",
+    "welcome": "Welcome to the SalamBot agent interface"
+  },
+  "Common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry"
+  }
+}
