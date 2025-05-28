@@ -4,11 +4,10 @@
  * @created     2025-05-25
  * @updated     2025-05-25
  * @project     SalamBot - AI CRM for Moroccan SMEs
- */
-{
+ */{
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -17,7 +16,16 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "noEmit": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "files": [],
   "include": [
@@ -26,7 +34,8 @@
     "src/**/*.js",
     "src/**/*.jsx",
     "jest.config.ts",
-    "vitest.config.ts"
+    "vitest.config.ts",
+    ".next/types/**/*.ts"
   ],
   "references": [
     {
