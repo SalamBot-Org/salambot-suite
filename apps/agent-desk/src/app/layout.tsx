@@ -18,8 +18,8 @@ export async function generateMetadata({
 }) {
   const messages = await getMessages({ locale });
   return {
-    title: messages?.AgentDesk?.title || 'SalamBot Agent Desk',
-    description: messages?.AgentDesk?.subtitle || 'Interface agent pour SalamBot CRM',
+    title: messages?.['AgentDesk']?.title || 'SalamBot Agent Desk',
+    description: messages?.['AgentDesk']?.subtitle || 'Interface agent pour SalamBot CRM',
   };
 }
 
