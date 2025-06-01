@@ -33,23 +33,23 @@ resource "google_redis_instance" "cache" {
   tier           = var.plan_tier
   memory_size_gb = var.memory_size_gb
   region         = var.region
-  
+
   location_id             = "${var.region}-a"
   alternative_location_id = var.plan_tier == "STANDARD_HA" ? "${var.region}-b" : null
-  
+
   redis_version     = var.redis_version
   display_name      = "${var.name} Redis Cache"
   reserved_ip_range = "10.0.0.0/29"
-  
+
   auth_enabled              = var.auth_enabled
   auth_string               = var.auth_enabled ? random_password.redis_auth[0].result : null
   transit_encryption_mode   = var.transit_encryption_mode
   connect_mode             = var.connect_mode
-  
+
   authorized_network = data.google_compute_network.redis_network.id
-  
+
   labels = var.labels
-  
+
   maintenance_policy {
     weekly_maintenance_window {
       day = var.maintenance_window.day
@@ -59,13 +59,13 @@ resource "google_redis_instance" "cache" {
       }
     }
   }
-  
+
   # Enable persistence for production workloads
   persistence_config {
     persistence_mode    = "RDB"
     rdb_snapshot_period = "TWENTY_FOUR_HOURS"
   }
-  
+
   lifecycle {
     prevent_destroy = true
   }

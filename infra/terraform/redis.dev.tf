@@ -26,7 +26,7 @@ provider "google" {
 locals {
   environment = "dev"
   project     = "salambot"
-  
+
   common_labels = {
     project     = local.project
     environment = local.environment
@@ -38,26 +38,25 @@ locals {
 # Redis cache instance for development
 module "redis_cache_dev" {
   source = "./modules/redis-cache"
-  
+
   name           = "salambot-cache-${local.environment}"
   region         = var.gcp_region
   plan_tier      = "BASIC"
   memory_size_gb = 1
-  
+
   # Security settings
   auth_enabled              = true
   transit_encryption_mode   = "SERVER_AUTHENTICATION"
-  
-  # Network configuration
+
   network      = "default"
   connect_mode = "DIRECT_PEERING"
-  
+
   # Maintenance window (Sunday 2 AM UTC)
   maintenance_window = {
     day        = "SUNDAY"
     start_time = "02:00"
   }
-  
+
   labels = local.common_labels
 }
 
