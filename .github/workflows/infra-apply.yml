@@ -31,7 +31,6 @@ on:
 env:
   TF_VERSION: '1.6.0'
   TF_WORKING_DIR: './infra/terraform'
-  GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
 jobs:
   terraform-validate:
@@ -73,9 +72,11 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
 
       - name: Authenticate to Google Cloud
+        id: auth
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
 
       - name: Terraform Init
         working-directory: ${{ env.TF_WORKING_DIR }}
@@ -118,9 +119,11 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
 
       - name: Authenticate to Google Cloud
+        id: auth
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
 
       - name: Terraform Init
         working-directory: ${{ env.TF_WORKING_DIR }}
@@ -158,7 +161,7 @@ jobs:
           cd ../../
           pnpm tsx scripts/print-redis-url.ts "$REDIS_URL" "$REDIS_TLS"
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SA_KEY_FILE }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth.outputs.credentials_file_path }}
 
   terraform-destroy:
     name: Terraform Destroy
@@ -175,9 +178,11 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
 
       - name: Authenticate to Google Cloud
+        id: auth
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
 
       - name: Terraform Init
         working-directory: ${{ env.TF_WORKING_DIR }}
