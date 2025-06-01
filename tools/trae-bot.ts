@@ -9,7 +9,12 @@ import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const GH = (cmd: string) => execSync(`gh ${cmd}`, { stdio: 'inherit', shell: true }); // <= garde compatibilité cmd/ps
+const GH = (cmd: string) =>
+    execSync(`gh ${cmd}`, {
+        stdio: 'inherit',
+        // PowerShell / CMD sous Windows, bash sinon
+        shell: process.platform === 'win32' ? process.env.ComSpec || 'cmd.exe' : '/bin/bash'
+    });
 
 /* ---------- 1. ouverture de la PR setup ---------- */
 function openSetupPR() {
