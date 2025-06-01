@@ -34,8 +34,8 @@ resource "google_redis_instance" "cache" {
   memory_size_gb = var.memory_size_gb
   region         = var.region
 
-  location_id             = "${var.region}-a"
-  alternative_location_id = var.plan_tier == "STANDARD_HA" ? "${var.region}-b" : null
+  location_id             = "${var.region}-b"
+  alternative_location_id = var.plan_tier == "STANDARD_HA" ? "${var.region}-c" : null
 
   redis_version     = var.redis_version
   display_name      = "${var.name} Redis Cache"
