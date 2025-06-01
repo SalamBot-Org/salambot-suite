@@ -22,6 +22,21 @@ provider "google" {
   region  = var.gcp_region
 }
 
+# Enable required APIs
+resource "google_project_service" "secretmanager" {
+  project = var.gcp_project_id
+  service = "secretmanager.googleapis.com"
+
+  disable_dependent_services = true
+}
+
+resource "google_project_service" "redis" {
+  project = var.gcp_project_id
+  service = "redis.googleapis.com"
+
+  disable_dependent_services = true
+}
+
 # Local values for common configurations
 locals {
   environment = "dev"
@@ -66,6 +81,11 @@ module "redis_cache_dev" {
   }
 
   labels = local.common_labels
+
+  depends_on = [
+    google_project_service.secretmanager,
+    google_project_service.redis
+  ]
 }
 
 # Output Redis connection details for use by applications
