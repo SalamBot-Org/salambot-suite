@@ -1,0 +1,71 @@
+version: 2
+updates:
+  # Configuration pour les dépendances npm/pnpm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "SalamBot-Org/maintainers"
+    assignees:
+      - "SalamBot-Org/maintainers"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    # Grouper les mises à jour mineures et de patch
+    groups:
+      nx-ecosystem:
+        patterns:
+          - "@nx/*"
+      react-ecosystem:
+        patterns:
+          - "react*"
+          - "@types/react*"
+      testing:
+        patterns:
+          - "jest*"
+          - "@testing-library/*"
+          - "@types/jest"
+      eslint:
+        patterns:
+          - "eslint*"
+          - "@typescript-eslint/*"
+    # Ignorer certaines dépendances si nécessaire
+    ignore:
+      # Exemple : ignorer les mises à jour majeures de certains packages
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+        
+  # Configuration pour Terraform (infrastructure)
+  - package-ecosystem: "terraform"
+    directory: "/infra/terraform"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "09:00"
+    reviewers:
+      - "SalamBot-Org/maintainers"
+    assignees:
+      - "SalamBot-Org/maintainers"
+    commit-message:
+      prefix: "infra"
+      include: "scope"
+
+  # Configuration pour GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "09:00"
+    reviewers:
+      - "SalamBot-Org/maintainers"
+    assignees:
+      - "SalamBot-Org/maintainers"
+    commit-message:
+      prefix: "ci"
+      include: "scope"

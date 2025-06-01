@@ -71,3 +71,35 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Security Audit
+        run: |
+          echo "🔍 Running security audit..."
+          pnpm audit --audit-level moderate
+          if [ $? -ne 0 ]; then
+            echo "⚠️ Security vulnerabilities detected!"
+            echo "Please run 'pnpm audit --fix' to resolve them."
+            exit 1
+          else
+            echo "✅ No security vulnerabilities found."
+          fi
+
+      - name: Check for outdated dependencies
+        run: |
+          echo "📦 Checking for outdated dependencies..."
+          pnpm outdated || echo "Some dependencies are outdated. Consider updating them."
