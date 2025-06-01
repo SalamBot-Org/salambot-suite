@@ -23,12 +23,22 @@ provider "google" {
 }
 
 # Enable required APIs
+resource "google_project_service" "compute" {
+  project = var.gcp_project_id
+  service = "compute.googleapis.com"
+
+  disable_dependent_services = false
+  disable_on_destroy         = false
+}
+
 resource "google_project_service" "secretmanager" {
   project = var.gcp_project_id
   service = "secretmanager.googleapis.com"
 
   disable_dependent_services = false
   disable_on_destroy         = false
+  
+  depends_on = [google_project_service.compute]
 }
 
 resource "google_project_service" "redis" {
@@ -37,14 +47,8 @@ resource "google_project_service" "redis" {
 
   disable_dependent_services = false
   disable_on_destroy         = false
-}
-
-resource "google_project_service" "compute" {
-  project = var.gcp_project_id
-  service = "compute.googleapis.com"
-
-  disable_dependent_services = false
-  disable_on_destroy         = false
+  
+  depends_on = [google_project_service.compute]
 }
 
 # Local values for common configurations
