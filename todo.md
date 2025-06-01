@@ -1,47 +1,216 @@
-/**
- * @file        Liste des tâches pour la migration et la configuration initiale du workspace SalamBot
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-25
- * @updated     2025-05-27
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
+# 📋 Roadmap et Tâches SalamBot
 
-# Tâches Initiales du Workspace SalamBot
+## 🔒 Sécurité et DevSecOps (Priorité Haute)
 
-## Analyse de l'état actuel (Migration)
-- [x] Vérifier la structure des dossiers dans les deux workspaces
-- [x] Comparer les fichiers package.json
-- [x] Analyser les configurations Nx
-- [x] Créer la structure de base dans le nouveau workspace
+### Gestion des Vulnérabilités
+- [x] Audit de sécurité initial et correction de 12 vulnérabilités
+- [x] Configuration Dependabot pour alertes automatiques
+- [x] Intégration des vérifications de sécurité dans CI/CD
+- [x] Documentation du processus de gestion des vulnérabilités
+- [ ] Mise en place de scans de sécurité SAST/DAST
+- [ ] Configuration des alertes Slack/Teams pour vulnérabilités critiques
+- [ ] Audit de sécurité trimestriel planifié
 
-## Migration des configurations essentielles
-- [x] Migrer le fichier .github/workflows/ci.yml
-- [x] Migrer le diagramme docs/archi.md (anciennement archi.mmd)
-- [x] Vérifier la configuration ESLint (utiliser version 8 stable)
-- [x] Vérifier la configuration Tailwind CSS 4
+### Secrets et Configuration
+- [x] Migration vers Google Secret Manager
+- [x] Rotation automatique des mots de passe Redis
+- [ ] Audit des variables d'environnement exposées
+- [ ] Chiffrement des données sensibles en base
+- [ ] Configuration RBAC (Role-Based Access Control)
 
-## Migration des applications
-- [x] Migrer apps/widget-web (chat widget multilingue)
-- [x] Migrer apps/agent-desk (interface opérateur)
-- [x] Migrer apps/functions-run (API Genkit)
+## 🚀 Développement et Fonctionnalités
 
-## Migration des bibliothèques
-- [x] Migrer libs/ui (design system partagé)
-- [x] Migrer libs/auth (hooks Firebase)
-- [x] Migrer libs/ai/lang-detect (logique Genkit)
+### Phase 1 : Fondations (En cours)
+- [x] Architecture monorepo Nx stabilisée
+- [x] Pipeline CI/CD complet avec tests automatisés
+- [x] Infrastructure Redis avec Terraform
+- [x] Système de monitoring et observabilité
+- [ ] Tests end-to-end avec Playwright
+- [ ] Documentation API complète
+- [ ] Métriques de performance baseline
 
-## Validation
-- [x] Vérifier que pnpm lint fonctionne
-- [x] Vérifier que pnpm test fonctionne
-- [x] Vérifier que pnpm build fonctionne
-- [x] Migrer les project.json pour toutes les applications et bibliothèques
-- [x] Vérifier la présence des README dans chaque dossier
-- [x] Vérifier la conformité des headers SalamBot
-- [x] Créer des fichiers source minimaux dans chaque app/lib
-- [x] Vérification syntaxique TypeScript réussie (script check-syntax.js) - *Script supprimé, validation via lint*
+### Phase 2 : Core Features (Planifié)
+- [ ] Système d'authentification multi-tenant
+- [ ] Interface de chat multilingue (AR/FR/EN)
+- [ ] Intégration WhatsApp Business API
+- [ ] Dashboard analytics temps réel
+- [ ] Système de notifications push
+- [ ] API REST v1 complète
 
-## Problèmes identifiés (Historique Migration)
-- [x] Configuration ESLint problématique : tous les dossiers d'apps/libs sont ignorés malgré les corrections - *Résolu*
-- [x] Erreur de project graph Nx persistante même après reset - *Résolu (erreur syntaxe JSON)*
-- [x] Nécessité d'une phase de correction approfondie de la configuration ESLint/Nx après la migration initiale - *Effectuée*
+### Phase 3 : Intelligence Artificielle (Planifié)
+- [ ] Modèle de détection de langue optimisé
+- [ ] Système de réponses automatiques contextuelles
+- [ ] Analyse de sentiment des conversations
+- [ ] Recommandations produits basées sur l'IA
+- [ ] Chatbot avec apprentissage continu
+- [ ] Intégration modèles LLM locaux
+
+### Phase 4 : Évolutivité (Futur)
+- [ ] Architecture microservices
+- [ ] Déploiement multi-région
+- [ ] Cache distribué Redis Cluster
+- [ ] Load balancing intelligent
+- [ ] Auto-scaling basé sur la charge
+- [ ] Backup et disaster recovery
+
+## 🛠️ Infrastructure et DevOps
+
+### Cloud et Déploiement
+- [x] Configuration Terraform pour Redis
+- [x] Workload Identity Federation (GCP)
+- [x] Déploiement automatisé via GitHub Actions
+- [ ] Configuration Kubernetes (GKE)
+- [ ] Monitoring avec Prometheus/Grafana
+- [ ] Logs centralisés avec ELK Stack
+- [ ] CDN pour assets statiques
+
+### Base de Données
+- [x] Redis pour cache et sessions
+- [ ] Firestore pour données métier
+- [ ] Backup automatisé quotidien
+- [ ] Réplication multi-zone
+- [ ] Optimisation des requêtes
+- [ ] Migration de données automatisée
+
+## 📱 Applications
+
+### Widget Web (apps/widget-web)
+- [x] Structure Next.js 15 configurée
+- [x] Intégration Tailwind CSS 4
+- [ ] Interface chat responsive
+- [ ] Support multilingue complet
+- [ ] Thèmes personnalisables
+- [ ] Intégration analytics
+- [ ] Tests unitaires complets
+
+### Agent Desk (apps/agent-desk)
+- [x] Structure React configurée
+- [ ] Dashboard opérateur temps réel
+- [ ] Gestion des conversations multiples
+- [ ] Système de notifications
+- [ ] Rapports et statistiques
+- [ ] Interface mobile responsive
+
+### Functions Run (apps/functions-run)
+- [x] Structure API Genkit configurée
+- [ ] Endpoints REST complets
+- [ ] Authentification JWT
+- [ ] Rate limiting
+- [ ] Documentation OpenAPI
+- [ ] Tests d'intégration
+
+## 📚 Bibliothèques
+
+### UI Library (libs/ui)
+- [x] Structure de base configurée
+- [ ] Composants design system complets
+- [ ] Storybook pour documentation
+- [ ] Tests visuels automatisés
+- [ ] Thèmes dark/light
+- [ ] Accessibilité WCAG 2.1
+
+### Auth Library (libs/auth)
+- [x] Hooks Firebase configurés
+- [ ] Gestion des rôles et permissions
+- [ ] SSO avec Google/Microsoft
+- [ ] Authentification à deux facteurs
+- [ ] Session management avancé
+
+### AI Library (libs/ai/lang-detect)
+- [x] Logique Genkit de base
+- [ ] Modèle de détection optimisé
+- [ ] Cache des prédictions
+- [ ] Métriques de précision
+- [ ] Support langues dialectales
+
+## 🧪 Qualité et Tests
+
+### Tests Automatisés
+- [x] Configuration Jest pour tests unitaires
+- [x] Linting ESLint strict
+- [x] Validation TypeScript
+- [ ] Tests d'intégration complets
+- [ ] Tests end-to-end Playwright
+- [ ] Tests de performance
+- [ ] Tests de sécurité automatisés
+
+### Monitoring et Observabilité
+- [x] Health checks basiques
+- [ ] Métriques applicatives détaillées
+- [ ] Alertes proactives
+- [ ] Tracing distribué
+- [ ] Profiling de performance
+- [ ] Logs structurés
+
+## 📖 Documentation
+
+### Documentation Technique
+- [x] README principal modernisé
+- [x] Guide de gestion des vulnérabilités
+- [x] Documentation infrastructure Redis
+- [ ] Guide de contribution détaillé
+- [ ] Architecture Decision Records (ADR)
+- [ ] Runbooks opérationnels
+- [ ] Guide de déploiement
+
+### Documentation Utilisateur
+- [ ] Guide d'installation widget
+- [ ] Manuel utilisateur agent desk
+- [ ] API documentation interactive
+- [ ] Tutoriels vidéo
+- [ ] FAQ et troubleshooting
+
+## 🎯 Objectifs Trimestriels
+
+### Q1 2025 (Actuel)
+- [x] Stabilisation de l'infrastructure
+- [x] Sécurisation complète du projet
+- [ ] Finalisation des tests automatisés
+- [ ] Première version du widget web
+
+### Q2 2025
+- [ ] Lancement de la version beta
+- [ ] Intégration WhatsApp Business
+- [ ] Dashboard analytics complet
+- [ ] Optimisation des performances
+
+### Q3 2025
+- [ ] Fonctionnalités IA avancées
+- [ ] Déploiement multi-région
+- [ ] Certification sécurité ISO 27001
+- [ ] Expansion fonctionnelle
+
+### Q4 2025
+- [ ] Version 1.0 production
+- [ ] Scalabilité enterprise
+- [ ] Intégrations tierces
+- [ ] Roadmap 2026
+
+---
+
+## 📝 Historique de Migration (Complété)
+
+### Analyse et Migration Initiale ✅
+- [x] Vérification structure des dossiers
+- [x] Comparaison des configurations
+- [x] Migration des workflows CI/CD
+- [x] Migration de la documentation
+
+### Applications et Bibliothèques ✅
+- [x] Migration complète de toutes les apps
+- [x] Migration complète de toutes les libs
+- [x] Validation des configurations Nx
+- [x] Tests de build et lint réussis
+
+### Problèmes Résolus ✅
+- [x] Configuration ESLint corrigée
+- [x] Project graph Nx stabilisé
+- [x] Syntaxe TypeScript validée
+- [x] Headers SalamBot uniformisés
+
+---
+
+**Dernière mise à jour :** 27 janvier 2025  
+**Prochaine révision :** 10 février 2025  
+**Responsable :** SalamBot DevOps Team
 
