@@ -28,6 +28,7 @@ resource "google_project_service" "secretmanager" {
   service = "secretmanager.googleapis.com"
 
   disable_dependent_services = true
+  disable_on_destroy         = false
 }
 
 resource "google_project_service" "redis" {
@@ -35,6 +36,7 @@ resource "google_project_service" "redis" {
   service = "redis.googleapis.com"
 
   disable_dependent_services = true
+  disable_on_destroy         = false
 }
 
 resource "google_project_service" "compute" {
@@ -42,6 +44,7 @@ resource "google_project_service" "compute" {
   service = "compute.googleapis.com"
 
   disable_dependent_services = true
+  disable_on_destroy         = false
 }
 
 # Local values for common configurations
