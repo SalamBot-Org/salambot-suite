@@ -1,0 +1,5 @@
+gcp_project_id = "salambot-app"
+gcp_region     = "europe-west1"
+environment    = "dev"
+project_name   = "salambot"
+team           = "salambot-team"
