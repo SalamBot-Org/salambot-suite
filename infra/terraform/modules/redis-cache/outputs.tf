@@ -8,29 +8,30 @@
 
 output "redis_host" {
   description = "Redis instance host"
-  value       = google_redis_instance.main.host
+  value       = google_redis_instance.cache.host
 }
 
 output "redis_port" {
   description = "Redis instance port"
-  value       = google_redis_instance.main.port
+  value       = google_redis_instance.cache.port
 }
 
 output "redis_auth_string" {
   description = "Redis AUTH string"
-  value       = google_redis_instance.main.auth_string
+  value       = google_redis_instance.cache.auth_string
   sensitive   = true
 }
 
-output "redis_connection_string" {
-  description = "Complete Redis connection string"
-  value       = "redis://:${google_redis_instance.main.auth_string}@${google_redis_instance.main.host}:${google_redis_instance.main.port}"
+output "redis_url" {
+  description = "Redis connection URL"
+  value       = var.auth_enabled ? "redis://:${random_password.redis_auth[0].result}@${google_redis_instance.cache.host}:${google_redis_instance.cache.port}" : "redis://${google_redis_instance.cache.host}:${google_redis_instance.cache.port}"
   sensitive   = true
 }
 
-output "prometheus_target_tag" {
-  description = "Prometheus target tag for Grafana Cloud monitoring"
-  value       = "redis-${var.environment}-${var.instance_name}"
+output "redis_ssl_url" {
+  description = "Redis SSL connection URL"
+  value       = var.auth_enabled ? "rediss://:${random_password.redis_auth[0].result}@${google_redis_instance.cache.host}:${google_redis_instance.cache.port}" : "rediss://${google_redis_instance.cache.host}:${google_redis_instance.cache.port}"
+  sensitive   = true
 }
 
 output "redis_tls_enabled" {
