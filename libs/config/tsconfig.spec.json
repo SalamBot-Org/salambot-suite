@@ -1,0 +1,21 @@
+/**
+ * @file        Configuration TypeScript pour les tests de la bibliothèque Config
+ * @author      SalamBot Team (contact: info@salambot.ma)
+ * @created     2025-01-27
+ * @updated     2025-01-27
+ * @project     SalamBot - AI CRM for Moroccan SMEs
+ */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "module": "commonjs",
+    "types": ["jest", "node"]
+  },
+  "include": [
+    "jest.config.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
+  ]
+}

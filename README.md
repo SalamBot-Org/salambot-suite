@@ -55,6 +55,68 @@ SalamBot est construit sur une architecture moderne et évolutive utilisant les 
     *   Fonctionnalités proactives (campagnes marketing ciblées).
     *   Personnalisation avancée et marketplace d'extensions.
 
+## Infrastructure
+
+SalamBot utilise une infrastructure cloud moderne basée sur Google Cloud Platform avec Terraform pour la gestion de l'infrastructure as code.
+
+### Redis Cache Managé
+
+Le projet utilise Google Cloud Memorystore pour Redis comme solution de cache distribuée et de stockage de sessions.
+
+#### Commandes Infrastructure Redis
+
+*   **Initialiser Terraform :**
+    ```bash
+    pnpm infra:redis:init
+    ```
+
+*   **Planifier les changements d'infrastructure :**
+    ```bash
+    pnpm infra:redis:plan
+    ```
+
+*   **Appliquer l'infrastructure Redis :**
+    ```bash
+    pnpm infra:redis:apply
+    ```
+
+*   **Détruire l'infrastructure Redis :**
+    ```bash
+    pnpm infra:redis:destroy
+    ```
+
+*   **Mettre à jour la configuration Firestore avec l'URL Redis :**
+    ```bash
+    pnpm infra:update-config
+    ```
+
+#### Configuration
+
+L'infrastructure Redis est configurée via les fichiers Terraform dans `infra/terraform/`. Les variables d'environnement sont gérées via la librairie `libs/config` qui expose :
+
+*   `getRedisClient()` - Client Redis configuré automatiquement
+*   `getEnvConfig()` - Variables d'environnement validées
+*   `getRuntimeConfig()` - Configuration runtime depuis Firestore
+
+#### Monitoring
+
+L'infrastructure inclut :
+*   Monitoring automatique via Google Cloud Operations
+*   Métriques Prometheus exportées par défaut
+*   Alertes Grafana configurables
+*   Health checks automatiques
+*   Intégration Grafana Cloud pour les tableaux de bord avancés
+*   Export de métriques avec `prometheus_target_tag` pour Grafana Cloud
+
+#### Sécurité & Maintenance
+
+*   **Rotation Automatique des Mots de Passe :** Rotation mensuelle automatisée des mots de passe Redis via GitHub Actions
+*   **Gestion des Secrets :** Intégration avec Google Secret Manager pour le stockage sécurisé des identifiants
+*   **Audit Trail :** Journalisation complète et versioning de toutes les opérations de sécurité
+*   **Support Multi-Environnements :** Workflows de rotation séparés pour dev, staging et production
+
+Pour des informations détaillées sur la rotation des mots de passe Redis, voir [`docs/redis-password-rotation.md`](docs/redis-password-rotation.md).
+
 ## Commandes de Développement Courantes
 
 Ce projet utilise `pnpm` comme gestionnaire de paquets et `Nx` pour la gestion du monorepo.
