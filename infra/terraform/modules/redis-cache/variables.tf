@@ -6,6 +6,11 @@
  * @project     SalamBot - AI CRM for Moroccan SMEs
  */
 
+variable "project_id" {
+  description = "GCP project ID"
+  type        = string
+}
+
 variable "name" {
   description = "Name of the Redis instance"
   type        = string

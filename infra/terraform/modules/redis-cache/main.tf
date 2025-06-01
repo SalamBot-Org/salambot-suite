@@ -75,6 +75,7 @@ resource "google_redis_instance" "cache" {
 
 # Secret Manager secret for Redis connection details
 resource "google_secret_manager_secret" "redis_connection" {
+  project   = var.project_id
   secret_id = "${var.name}-redis-connection"
 
   labels = var.labels

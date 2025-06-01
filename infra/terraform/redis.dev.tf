@@ -46,6 +46,7 @@ resource "google_compute_network" "redis_network" {
 module "redis_cache_dev" {
   source = "./modules/redis-cache"
 
+  project_id     = var.gcp_project_id
   name           = "salambot-cache-${local.environment}"
   region         = var.gcp_region
   plan_tier      = "BASIC"
