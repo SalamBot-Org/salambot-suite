@@ -37,6 +37,13 @@ resource "google_project_service" "redis" {
   disable_dependent_services = true
 }
 
+resource "google_project_service" "compute" {
+  project = var.gcp_project_id
+  service = "compute.googleapis.com"
+
+  disable_dependent_services = true
+}
+
 # Local values for common configurations
 locals {
   environment = "dev"
@@ -55,6 +62,8 @@ resource "google_compute_network" "redis_network" {
   name                    = "salambot-${local.environment}-network"
   auto_create_subnetworks = true
   mtu                     = 1460
+
+  depends_on = [google_project_service.compute]
 }
 
 # Redis cache instance for development
@@ -84,7 +93,8 @@ module "redis_cache_dev" {
 
   depends_on = [
     google_project_service.secretmanager,
-    google_project_service.redis
+    google_project_service.redis,
+    google_project_service.compute
   ]
 }
 
