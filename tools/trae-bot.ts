@@ -9,13 +9,15 @@ import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const GH = (cmd: string) => execSync(`gh ${cmd}`, { stdio: 'inherit' });
+const GH = (cmd: string) => execSync(`gh ${cmd}`, { stdio: 'inherit', shell: true }); // <= garde compatibilité cmd/ps
 
 /* ---------- 1. ouverture de la PR setup ---------- */
 function openSetupPR() {
-  const branch = 'feature/trae-bot-setup';
-  // crée branche locale + pousse
-  GH(`repo set-default $(git remote get-url origin)`);
+    const branch = 'feature/trae-bot-setup';
+    
+  // Définit le dépôt par défaut sans la substitution bash
+  const remote = execSync('git remote get-url origin').toString().trim();
+  GH(`repo set-default "${remote}"`);
   execSync(`git checkout -b ${branch}`);
   execSync('git add tools/trae-bot.ts .github/workflows/trae.yml');
   execSync(`git commit -m "chore(bot): initial Trae-Bot automation"`);
