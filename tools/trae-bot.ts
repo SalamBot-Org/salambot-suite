@@ -47,19 +47,19 @@ function openSetupPR() {
 const issues = [
   {
     title: 'feat(core): UnifiedAIService + providerPolicy',
-    assignee: 'Trae-Bot',
+    assignee: 'oarib',
     body: 'Implémenter le service IA unifié selon TODO.md.',
     labels: 'phase-2,priority-high,core'
   },
   {
     title: 'feat(connectors): WhatsApp Cloud Sandbox',
-    assignee: 'Trae-Bot',
+    assignee: 'oarib',
     body: 'Intégrer WhatsApp Business Cloud API.',
     labels: 'phase-2,priority-high,connectors'
   },
   {
     title: 'feat(payment): Stripe + CMI Integration',
-    assignee: 'Trae-Bot',
+    assignee: 'oarib',
     body: 'Module payment abstrait + Stripe + CMI.',
     labels: 'phase-2,priority-high,payment'
   },
