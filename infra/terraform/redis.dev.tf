@@ -27,7 +27,7 @@ resource "google_project_service" "secretmanager" {
   project = var.gcp_project_id
   service = "secretmanager.googleapis.com"
 
-  disable_dependent_services = true
+  disable_dependent_services = false
   disable_on_destroy         = false
 }
 
@@ -35,7 +35,7 @@ resource "google_project_service" "redis" {
   project = var.gcp_project_id
   service = "redis.googleapis.com"
 
-  disable_dependent_services = true
+  disable_dependent_services = false
   disable_on_destroy         = false
 }
 
@@ -43,7 +43,7 @@ resource "google_project_service" "compute" {
   project = var.gcp_project_id
   service = "compute.googleapis.com"
 
-  disable_dependent_services = true
+  disable_dependent_services = false
   disable_on_destroy         = false
 }
 
