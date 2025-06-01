@@ -55,7 +55,7 @@ module "redis_cache_dev" {
   auth_enabled            = true
   transit_encryption_mode = "SERVER_AUTHENTICATION"
 
-  network      = google_compute_network.redis_network.name
+  network      = google_compute_network.redis_network.id
   connect_mode = "DIRECT_PEERING"
 
   # Maintenance window (Sunday 2 AM UTC)

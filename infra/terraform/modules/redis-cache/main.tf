@@ -45,7 +45,7 @@ resource "google_redis_instance" "cache" {
   transit_encryption_mode = var.transit_encryption_mode
   connect_mode            = var.connect_mode
 
-  authorized_network = data.google_compute_network.redis_network.id
+  authorized_network = var.network
 
   labels = var.labels
 
@@ -70,10 +70,8 @@ resource "google_redis_instance" "cache" {
   }
 }
 
-# Data source for the VPC network
-data "google_compute_network" "redis_network" {
-  name = var.network
-}
+# Use the network ID directly (no data source needed)
+# The network variable should contain the network ID or self_link
 
 # Secret Manager secret for Redis connection details
 resource "google_secret_manager_secret" "redis_connection" {

@@ -70,7 +70,7 @@ variable "labels" {
 }
 
 variable "network" {
-  description = "VPC network for the Redis instance"
+  description = "VPC network ID or self_link for the Redis instance"
   type        = string
   default     = "default"
 }
