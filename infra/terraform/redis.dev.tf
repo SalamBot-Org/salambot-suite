@@ -45,8 +45,8 @@ module "redis_cache_dev" {
   memory_size_gb = 1
 
   # Security settings
-  auth_enabled              = true
-  transit_encryption_mode   = "SERVER_AUTHENTICATION"
+  auth_enabled            = true
+  transit_encryption_mode = "SERVER_AUTHENTICATION"
 
   network      = "default"
   connect_mode = "DIRECT_PEERING"

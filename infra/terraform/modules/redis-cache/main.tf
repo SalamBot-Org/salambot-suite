@@ -41,10 +41,9 @@ resource "google_redis_instance" "cache" {
   display_name      = "${var.name} Redis Cache"
   reserved_ip_range = "10.0.0.0/29"
 
-  auth_enabled              = var.auth_enabled
-  auth_string               = var.auth_enabled ? random_password.redis_auth[0].result : null
-  transit_encryption_mode   = var.transit_encryption_mode
-  connect_mode             = var.connect_mode
+  auth_enabled            = var.auth_enabled
+  transit_encryption_mode = var.transit_encryption_mode
+  connect_mode            = var.connect_mode
 
   authorized_network = data.google_compute_network.redis_network.id
 
@@ -79,9 +78,9 @@ data "google_compute_network" "redis_network" {
 # Secret Manager secret for Redis connection details
 resource "google_secret_manager_secret" "redis_connection" {
   secret_id = "${var.name}-redis-connection"
-  
+
   labels = var.labels
-  
+
   replication {
     auto {}
   }
@@ -90,14 +89,14 @@ resource "google_secret_manager_secret" "redis_connection" {
 # Store Redis connection details in Secret Manager
 resource "google_secret_manager_secret_version" "redis_connection" {
   secret = google_secret_manager_secret.redis_connection.id
-  
+
   secret_data = jsonencode({
-    host     = google_redis_instance.cache.host
-    port     = google_redis_instance.cache.port
-    auth     = var.auth_enabled ? random_password.redis_auth[0].result : null
-    tls      = var.transit_encryption_mode == "SERVER_AUTHENTICATION"
-    url      = var.auth_enabled ? "redis://:${random_password.redis_auth[0].result}@${google_redis_instance.cache.host}:${google_redis_instance.cache.port}" : "redis://${google_redis_instance.cache.host}:${google_redis_instance.cache.port}"
-    ssl_url  = var.auth_enabled ? "rediss://:${random_password.redis_auth[0].result}@${google_redis_instance.cache.host}:${google_redis_instance.cache.port}" : "rediss://${google_redis_instance.cache.host}:${google_redis_instance.cache.port}"
+    host    = google_redis_instance.cache.host
+    port    = google_redis_instance.cache.port
+    auth    = var.auth_enabled ? random_password.redis_auth[0].result : null
+    tls     = var.transit_encryption_mode == "SERVER_AUTHENTICATION"
+    url     = var.auth_enabled ? "redis://:${random_password.redis_auth[0].result}@${google_redis_instance.cache.host}:${google_redis_instance.cache.port}" : "redis://${google_redis_instance.cache.host}:${google_redis_instance.cache.port}"
+    ssl_url = var.auth_enabled ? "rediss://:${random_password.redis_auth[0].result}@${google_redis_instance.cache.host}:${google_redis_instance.cache.port}" : "rediss://${google_redis_instance.cache.host}:${google_redis_instance.cache.port}"
   })
 }
 
@@ -106,11 +105,11 @@ resource "google_monitoring_uptime_check_config" "redis_uptime" {
   display_name = "${var.name} Redis Uptime Check"
   timeout      = "10s"
   period       = "300s"
-  
+
   tcp_check {
     port = google_redis_instance.cache.port
   }
-  
+
   monitored_resource {
     type = "uptime_url"
     labels = {
@@ -118,7 +117,7 @@ resource "google_monitoring_uptime_check_config" "redis_uptime" {
       project_id = data.google_client_config.current.project
     }
   }
-  
+
   content_matchers {
     content = "PONG"
     matcher = "CONTAINS_STRING"

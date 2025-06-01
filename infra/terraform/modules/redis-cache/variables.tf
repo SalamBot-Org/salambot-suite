@@ -84,8 +84,8 @@ variable "connect_mode" {
 variable "maintenance_window" {
   description = "Maintenance window configuration"
   type = object({
-    day          = string
-    start_time   = string
+    day        = string
+    start_time = string
   })
   default = {
     day        = "SUNDAY"
