@@ -37,7 +37,7 @@ resource "google_project_service" "secretmanager" {
 
   disable_dependent_services = false
   disable_on_destroy         = false
-  
+
   depends_on = [google_project_service.compute]
 }
 
@@ -47,7 +47,7 @@ resource "google_project_service" "redis" {
 
   disable_dependent_services = false
   disable_on_destroy         = false
-  
+
   depends_on = [google_project_service.compute]
 }
 
