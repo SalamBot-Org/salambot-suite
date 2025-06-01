@@ -1,37 +1,49 @@
 #!/usr/bin/env ts-node
-/**
- * Trae-Bot helper – crée issues & PR via la CLI GitHub.
- * Usage :
- *   pnpm bot:init             -> ouvre la PR setup + 5 issues Phase-2
- */
-
 import { execSync } from 'node:child_process';
-import fs from 'node:fs';
-import path from 'node:path';
 
 const GH = (cmd: string) =>
-    execSync(`gh ${cmd}`, {
-        stdio: 'inherit',
-        // PowerShell / CMD sous Windows, bash sinon
-        shell: process.platform === 'win32' ? process.env.ComSpec || 'cmd.exe' : '/bin/bash'
-    });
+  execSync(`gh ${cmd}`, {
+    stdio: 'inherit',
+    shell: process.platform === 'win32' ? process.env.ComSpec || 'cmd.exe' : '/bin/bash'
+  });
 
-/* ---------- 1. ouverture de la PR setup ---------- */
+/* -------------------------------------------------------------------------- */
+/*                                1.  PR setup                                */
+/* -------------------------------------------------------------------------- */
 function openSetupPR() {
-    const branch = 'feature/trae-bot-setup';
-    
-  // Définit le dépôt par défaut sans la substitution bash
+  const branch = 'feature/trae-bot-setup';
+
+  // Définit le dépôt GitHub par défaut (utile si plusieurs repos)
   const remote = execSync('git remote get-url origin').toString().trim();
   GH(`repo set-default "${remote}"`);
-  execSync(`git checkout -b ${branch}`);
+
+  /* ----- création de la branche ou checkout si elle existe déjà ---------- */
+  try {
+    execSync(`git checkout -b ${branch}`);
+  } catch {
+    execSync(`git checkout ${branch}`);
+  }
+
+  /* ----- ajoute le script + workflow au commit initial ------------------- */
   execSync('git add tools/trae-bot.ts .github/workflows/trae.yml');
-  execSync(`git commit -m "chore(bot): initial Trae-Bot automation"`);
+  try {
+    execSync('git commit -m "chore(bot): initial Trae-Bot automation"');
+  } catch {
+    // commit already exists – silence is golden
+  }
   execSync(`git push -u origin ${branch}`);
-  // ouvre PR
-  GH(`pr create --fill --label phase-2,priority-high --reviewer oarib`);
+
+  /* ----- ouvre la Pull Request ------------------------------------------ */
+  try {
+    GH('pr view'); // si PR existe déjà, pas d’exception
+  } catch {
+    GH('pr create --fill --label phase-2,priority-high --reviewer oarib');
+  }
 }
 
-/* ---------- 2. création des issues Phase-2 ---------- */
+/* -------------------------------------------------------------------------- */
+/*                             2.  Issues Phase 2                             */
+/* -------------------------------------------------------------------------- */
 const issues = [
   {
     title: 'feat(core): UnifiedAIService + providerPolicy',
@@ -67,18 +79,25 @@ const issues = [
 
 function createPhase2Issues() {
   issues.forEach(({ title, assignee, body, labels }) => {
-    GH(
-      `issue create --title "${title}" --body "${body}" --assignee "${assignee}" --label "${labels}"`
-    );
+    GH(`issue create --title "${title}" --body "${body}" --assignee "${assignee}" --label "${labels}"`);
   });
 }
 
-/* ---------- Exécution ---------- */
+/* -------------------------------------------------------------------------- */
+/*                                3.  CLI                                     */
+/* -------------------------------------------------------------------------- */
 const arg = process.argv[2];
-if (arg === 'init') {
-  openSetupPR();
-  createPhase2Issues();
-  console.log('✅ PR + issues Phase-2 créés');
-} else {
-  console.log('Usage: pnpm bot:init');
+
+switch (arg) {
+  case 'init':
+    openSetupPR();
+    createPhase2Issues();
+    console.log('\n✅ Pull Request et issues Phase 2 créées');
+    break;
+  case 'issues':
+    createPhase2Issues();
+    console.log('\n✅ Issues Phase 2 créées (sans PR)');
+    break;
+  default:
+    console.log('Usage :\n  pnpm bot:init           # PR + issues\n  pnpm bot:init issues    # issues seules');
 }
