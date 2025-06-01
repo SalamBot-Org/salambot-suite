@@ -35,6 +35,13 @@ locals {
   }
 }
 
+# Create VPC network for Redis
+resource "google_compute_network" "redis_network" {
+  name                    = "salambot-${local.environment}-network"
+  auto_create_subnetworks = true
+  mtu                     = 1460
+}
+
 # Redis cache instance for development
 module "redis_cache_dev" {
   source = "./modules/redis-cache"
@@ -48,7 +55,7 @@ module "redis_cache_dev" {
   auth_enabled            = true
   transit_encryption_mode = "SERVER_AUTHENTICATION"
 
-  network      = "default"
+  network      = google_compute_network.redis_network.name
   connect_mode = "DIRECT_PEERING"
 
   # Maintenance window (Sunday 2 AM UTC)
