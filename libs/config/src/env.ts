@@ -13,18 +13,20 @@ import { EnvConfig } from './types';
  */
 export function getEnvConfig(): EnvConfig {
   const nodeEnv = process.env['NODE_ENV'] || 'development';
-  
+
   // Validation de l'environnement
   if (!['development', 'production', 'test'].includes(nodeEnv)) {
-    throw new Error(`Invalid NODE_ENV: ${nodeEnv}. Must be one of: development, production, test`);
+    throw new Error(
+      `Invalid NODE_ENV: ${nodeEnv}. Must be one of: development, production, test`
+    );
   }
-  
+
   return {
     nodeEnv: nodeEnv as 'development' | 'production' | 'test',
     gcpProjectId: process.env['GCP_PROJECT_ID'],
     googleApplicationCredentials: process.env['GOOGLE_APPLICATION_CREDENTIALS'],
     redisUrl: process.env['REDIS_URL'],
-    redisTls: process.env['REDIS_TLS'] === 'true'
+    redisTls: process.env['REDIS_TLS'] === 'true',
   };
 }
 
@@ -32,12 +34,12 @@ export function getEnvConfig(): EnvConfig {
  * Vérifie si toutes les variables d'environnement requises sont définies
  */
 export function validateRequiredEnvVars(requiredVars: string[]): void {
-  const missingVars = requiredVars.filter(varName => !process.env[varName]);
-  
+  const missingVars = requiredVars.filter((varName) => !process.env[varName]);
+
   if (missingVars.length > 0) {
     throw new Error(
       `Missing required environment variables: ${missingVars.join(', ')}\n` +
-      'Please check your .env file or environment configuration.'
+        'Please check your .env file or environment configuration.'
     );
   }
 }
@@ -70,7 +72,7 @@ export function maskSensitiveValue(value: string): string {
   if (!value || value.length < 8) {
     return '***';
   }
-  
+
   return value.substring(0, 4) + '***' + value.substring(value.length - 4);
 }
 
@@ -79,12 +81,16 @@ export function maskSensitiveValue(value: string): string {
  */
 export function getEnvForLogs(): Record<string, string> {
   const config = getEnvConfig();
-  
+
   return {
     NODE_ENV: config.nodeEnv,
     GCP_PROJECT_ID: config.gcpProjectId || 'not-set',
-    GOOGLE_APPLICATION_CREDENTIALS: config.googleApplicationCredentials ? 'set' : 'not-set',
-    REDIS_URL: config.redisUrl ? maskSensitiveValue(config.redisUrl) : 'not-set',
-    REDIS_TLS: config.redisTls ? 'true' : 'false'
+    GOOGLE_APPLICATION_CREDENTIALS: config.googleApplicationCredentials
+      ? 'set'
+      : 'not-set',
+    REDIS_URL: config.redisUrl
+      ? maskSensitiveValue(config.redisUrl)
+      : 'not-set',
+    REDIS_TLS: config.redisTls ? 'true' : 'false',
   };
 }

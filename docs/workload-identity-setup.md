@@ -98,12 +98,12 @@ Ajoutez ces secrets dans votre repository GitHub (Settings > Secrets and variabl
 
 ### Secrets requis
 
-| Secret | Valeur | Description |
-|--------|--------|-------------|
-| `WIF_PROVIDER` | `projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider` | Identifiant du provider OIDC |
-| `WIF_SERVICE_ACCOUNT` | `terraform-github-actions@YOUR_PROJECT_ID.iam.gserviceaccount.com` | Email du service account |
-| `GCP_PROJECT_ID` | `YOUR_PROJECT_ID` | ID du projet GCP |
-| `TF_STATE_BUCKET` | `your-terraform-state-bucket` | Nom du bucket pour le state Terraform |
+| Secret                | Valeur                                                                                                                 | Description                           |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `WIF_PROVIDER`        | `projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider` | Identifiant du provider OIDC          |
+| `WIF_SERVICE_ACCOUNT` | `terraform-github-actions@YOUR_PROJECT_ID.iam.gserviceaccount.com`                                                     | Email du service account              |
+| `GCP_PROJECT_ID`      | `YOUR_PROJECT_ID`                                                                                                      | ID du projet GCP                      |
+| `TF_STATE_BUCKET`     | `your-terraform-state-bucket`                                                                                          | Nom du bucket pour le state Terraform |
 
 ### Obtenir les valeurs
 

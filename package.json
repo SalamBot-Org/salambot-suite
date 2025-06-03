@@ -1,6 +1,6 @@
 {
-  "name": "@./source",
-  "version": "0.0.0",
+  "name": "@salambot/suite",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "lint": "nx run-many --target=lint --all --parallel",
@@ -15,7 +15,12 @@
     "infra:redis:destroy": "cd infra/terraform && terraform destroy -auto-approve",
     "infra:update-config": "node scripts/update-firestore-config.js",
     "infra:validate": "node scripts/validate-terraform.js",
-    "infra:rotate-redis-password": "tsx scripts/rotate-redis-password.ts"
+    "infra:rotate-redis-password": "tsx scripts/rotate-redis-password.ts",
+    "version:patch": "npm version patch --no-git-tag-version && git add package.json",
+    "version:minor": "npm version minor --no-git-tag-version && git add package.json",
+    "version:major": "npm version major --no-git-tag-version && git add package.json",
+    "release:tag": "git tag -a v$(node -p \"require('./package.json').version\") -m \"Release v$(node -p \"require('./package.json').version\")\"",
+    "release:push": "git push origin main --tags"
   },
   "private": true,
   "devDependencies": {

@@ -25,8 +25,8 @@ jest.mock('cld3', () => {
         } else {
           return { language: 'unknown', probability: 0.1 };
         }
-      })
-    }))
+      }),
+    })),
   };
 });
 
@@ -45,9 +45,9 @@ jest.mock('genkit-vertexai', () => {
           } else {
             return { text: 'fr' }; // Fallback par défaut
           }
-        })
+        }),
       };
-    })
+    }),
   };
 });
 
@@ -63,7 +63,7 @@ describe('Flow de détection de langue', () => {
     expect(result.confidence).toBeGreaterThan(0.7);
   });
 
-  it('devrait détecter correctement l\'arabe avec CLD3', async () => {
+  it("devrait détecter correctement l'arabe avec CLD3", async () => {
     const result = await detectLanguage('مرحبا كيف حالك');
     expect(result.detectedLanguage).toBe('ar');
     expect(result.source).toBe('cld3');

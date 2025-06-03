@@ -4,7 +4,10 @@ import { execSync } from 'node:child_process';
 const GH = (cmd: string) =>
   execSync(`gh ${cmd}`, {
     stdio: 'inherit',
-    shell: process.platform === 'win32' ? process.env.ComSpec || 'cmd.exe' : '/bin/bash'
+    shell:
+      process.platform === 'win32'
+        ? process.env.ComSpec || 'cmd.exe'
+        : '/bin/bash',
   });
 
 /* -------------------------------------------------------------------------- */
@@ -49,37 +52,39 @@ const issues = [
     title: 'feat(core): UnifiedAIService + providerPolicy',
     assignee: 'oarib',
     body: 'Implémenter le service IA unifié selon TODO.md.',
-    labels: 'phase-2,priority-high,core'
+    labels: 'phase-2,priority-high,core',
   },
   {
     title: 'feat(connectors): WhatsApp Cloud Sandbox',
     assignee: 'oarib',
     body: 'Intégrer WhatsApp Business Cloud API.',
-    labels: 'phase-2,priority-high,connectors'
+    labels: 'phase-2,priority-high,connectors',
   },
   {
     title: 'feat(payment): Stripe + CMI Integration',
     assignee: 'oarib',
     body: 'Module payment abstrait + Stripe + CMI.',
-    labels: 'phase-2,priority-high,payment'
+    labels: 'phase-2,priority-high,payment',
   },
   {
     title: 'docs: Pricing Strategy',
     assignee: 'oarib',
     body: 'Rédiger docs/pricing.md avec la nouvelle grille.',
-    labels: 'phase-2,priority-high,documentation'
+    labels: 'phase-2,priority-high,documentation',
   },
   {
     title: 'infra: Redis Cache Module',
     assignee: 'devops',
     body: 'Module Terraform pour Redis cache.',
-    labels: 'phase-2,priority-high,infrastructure'
-  }
+    labels: 'phase-2,priority-high,infrastructure',
+  },
 ];
 
 function createPhase2Issues() {
   issues.forEach(({ title, assignee, body, labels }) => {
-    GH(`issue create --title "${title}" --body "${body}" --assignee "${assignee}" --label "${labels}"`);
+    GH(
+      `issue create --title "${title}" --body "${body}" --assignee "${assignee}" --label "${labels}"`
+    );
   });
 }
 
@@ -99,5 +104,7 @@ switch (arg) {
     console.log('\n✅ Issues Phase 2 créées (sans PR)');
     break;
   default:
-    console.log('Usage :\n  pnpm bot:init           # PR + issues\n  pnpm bot:init issues    # issues seules');
+    console.log(
+      'Usage :\n  pnpm bot:init           # PR + issues\n  pnpm bot:init issues    # issues seules'
+    );
 }

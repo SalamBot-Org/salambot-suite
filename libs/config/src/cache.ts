@@ -28,7 +28,7 @@ class MemoryCache {
     this.config = {
       defaultTtl: config.defaultTtl || 300, // 5 minutes par défaut
       maxSize: config.maxSize || 100,
-      enabled: config.enabled !== false
+      enabled: config.enabled !== false,
     };
 
     // Nettoyage périodique du cache
@@ -46,7 +46,7 @@ class MemoryCache {
     }
 
     const item = this.cache.get(key);
-    
+
     if (!item) {
       return null;
     }
@@ -75,11 +75,11 @@ class MemoryCache {
 
     const ttl = ttlSeconds || this.config.defaultTtl;
     const now = Date.now();
-    
+
     this.cache.set(key, {
       value,
-      expiresAt: now + (ttl * 1000),
-      createdAt: now
+      expiresAt: now + ttl * 1000,
+      createdAt: now,
     });
   }
 
@@ -103,7 +103,7 @@ class MemoryCache {
   getStats() {
     const now = Date.now();
     let expiredCount = 0;
-    
+
     for (const [, item] of this.cache) {
       if (now > item.expiresAt) {
         expiredCount++;
@@ -115,7 +115,7 @@ class MemoryCache {
       maxSize: this.config.maxSize,
       expiredItems: expiredCount,
       enabled: this.config.enabled,
-      defaultTtl: this.config.defaultTtl
+      defaultTtl: this.config.defaultTtl,
     };
   }
 
@@ -132,7 +132,7 @@ class MemoryCache {
       }
     }
 
-    keysToDelete.forEach(key => this.cache.delete(key));
+    keysToDelete.forEach((key) => this.cache.delete(key));
   }
 
   /**

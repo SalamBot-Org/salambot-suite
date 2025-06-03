@@ -12,13 +12,11 @@ export default {
   preset: '../../jest.preset.js',
   transform: {
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nx/react/plugins/jest',
-    '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nx/next/babel'] }]
+    '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nx/next/babel'] }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/widget-web',
   setupFilesAfterEnv: ['<rootDir>/src/jest-setup.ts'],
   // Ajout pour aider Jest à trouver les modules depuis la racine src/
-  modulePaths: ['<rootDir>/src']
+  modulePaths: ['<rootDir>/src'],
 };
-
-

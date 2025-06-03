@@ -10,10 +10,11 @@ module.exports = {
   getLanguageDetector: jest.fn(() => ({
     findLanguage: jest.fn((text) => {
       // Simulation simple
-      if (text.includes("bonjour")) return { language: "fr", probability: 0.9 };
-      if (text.includes("مرحبا")) return { language: "ar", probability: 0.9 };
-      if (text.includes("labas")) return { language: "unknown", probability: 0.3 };
-      return { language: "unknown", probability: 0.1 };
+      if (text.includes('bonjour')) return { language: 'fr', probability: 0.9 };
+      if (text.includes('مرحبا')) return { language: 'ar', probability: 0.9 };
+      if (text.includes('labas'))
+        return { language: 'unknown', probability: 0.3 };
+      return { language: 'unknown', probability: 0.1 };
     }),
   })),
 };
