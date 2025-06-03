@@ -17,14 +17,16 @@ export const flowsConfig = {
   langDetect: {
     flow: langDetectFlow,
     enabled: true,
-    description: 'Détecte la langue d\'un texte (fr, ar, darija) avec CLD3 et fallback LLM',
+    description:
+      "Détecte la langue d'un texte (fr, ar, darija) avec CLD3 et fallback LLM",
   },
-  
+
   // Flow de génération de réponse (à implémenter)
   reply: {
     // flow: replyFlow,
     enabled: false,
-    description: 'Génère une réponse adaptée à la langue détectée (Gemini pour fr/ar, Llama pour darija)',
+    description:
+      'Génère une réponse adaptée à la langue détectée (Gemini pour fr/ar, Llama pour darija)',
   },
 };
 

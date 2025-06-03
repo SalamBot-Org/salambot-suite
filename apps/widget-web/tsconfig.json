@@ -1,10 +1,3 @@
-/**
- * @file        Configuration TypeScript pour widget-web
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-25
- * @updated     2025-05-25
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
@@ -20,13 +13,6 @@
     "incremental": true,
     "types": ["jest", "node"]
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx",
-    "next-env.d.ts"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts"],
   "exclude": ["node_modules", "jest.config.ts"]
 }
-

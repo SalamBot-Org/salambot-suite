@@ -1,38 +1,22 @@
-/**
- * @file        Configuration du projet functions-run pour Nx
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-25
- * @updated     2025-05-25
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
 {
   "name": "functions-run",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/functions-run/src",
   "projectType": "application",
-  "tags": [
-    "scope:functions-run",
-    "type:app"
-  ],
+  "tags": ["scope:functions-run", "type:app"],
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/functions-run",
-        "format": [
-          "cjs"
-        ],
+        "format": ["cjs"],
         "bundle": false,
         "main": "apps/functions-run/src/main.ts",
         "tsConfig": "apps/functions-run/tsconfig.app.json",
-        "assets": [
-          "apps/functions-run/src/assets"
-        ],
+        "assets": ["apps/functions-run/src/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -56,9 +40,7 @@
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "buildTarget": "functions-run:build",
         "runBuildTargetDependencies": false
@@ -75,16 +57,12 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": [
-          "apps/functions-run/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["apps/functions-run/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "passWithNoTests": true,
         "jestConfig": "apps/functions-run/jest.config.ts"
@@ -92,4 +70,3 @@
     }
   }
 }
-

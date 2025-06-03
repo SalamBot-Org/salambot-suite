@@ -11,8 +11,11 @@ module.exports = {
     return {
       generate: jest.fn(async (prompt) => {
         // Simulation simple
-        if (prompt.includes("darija")) return { text: "هذه إجابة باللغة العربية الفصحى لرسالة بالدارجة المغربية." };
-        return { text: "Réponse par défaut." };
+        if (prompt.includes('darija'))
+          return {
+            text: 'هذه إجابة باللغة العربية الفصحى لرسالة بالدارجة المغربية.',
+          };
+        return { text: 'Réponse par défaut.' };
       }),
     };
   }),

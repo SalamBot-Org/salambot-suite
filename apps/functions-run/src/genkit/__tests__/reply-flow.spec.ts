@@ -24,9 +24,9 @@ jest.mock('genkit-vertexai', () => {
           } else {
             return { text: 'Réponse par défaut.' };
           }
-        })
+        }),
       };
-    })
+    }),
   };
 });
 
@@ -37,13 +37,15 @@ jest.mock('genkit-openai', () => {
       return {
         generate: jest.fn(async (prompt) => {
           if (prompt.includes('darija')) {
-            return { text: 'هذه إجابة باللغة العربية الفصحى لرسالة بالدارجة المغربية.' };
+            return {
+              text: 'هذه إجابة باللغة العربية الفصحى لرسالة بالدارجة المغربية.',
+            };
           } else {
             return { text: 'Réponse par défaut.' };
           }
-        })
+        }),
       };
-    })
+    }),
   };
 });
 
@@ -58,7 +60,7 @@ jest.mock('fs', () => {
         return 'Prompt pour darija';
       }
       return '';
-    })
+    }),
   };
 });
 
@@ -93,11 +95,13 @@ describe('Flow de génération de réponse', () => {
 
   it('devrait gérer les erreurs et fournir une réponse de secours', async () => {
     // Simuler une erreur en remplaçant temporairement l'implémentation du mock
-    const mockGeminiGenerate = jest.fn().mockRejectedValue(new Error('Erreur simulée'));
+    const mockGeminiGenerate = jest
+      .fn()
+      .mockRejectedValue(new Error('Erreur simulée'));
     jest.mocked(GeminiModel).mockImplementationOnce(() => ({
-      generate: mockGeminiGenerate
+      generate: mockGeminiGenerate,
     }));
-    
+
     const result = await generateReply('Message qui provoque une erreur', 'fr');
     expect(result.reply).toContain('difficultés techniques');
     expect(result.modelUsed).toBe('fallback');

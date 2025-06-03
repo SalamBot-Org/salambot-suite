@@ -17,25 +17,26 @@ export default function Home() {
         <h1>SalamBot Widget</h1>
         <p>Assistant virtuel intelligent pour les PME marocaines</p>
       </header>
-      
+
       <main className={styles.main}>
         <div className={styles.description}>
           <h2>Bienvenue sur le widget web de SalamBot</h2>
           <p>
-            SalamBot est un assistant virtuel conçu pour aider les PME marocaines
-            à améliorer leur relation client. Il comprend le français, l&apos;arabe classique
-            et le darija marocain.
+            SalamBot est un assistant virtuel conçu pour aider les PME
+            marocaines à améliorer leur relation client. Il comprend le
+            français, l&apos;arabe classique et le darija marocain.
           </p>
           <p>
-            Essayez notre démo ci-dessous en posant une question dans la langue de votre choix.
+            Essayez notre démo ci-dessous en posant une question dans la langue
+            de votre choix.
           </p>
         </div>
-        
+
         <div className={styles.chatBoxWrapper}>
           <ChatBox />
         </div>
       </main>
-      
+
       <footer className={styles.footer}>
         <p>© 2025 SalamBot - AI CRM pour les PME Marocaines</p>
       </footer>

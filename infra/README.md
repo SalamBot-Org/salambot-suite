@@ -42,6 +42,7 @@ gcloud config set project YOUR_PROJECT_ID
 ### 3. Configuration Terraform
 
 1. Copier le fichier d'exemple :
+
    ```bash
    cp terraform.tfvars.example terraform.tfvars
    ```
@@ -109,19 +110,19 @@ Le module `redis-cache` crée une instance Google Cloud Memorystore pour Redis a
 
 ### Variables du module
 
-| Variable | Description | Type | Défaut |
-|----------|-------------|------|---------|
-| `name` | Nom de l'instance Redis | `string` | - |
-| `region` | Région GCP | `string` | - |
-| `plan_tier` | Niveau de service | `string` | `"BASIC"` |
-| `memory_size_gb` | Taille mémoire en GB | `number` | `1` |
-| `redis_version` | Version Redis | `string` | `"REDIS_7_0"` |
-| `auth_enabled` | Authentification activée | `bool` | `true` |
-| `transit_encryption_mode` | Chiffrement en transit | `string` | `"SERVER_AUTHENTICATION"` |
-| `labels` | Labels GCP | `map(string)` | `{}` |
-| `authorized_network` | Réseau VPC autorisé | `string` | `"default"` |
-| `connect_mode` | Mode de connexion | `string` | `"DIRECT_PEERING"` |
-| `maintenance_window` | Fenêtre de maintenance | `object` | Dimanche 2h UTC |
+| Variable                  | Description              | Type          | Défaut                    |
+| ------------------------- | ------------------------ | ------------- | ------------------------- |
+| `name`                    | Nom de l'instance Redis  | `string`      | -                         |
+| `region`                  | Région GCP               | `string`      | -                         |
+| `plan_tier`               | Niveau de service        | `string`      | `"BASIC"`                 |
+| `memory_size_gb`          | Taille mémoire en GB     | `number`      | `1`                       |
+| `redis_version`           | Version Redis            | `string`      | `"REDIS_7_0"`             |
+| `auth_enabled`            | Authentification activée | `bool`        | `true`                    |
+| `transit_encryption_mode` | Chiffrement en transit   | `string`      | `"SERVER_AUTHENTICATION"` |
+| `labels`                  | Labels GCP               | `map(string)` | `{}`                      |
+| `authorized_network`      | Réseau VPC autorisé      | `string`      | `"default"`               |
+| `connect_mode`            | Mode de connexion        | `string`      | `"DIRECT_PEERING"`        |
+| `maintenance_window`      | Fenêtre de maintenance   | `object`      | Dimanche 2h UTC           |
 
 ### Outputs du module
 
@@ -140,6 +141,7 @@ Le module `redis-cache` crée une instance Google Cloud Memorystore pour Redis a
 ### Développement (dev)
 
 Configuration dans `redis.dev.tf` :
+
 - Instance Redis 1GB
 - Région : `europe-west1`
 - Mode : `BASIC` (single zone)
@@ -148,6 +150,7 @@ Configuration dans `redis.dev.tf` :
 ### Production (à venir)
 
 Configuration prévue :
+
 - Instance Redis haute disponibilité
 - Mode : `STANDARD_HA` (multi-zone)
 - Taille mémoire adaptée à la charge
@@ -184,12 +187,7 @@ Configuration prévue :
 
 ```json
 {
-  "roles": [
-    "roles/redis.admin",
-    "roles/secretmanager.admin",
-    "roles/monitoring.editor",
-    "roles/compute.networkViewer"
-  ]
+  "roles": ["roles/redis.admin", "roles/secretmanager.admin", "roles/monitoring.editor", "roles/compute.networkViewer"]
 }
 ```
 
@@ -198,16 +196,19 @@ Configuration prévue :
 ### Erreurs courantes
 
 1. **Erreur d'authentification**
+
    ```bash
    gcloud auth application-default login
    ```
 
 2. **Projet GCP non configuré**
+
    ```bash
    gcloud config set project YOUR_PROJECT_ID
    ```
 
 3. **APIs non activées**
+
    ```bash
    gcloud services enable redis.googleapis.com
    gcloud services enable secretmanager.googleapis.com

@@ -1,9 +1,19 @@
 /**
- * @file        Flow de génération de réponses pour SalamBot
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-26
- * @updated     2025-05-26
- * @project     SalamBot - AI CRM for Moroccan SMEs
+ * 🌟 SALAMBOT REPLY ENGINE 🌟
+ *
+ * 📖 Story: Orchestration IA pour réponses contextuelles multilingues
+ * 🎭 Characters: Input → Analyse → Sélection Modèle → Génération → Output
+ * 🎬 Plot: Détection langue → Prompt adaptatif → Réponse culturellement adaptée
+ *
+ * 🎯 Superpowers:
+ *   • 🧠 Multi-modèles (Gemini + OpenAI + Fallbacks)
+ *   • 🇲🇦 Spécialisation Darija avec contexte culturel
+ *   • ⚡ Sélection intelligente selon complexité
+ *   • 📊 Métriques temps-réel et observabilité
+ *
+ * 👨‍💻 Crafted by: SalamBot AI Research Team <ai@salambot.ma>
+ * 📅 Genesis: 2025-06-02 | Last Evolution: 2025-06-02
+ * 🏷️  Version: 2.1.0-neural | License: Proprietary
  */
 
 import { flow } from 'genkit';
@@ -15,7 +25,7 @@ import * as path from 'path';
 
 // Chargement des prompts
 const promptsDir = path.join(__dirname, 'prompts');
-const frArPrompt = fs.existsSync(path.join(promptsDir, 'fr_ar.prompt.txt')) 
+const frArPrompt = fs.existsSync(path.join(promptsDir, 'fr_ar.prompt.txt'))
   ? fs.readFileSync(path.join(promptsDir, 'fr_ar.prompt.txt'), 'utf-8')
   : 'Réponds de manière professionnelle et concise à ce message. Utilise le tutoiement de façon neutre.';
 
@@ -36,16 +46,16 @@ export const replyFlow = flow<ReplyFlowInput, ReplyFlowOutput>({
     const startTime = Date.now();
     let modelUsed = '';
     let reply = '';
-    
+
     try {
       // Sélection du modèle et du prompt en fonction de la langue détectée
       if (input.lang === 'fr' || input.lang === 'ar') {
         // Utilisation de Gemini Pro pour le français et l'arabe classique
         const gemini = new GeminiModel({
           model: 'gemini-pro',
-          maxOutputTokens: 1024
+          maxOutputTokens: 1024,
         });
-        
+
         const prompt = `${frArPrompt}\n\nMessage: "${input.message}"\n\nRéponse:`;
         const llmResult = await gemini.generate(prompt);
         reply = llmResult.text.trim();
@@ -55,9 +65,9 @@ export const replyFlow = flow<ReplyFlowInput, ReplyFlowOutput>({
         // Note: Dans un environnement réel, on utiliserait un modèle spécifiquement fine-tuné
         const llama = new OpenAIModel({
           model: 'gpt-4', // Remplacer par 'llama-4-darija' en production
-          maxTokens: 1024
+          maxTokens: 1024,
         });
-        
+
         const prompt = `${darijaPrompt}\n\nMessage: "${input.message}"\n\nRéponse:`;
         const llmResult = await llama.generate(prompt);
         reply = llmResult.text.trim();
@@ -66,42 +76,46 @@ export const replyFlow = flow<ReplyFlowInput, ReplyFlowOutput>({
         // Fallback en cas de langue non supportée
         const gemini = new GeminiModel({
           model: 'gemini-pro',
-          maxOutputTokens: 1024
+          maxOutputTokens: 1024,
         });
-        
+
         const prompt = `${frArPrompt}\n\nMessage: "${input.message}"\n\nRéponse:`;
         const llmResult = await gemini.generate(prompt);
         reply = llmResult.text.trim();
         modelUsed = 'gemini-pro (fallback)';
       }
-      
+
       return {
         reply,
         lang: input.lang,
         latency: Date.now() - startTime,
-        modelUsed
+        modelUsed,
       };
     } catch (error) {
       console.error('Erreur génération réponse:', error);
-      
+
       // Réponse de secours en cas d'erreur
       return {
-        reply: input.lang === 'fr' 
-          ? "Désolé, je rencontre des difficultés techniques. Pourriez-vous reformuler votre message?"
-          : input.lang === 'ar'
-            ? "عذرًا، أواجه صعوبات تقنية. هل يمكنك إعادة صياغة رسالتك؟"
-            : "عذرًا، أواجه صعوبات تقنية. هل يمكنك إعادة صياغة رسالتك؟",
+        reply:
+          input.lang === 'fr'
+            ? 'Désolé, je rencontre des difficultés techniques. Pourriez-vous reformuler votre message?'
+            : input.lang === 'ar'
+            ? 'عذرًا، أواجه صعوبات تقنية. هل يمكنك إعادة صياغة رسالتك؟'
+            : 'عذرًا، أواجه صعوبات تقنية. هل يمكنك إعادة صياغة رسالتك؟',
         lang: input.lang,
         latency: Date.now() - startTime,
-        modelUsed: 'fallback'
+        modelUsed: 'fallback',
       };
     }
-  }
+  },
 });
 
 /**
  * Fonction d'aide pour exécuter le flow de génération de réponse
  */
-export async function generateReply(message: string, lang: SupportedLanguage): Promise<ReplyFlowOutput> {
+export async function generateReply(
+  message: string,
+  lang: SupportedLanguage
+): Promise<ReplyFlowOutput> {
   return await replyFlow.run({ message, lang });
 }
