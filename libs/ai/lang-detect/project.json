@@ -14,6 +14,13 @@
         "tsConfig": "libs/ai/lang-detect/tsconfig.lib.json",
         "assets": ["libs/ai/lang-detect/*.md"]
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ai/lang-detect/**/*.ts"]
+      }
     }
   }
 }
