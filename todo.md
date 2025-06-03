@@ -1,53 +1,63 @@
 # SalamBot Suite v2.1 - Plan d'Action Critique
 
-> **✅ STATUT GLOBAL : EN COURS D'AMÉLIORATION**  
-> **Progrès réalisés** : Documentation technique complétée, incohérences corrigées  
-> **Écarts restants** : Détection Darija (85% vs 90% objectif), API Gateway à implémenter, couverture tests insuffisante
+> **⚠️ STATUT GLOBAL : ÉCART CRITIQUE IDENTIFIÉ**  
+> **Progrès réalisés** : Architecture documentée, infrastructure Terraform, CI/CD fonctionnel  
+> **Écarts critiques** : Détection Darija non implémentée, API Gateway inexistant, applications core vides, authentification non fonctionnelle
 
 ## 🔥 PRIORITÉ P0 - CRITIQUE (Semaines 1-2)
 
-### 🎯 Détection Darija Bi-Script - URGENT
+### 🎯 Détection Darija Bi-Script - IMPLÉMENTATION COMPLÈTE REQUISE
 
-**Objectif** : Passer de 85% à 90%+ de précision (objectif réaliste)
+**Réalité** : Seule une fonction stub `detectLanguage` existe dans `libs/ai/lang-detect`  
+**Objectif** : Implémenter de 0% à 90%+ de précision
 
-- [ ] **Semaine 1** : Audit complet du pipeline de détection actuel
-- [ ] **Semaine 1** : Implémentation dictionnaire bi-script 2000+ termes
-- [ ] **Semaine 2** : Optimisation modèle CLD3 + Gemini Pro
-- [ ] **Semaine 2** : Tests de précision avec dataset Darija validé
+- [ ] **Semaine 1** : Implémentation complète du pipeline de détection
+- [ ] **Semaine 1** : Intégration CLD3 + modèle personnalisé Darija
+- [ ] **Semaine 2** : Dictionnaire bi-script 2000+ termes
+- [ ] **Semaine 2** : Tests de précision avec dataset Darija
 - [ ] **Semaine 2** : Métriques temps réel (latence <150ms, précision 90%+)
 
-### 🌐 API Gateway - IMPLÉMENTATION
+### 🌐 API Gateway - CRÉATION COMPLÈTE REQUISE
 
-**Objectif** : Finaliser l'implémentation basée sur la documentation
+**Réalité** : Aucun code d'API Gateway trouvé, seule documentation existe  
+**Objectif** : Créer l'API Gateway de zéro
 
 - [x] **Semaine 1** : Architecture détaillée avec rate limiting ✅
 - [x] **Semaine 1** : Documentation API complète ✅
-- [ ] **Semaine 2** : Implémentation code source
+- [ ] **Semaine 2** : Création complète du code source
+- [ ] **Semaine 2** : Implémentation rate limiting et authentification
 - [ ] **Semaine 2** : Tests de charge (1000+ req/s)
 - [ ] **Semaine 2** : Intégration CI/CD
 
-### 📊 Couverture Tests - QUALITÉ
+### 📊 Couverture Tests - CRÉATION REQUISE
 
-**Objectif** : Passer de 75% à 85%
+**Réalité** : Tests basiques configurés mais peu de tests métier implémentés  
+**Objectif** : Créer une suite de tests complète (0% → 85%)
 
-- [ ] **Semaine 1** : Sprint tests unitaires (focus Darija + Auth)
+- [ ] **Semaine 1** : Création tests unitaires pour composants existants
+- [ ] **Semaine 1** : Tests pour détection Darija et authentification
 - [ ] **Semaine 2** : Tests d'intégration API Gateway
 - [ ] **Semaine 2** : Tests E2E critiques (chat flow complet)
 
 ## 🚀 PRIORITÉ P1 - IMPORTANT (Semaines 3-4)
 
-### 🔐 Sécurité Renforcée
+### 🔐 Authentification et Sécurité - IMPLÉMENTATION REQUISE
 
+**Réalité** : Hooks d'authentification Firebase non implémentés dans `libs/auth`
+
+- [ ] **Semaine 3** : Implémentation complète authentification Firebase
+- [ ] **Semaine 3** : Configuration RBAC et gestion utilisateurs
 - [ ] **Semaine 3** : Scans SAST/DAST automatisés
-- [ ] **Semaine 3** : Audit variables d'environnement exposées
-- [ ] **Semaine 4** : Configuration RBAC multi-tenant
+- [ ] **Semaine 4** : Audit variables d'environnement exposées
 - [ ] **Semaine 4** : Chiffrement données sensibles
 
-### 📱 Applications Core
+### 📱 Applications Core - IMPLÉMENTATION COMPLÈTE REQUISE
 
-- [ ] **Semaine 3** : Widget Web - Interface chat responsive
-- [ ] **Semaine 3** : Functions Run - Endpoints REST complets
-- [ ] **Semaine 4** : Agent Desk - Dashboard temps réel
+**Réalité** : Applications avec structure de base mais logique métier manquante
+
+- [ ] **Semaine 3** : Widget Web - Implémentation complète interface chat
+- [ ] **Semaine 3** : Functions Run - Création endpoints REST (actuellement vide)
+- [ ] **Semaine 4** : Agent Desk - Développement dashboard complet
 - [ ] **Semaine 4** : Intégration WhatsApp Business API
 
 ### 🛠️ Infrastructure
@@ -113,43 +123,45 @@
 
 ## 📋 ÉTAT ACTUEL (Baseline)
 
-### ✅ Acquis
+### ✅ Acquis (Réels)
 
 - [x] Architecture monorepo Nx stabilisée
 - [x] Pipeline CI/CD avec tests automatisés
 - [x] Infrastructure Redis avec Terraform
-- [x] Sécurité : 12 vulnérabilités corrigées
 - [x] Workload Identity Federation (GCP)
 - [x] Rotation automatique mots de passe Redis
+- [x] Documentation technique complète
+- [x] Structure de base des applications
 
-### ⚠️ En Cours
+### ⚠️ En Cours (Partiellement Implémenté)
 
-- [x] Structure applications (Next.js, React, Genkit)
-- [x] Bibliothèques de base (UI, Auth, AI)
-- [x] Documentation technique initiale
+- [x] Configuration applications (Next.js, React)
+- [x] Structure bibliothèques (UI, Config)
 - [x] Tests unitaires configuration
+- [x] Composants UI de base (ChatBox)
 
-### ❌ Manquant Critique
+### ❌ Manquant Critique (Non Implémenté)
 
-- [ ] **Détection Darija performante** (45% → 88%)
-- [ ] **API Gateway complet** (0% → 100%)
-- [ ] **Couverture tests suffisante** (60% → 75%)
-- [ ] Tests E2E automatisés
-- [ ] Monitoring production-ready
+- [ ] **Détection Darija** (0% → 90%) - Seul stub existe
+- [ ] **API Gateway** (0% → 100%) - Aucun code
+- [ ] **Authentification Firebase** (0% → 100%) - Hooks vides
+- [ ] **Logique métier applications** (5% → 100%)
+- [ ] **Tests métier** (0% → 85%)
+- [ ] **Monitoring production-ready**
 
 ## 🎯 PLAN D'EXÉCUTION 4 SEMAINES
 
-### Semaine 1 : Crisis Mode - Audit & PoC
+### Semaine 1 : Crisis Mode - Implémentation Core
 
-- **Lundi-Mardi** : Audit détection Darija + PoC API Gateway
-- **Mercredi-Jeudi** : Dictionnaire bi-script + Architecture Gateway
-- **Vendredi** : Sprint tests + Validation approches
+- **Lundi-Mardi** : Implémentation détection Darija complète + PoC API Gateway
+- **Mercredi-Jeudi** : Authentification Firebase + Architecture Gateway
+- **Vendredi** : Tests unitaires + Validation fonctionnelle
 
-### Semaine 2 : Crisis Mode - Implémentation
+### Semaine 2 : Crisis Mode - Intégration
 
-- **Lundi-Mardi** : Optimisation modèle Darija + MVP Gateway
-- **Mercredi-Jeudi** : Tests performance + Intégration
-- **Vendredi** : Validation métriques + Documentation
+- **Lundi-Mardi** : Finalisation API Gateway + Intégration Darija
+- **Mercredi-Jeudi** : Logique métier applications + Tests intégration
+- **Vendredi** : Validation métriques + Documentation mise à jour
 
 ### Semaine 3 : Stabilisation - Sécurité & Apps
 
