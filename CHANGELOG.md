@@ -13,14 +13,23 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 - Scripts d'infrastructure Terraform pour Redis
 - Configuration ESLint et Prettier
 - Tests automatisés avec Jest
+- **Script de synchronisation automatique TODO.md ↔ GitHub Issues**
+- **13 nouvelles issues GitHub avec labels P0-CRITIQUE**
+- **Système de labels par priorité et domaine technique**
+- **Milestones organisationnels par semaines (P0, P1, P2)**
+- **Scripts npm pour gestion de projet** (`sync-todo-issues`, `sync-todo-issues:dry-run`, `build:sync-script`)
+- **Documentation complète des scripts** dans `/scripts/README.md`
 
 ### Modifié
 - Standardisation des versions Node.js à 22 dans tous les workflows
 - Amélioration de la cohérence des en-têtes de workflows
+- **Amélioration de la gestion de projet** avec alignement automatique TODO-Issues
 
 ### Corrigé
 - Suppression des tags dupliqués
 - Correction des incohérences de versioning
+- **Résolution des conflits de merge dans PR #38** (pnpm-lock.yaml)
+- **Synchronisation des dépendances Dependabot**
 
 ## [1.0.0] - 2025-01-27
 

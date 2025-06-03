@@ -620,6 +620,42 @@ pnpm audit --fix          # Correction automatique
 pnpm outdated             # Vérifier les dépendances obsolètes
 ```
 
+## 🔄 Gestion de Projet
+
+### Synchronisation TODO ↔ Issues GitHub
+
+Le projet utilise un système automatisé pour maintenir l'alignement entre le fichier technique `todo.md` et les issues GitHub :
+
+```bash
+# Prévisualiser les changements
+npm run sync-todo-issues:dry-run
+
+# Synchroniser TODO vers GitHub Issues
+npm run sync-todo-issues
+
+# Compiler le script de synchronisation
+npm run build:sync-script
+```
+
+**Fonctionnalités :**
+- ✅ Création automatique d'issues avec labels **P0-CRITIQUE**/**P1-IMPORTANT**
+- 🎯 Génération de **milestones** par priorité et échéance
+- 🔍 **Détection de doublons** et gestion des tâches terminées
+- 📋 **Mode dry-run** pour prévisualisation
+- 📚 Documentation complète dans `/scripts/README.md`
+
+### Labels et Organisation
+
+| Label | Priorité | Description |
+|-------|----------|-------------|
+| `P0-CRITIQUE` | 🔴 Critique | À traiter immédiatement |
+| `P1-IMPORTANT` | 🟠 Important | À traiter rapidement |
+| `ai`, `nlp` | 🟣 Domaine | Intelligence artificielle |
+| `backend`, `api` | 🔵 Domaine | Services backend |
+| `testing`, `quality` | 🟢 Domaine | Tests et qualité |
+| `security`, `auth` | 🔴 Domaine | Sécurité |
+| `infrastructure` | 🔵 Domaine | DevOps |
+
 ## 📁 Structure du Projet
 
 ```
@@ -640,6 +676,10 @@ salambot-suite/
 │   ├── redis-password-rotation.md
 │   └── workload-identity-setup.md
 ├── scripts/                       # Scripts d'automatisation
+│   ├── sync-todo-issues.ts      # Synchronisation TODO ↔ GitHub Issues
+│   ├── README.md                 # Documentation des scripts
+│   └── ...                       # Autres scripts d'infrastructure
+├── todo.md                        # Fichier technique des tâches
 └── .github/                       # Workflows CI/CD et Dependabot
 ```
 

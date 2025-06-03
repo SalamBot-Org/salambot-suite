@@ -41,7 +41,7 @@
 
 ## 🚀 PRIORITÉ P1 - IMPORTANT (Semaines 3-4)
 
-### 🔐 Authentification et Sécurité - IMPLÉMENTATION REQUISE
+### 🔐 [P1-IMPORTANT] Authentification et Sécurité - IMPLÉMENTATION REQUISE
 
 **Réalité** : Hooks d'authentification Firebase non implémentés dans `libs/auth`
 
@@ -51,7 +51,7 @@
 - [ ] **Semaine 4** : Audit variables d'environnement exposées
 - [ ] **Semaine 4** : Chiffrement données sensibles
 
-### 📱 Applications Core - IMPLÉMENTATION COMPLÈTE REQUISE
+### 📱 [P1-IMPORTANT] Applications Core - IMPLÉMENTATION COMPLÈTE REQUISE
 
 **Réalité** : Applications avec structure de base mais logique métier manquante
 
@@ -60,7 +60,7 @@
 - [ ] **Semaine 4** : Agent Desk - Développement dashboard complet
 - [ ] **Semaine 4** : Intégration WhatsApp Business API
 
-### 🛠️ Infrastructure
+### 🛠️ [P1-IMPORTANT] Infrastructure & Monitoring - Production Ready
 
 - [ ] **Semaine 3** : Monitoring Prometheus/Grafana
 - [ ] **Semaine 3** : Logs centralisés ELK Stack
