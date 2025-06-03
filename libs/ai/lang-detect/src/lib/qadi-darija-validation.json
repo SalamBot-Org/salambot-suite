@@ -1,0 +1,2339 @@
+﻿{
+    "metadata":  {
+                     "created_date":  "2025-06-03",
+                     "version":  "1.0.0",
+                     "total_samples":  178,
+                     "scripts":  {
+                                     "bi_script":  0,
+                                     "arabic":  0,
+                                     "latin":  172,
+                                     "other":  6
+                                 },
+                     "source":  "QCRI Arabic Dialect Identification (QADI)",
+                     "description":  "Dataset de validation pour la dÃ©tection Darija bi-script basÃ© sur QADI",
+                     "name":  "QADI Darija Validation Dataset",
+                     "validation_objectives":  {
+                                                   "darija_arabic_precision":  0.85,
+                                                   "global_precision":  0.88,
+                                                   "darija_latin_precision":  0.9,
+                                                   "response_time_ms":  100,
+                                                   "test_coverage":  0.85
+                                               }
+                 },
+    "samples":  [
+                    {
+                        "id":  "qadi_ma_1",
+                        "text":  "@USER ÙŠØ¹Ù†ÙŠ Ø§Ù†Øª Ù„Ùˆ ÙƒÙ†Øª Ù…Ù‚ØªÙ†Ø¹ Ø¨Ø§Ù† Ø¹Ù‚Ù„Ù‡Ø§ Ø§Ø¬Ù…Ù„ Ù…Ù† Ø¬Ø³Ù…Ù‡Ø§ ÙƒÙ†Øª Ø¬Ø¨ØªÙ‡Ø§ Ù„Ø¨Ø±Ù†Ø§Ù…Ø¬ ØªÙˆÙ„Ø¹ Ø§Ù„Ø­Ù„Ù‚Ø© Ùˆ ØªØ²ÙŠØ¯ Ù†Ø³Ø¨Ø© Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯Ø© Ø§Ù„ÙŠ Ø¹Ù†Ø¯Ù‡ Ø¹Ù‚Ù„ Ù…Ø¨ØªØ³ØªØ¶ÙŠÙÙ‡Ù… Ø·ÙˆÙ†ÙŠ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_2",
+                        "text":  "Ù…Ø§ØªØ³Ø¨ÙˆØ´ ÙÙŠØ±Ù†Ø§Ù†Ø¯ÙŠÙ†Ùˆ Ø±Ø§Ù‡ Ù…ÙŠØªØ© Ù„ÙŠÙ‡ Ù†Ø³ÙŠØ¨ØªÙˆ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "other",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "other",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_3",
+                        "text":  "@USER ÙˆØ§Ø´ Ù…Ø±Ø§Ø¨Ø· Ù…Ø´Ø§ Ø¹Ù†Ø¯Ù‡Ù… ØµØ§ÙÙŠ ØŸ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_4",
+                        "text":  "@USER Ù†ÙÙŠ Ø§Ù„Ù…Ø¯Ø±Ø¨ Ø§Ù„ÙƒØ¯Ø§Ø¨ ÙˆØ§Ù†ØªÙ… ÙƒØ°Ø§Ù„Ùƒ Ù‡Ùˆ Ù„ÙƒØ±Ù‡Ù†Ø§ ÙÙŠÙƒÙ… ÙˆÙÙŠ Ù…Ø§Ù„Ù‚Ø§ Ø§Ø­Ù†Ø§ ØªÙØ±Ø¬ØªØ§ Ø¹Ù„Ù‰ Ø§Ù„Ù…Ø¨Ø§Ø±Ø© ÙˆØ´ÙˆÙÙ†Ø§ Ø§ÙŠØ´ Ù„ØµØ§Ø± ÙÙŠ Ø§Ù„Ù…Ø¨Ø§Ø±Ø© Ù…Ø§Ù†Ø­ØªØ§Ø¬ Ù†Ø³Ù…Ø¹ Ù…Ù† Ù…Ø¯Ø±Ø¨ ÙØ§Ø´Ù„",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_5",
+                        "text":  "Ø§Ù„Ø¨Ø±ØªØºØ§Ù„ ØºØ¯ÙŠ ØªØ§Ø®Ø¯ Ù…Ø§ØªØ´ Ø§Ù„Ù…ØºØ±Ø¨ Ø¹Ù„Ù‰ Ø§Ù†Ù‡ Ø³Ù‡Ù„ ÙˆØºØ¯ÙŠ Ø§ØªØ®ÙˆØ±Ùˆ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "other",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "other",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_6",
+                        "text":  "@USER Ø§ÙˆÙˆÙˆÙˆ Ù…Ø²ÙŠØ§Ù† Ø§Ù„Ù„Ù‡ ÙŠØ¬ÙŠØ¨Ùƒ Ø¹Ù„Ù‰ Ø®ÙŠØ± EMOJI ØµØ§ÙÙŠ ØªÙ„Ù‚Ø§ Ø§Ù„ØªÙ…Ø± ÙˆØ§Ù„Ø­Ù„ÙŠØ¨ Ø¹Ù†Ø¯ Ø§Ù„Ù…Ø­Ø·Ø© EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_7",
+                        "text":  "@USER ÙƒØ§Ù†Øª Ø¯Ø§Ù‡Ø¨ Ø§Ù†Ø§ Ø§ÙŠØ¶Ø§ Ù„ØªØ¨Ù„ÙŠØº Ù„Ù‚ÙŠØªÙ‡Ø§ Ù…Ø´ Ø´ØºØ§Ù„Ø© ÙˆØ¹Ù‚Ø¨Ø§Ù„ Ø§Ù†Øª ÙƒÙ…Ø§Ù†",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_8",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡Ù‡ ÙˆØ§Ù‡Ùˆ Ù…ÙˆÙƒÙŠØ· Ø­Ù…Ø±Ø§ ÙˆØ¬Ø§ØªÙˆ ØºØ§Ù„ÙŠØ© Ù†Ù‚ØµÙ‡Ø§ Ø¹Ù„ÙŠÙ‡ Ù…Ù† Ø§Ù„Ù…ØµØ§Ø±ÙŠÙ . .Ù‡Ù‡Ù‡Ù‡ Ø±ÙŠØ¯ ÙƒØ§Ø±Ø¨ÙŠØª Ù‚Ø§Ù„Ùƒ ! ! ! Ù‡Ù‡Ù‡Ù‡Ù‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_9",
+                        "text":  "@USER EMOJI ÙˆØ§Ù„Ù„Ù‡ Ø§Ù„Ù…ØµØ±ÙŠÙ† Ø¹Ø³Ù„ Ø¹Ù„Ø§Ø§Ø§Ø§Ù… EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_10",
+                        "text":  "@USER Ù„Ø§ Ù„Ù„Ø§Ø³Ù Ø§Ù„Ø®Ø§Øµ Ù…Ù…Ù†ÙˆØ¹ Ø§Ø°Ø§ ÙÙŠ Ø´ÙŠ Ø§Ø­ÙƒÙŠ Ù‡Ù†Ø§ Ù‚Ø¯Ø§Ù… Ø§Ù„Ù†Ø§Ø³",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_11",
+                        "text":  "@USER Ø§Ù„Ø­Ù…Ø¯ Ø§Ù„Ù„Ù‡ Ù…ØºØ§Ø±Ø¨Ø© ÙŠÙˆÙ‚Ø¹ Ù„ÙŠ ÙŠÙˆÙ‚Ø¹ Ù…ÙŠ Ù…Ø³ØªØ­ÙŠÙ„ ÙŠÙˆØµÙ„Ùˆ Ù„Ù‡Ø¯Ùˆ Ø¨Ø²Ø§Ø§Ø§Ù Ø§Ù„Ù‡Ø±Ø¨Ø©",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_12",
+                        "text":  "#MoroccoWatch Ø£Ø³ØªØ§Ø° Ø¨Ø¬Ø§Ù…Ø¹Ø© Ø§Ù„Ø£Ø²Ù‡Ø± ÙÙŠ Ù…ØµØ± : Ø§Ù„Ù…Ù†ØªÙ‚Ø¨Ø© Ø±Ø§Ø¬Ù„ ÙˆÙ…ÙÙŠÙ‡Ø§Ø´ Ø±ÙŠØ­Ø© Ø§Ù„Ø£Ù†ÙˆØ«Ø© ÙˆØ¨Ø­Ø²Ù† Ù„Ù…Ø§ Ø£Ø´ÙˆÙÙ‡Ø§ ( ÙÙŠØ¯ÙŠÙˆ ) URL #Ø§Ù„Ù…ØºØ±Ø¨ #Maroc URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_13",
+                        "text":  "@USER Ù…Ø§ÙÙ‡Ù…ØªØ´ Ø´Ù†Ùˆ ÙƒÙŠÙˆÙ‚Ø¹Ù„Ùˆ Ù‚Ø¯Ø§Ù… Ø§Ù„Ù…Ø±Ù…Ù‰",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_14",
+                        "text":  "@USER Ù…Ø¹Ùƒ Ø­Ù‚ Ø­Ù†ÙˆÙ†Ø© Ø­ØªÙ‰ Ø§Ù†Ø§ Ù…ÙƒÙ†ØªØ´ Ø§ØªØ§Ø¨Ø¹Ù‡ Ù„ÙƒÙ† Ø§Ù„Ø³Ù†Ø© Ø§Ù„Ù„ÙŠ ÙØ§ØªØª Ø§Ø¨ØªØ¯ÙŠØª Ø§ØªØ§Ø¨Ø¹ Ø°Ø§ÙÙˆÙŠØ³ Ù„Ø§Ù†Ù‡ ÙÙŠÙ‡ Ø­Ù…Ø§Ù‚ÙŠ Ø£Ø¶Ø§Ù Ø¬Ùˆ Ø¬Ù…ÙŠÙ„ Ù„Ù„Ø¨Ø±Ù†Ø§Ù…Ø¬ ÙˆÙ‡Ø§Ø¯ Ø§Ù„Ø³Ù†Ø© Ù„Ø§Ù†Ù‡ ÙÙŠÙ‡ Ø§Ù„Ø¯ÙŠÙØ§ Ø¥Ø¶Ø§ÙØ© Ù„Ù„Ø£ØµÙˆØ§Øª Ø§Ù„Ù…ØºØ±Ø¨ÙŠØ© Ù‚ÙˆÙŠØ© Ù‡Ø§Ø¯ Ø§Ù„Ø³Ù†Ø© EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_15",
+                        "text":  "@USER Ø£ØºÙ„Ø¨ Ø§Ù„Ù…ØºØ§Ø±Ø¨Ø© Ø§Ù„Ù„ÙŠ ÙÙØ±Ù†Ø³Ø§ ÙÙŠÙ‡Ù… ÙˆØ§Ø­Ø¯ Ø§Ù„Ø¨Ø® ÙˆØ§Ù„Ù†Ø®ÙˆØ© Ø¹Ù„Ù‰ Ø§Ù„Ø®ÙˆØ§ ÙˆØ§Ù„Ø¹ÙŠØ§Ù‚Ø©",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_16",
+                        "text":  "@USER Ø§Ù„Ø¬Ùˆ Ù…Ø²ÙŠØ§Ù† ØµØ±Ø§Ø­Ø© ÙˆØ­ØªÙ‰ Ø¨Ø§Ù„Ù„ÙŠÙ„ ÙƒÙŠÙƒÙˆÙ† Ù…Ø¨Ø±Ø¯ Ø§Ù„Ù†Ù‡Ø§Ø± Ù„ÙŠ Ø´ÙˆÙŠØ© Ø§Ù„ØµÙ‡Ø¯ ÙˆÙ„ÙƒÙ† Ù…Ø²ÙŠØ§Ù† ÙˆÙ‚ØªÙˆ Ù‡Ø§Ø¯ÙŠ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_17",
+                        "text":  "Ù…Ù…ÙƒÙ† Ø±Ø£ÙŠ Ø§Ù„Ø¬Ø§Ù…ÙŠÙŠÙ† ÙˆØ§Ù„Ù…Ø¯Ø§Ø®Ù„Ø© Ø¹Ù„ÙŠÙ‡Ù… Ù…Ù† Ø§Ù„Ù„Ù‡ Ù…Ø§ ÙŠØ³ØªØ­Ù‚ÙˆÙ† . . NEWLINE EMOJI URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_18",
+                        "text":  "@USER Ù‡Ø§ Ù…Ø§Ù…Ø§ÙˆØªÙƒÙ… Ø³ÙŠØ±Ùˆ Ù‚Ù„Ø¨Ùˆ Ø¹Ù„Ù‰ Ø¨Ø§Ø¨Ø§ÙƒÙ… Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡ URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_19",
+                        "text":  "@USER Ø§ØªÙÙ‚ ÙˆØ¨Ø´Ø¯Ø© . .Ø®Ø§ØµØ© ÙØ§Ù„Ù…Ø¨Ø§Ø±Ø© Ø§Ù„Ø§Ø®ÙŠØ±Ø© Ø¯Ø§ÙƒØ´ÙŠ Ù…ÙØ±ÙˆÙˆØ¬ NEWLINE Ù…Ø§Ø¹Ø±ÙØª ÙˆØ§Ø´ Ù…Ø¬Ø§Ù…Ù„Ø© ÙˆÙ„Ø§ ÙƒØ§ÙŠÙ†ÙŠÙ† ØªØ¯Ø®Ù„Ø§Øª Ù†ÙŠØª Ø¯ÙŠØ§Ù„ Ø§Ù„Ø¬Ø§Ù…Ø¹Ø© Ø­ÙŠØ« Ø¯Ø§ÙƒØ´ÙŠ Ø¨Ø²Ø§Ø§Ù . .Ù„Ø§Ø¹Ø¨ÙŠÙŠÙŠÙ† Ù…Ø§Ø´ÙŠ Ù…Ù‚Ø§Ù…Ù‡Ù… ÙŠÙ„Ø¨Ø¹Ùˆ ÙˆÙ„Ø§Ø¹Ø¨ÙŠÙŠÙ† Ù…Ø²ÙŠØ§Ù†ÙŠÙ† Ù…Ø®Ù„ÙŠÙ‡Ù… ÙØ¯ÙƒØ© Ø§Ù„Ø§Ø­ØªÙŠØ§Ø· ÙˆÙ„Ø§ Ù…Ø¯Ø®Ù„Ù‡Ù… ÙØ§Ø®Ø± Ø§Ø·ÙˆØ§Ø± Ø§Ù„Ù…Ù‚Ø§Ø¨Ù„Ø©",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_20",
+                        "text":  "@USER ÙŠØ§Ø±ÙŠØª Ù‡Ù‡Ù‡Ù‡ Ù„Ø§ Ù…Ø´ Ù‚ØµØ¯ Ù…Ø¸Ù†Ø´",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_21",
+                        "text":  "@USER Ø§Ù‚ÙˆØ¯ Ø¨Ù„ÙŠØ© Ø§Ù‚Ø¯Ø± ØªØ´Ø¯ ÙØ¨Ù†Ø§Ø¯Ù… NEWLINE ÙƒØªØ±Ø¯ÙˆØ§ Ø¨Ø­Ø§Ù„ Ø§Ù„ÙƒÙ„Ø¨",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_22",
+                        "text":  "@USER Ø§Ù„Ù„Ù‡ ÙŠØ±Ø­Ù…Ù‡ EMOJI Ø±Ø¨ÙŠ Ù…Ø¹Ùƒ Ø®ÙˆÙŠØ§ Ùˆ Ø§Ù†Ø§ Ù„Ù„Ù‡ Ùˆ Ø§Ù†Ø§ Ø§Ù„ÙŠÙ‡ Ø±Ø§Ø¬Ø¹ÙˆÙ†",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_23",
+                        "text":  "@USER Ù…Ø§ ØªØ®Ø§ÙÙŠØ´ Ø­Ù†Ø§ Ù„Ù‡Ù… Ø¨Ø§Ù„Ù…Ø±ØµØ¯ Ø§Ù„Ù„ÙŠ ÙŠÙ…Ø³ Ø¹Ù„Ù…Ù†Ø§ Ùˆ Ø´Ø±ÙÙ†Ø§ Ù†ÙƒÙ„ÙˆÙ‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_24",
+                        "text":  "@USER Ø§Ù„Ù…Ø­Ø·Ø© Ø§Ù„Ø­Ø±Ø§Ø±ÙŠØ© Ø³Ù…Ø¹Øª Ø¨Ø§Ù„Ù„ÙŠ ÙƒØ§Ù†Øª ØºØ§Ø¯ÙŠ ØªÙ‚Ø§Ù… ÙÙŠ Ø§ÙŠØª Ù…Ù„ÙˆÙ„ ÙˆØ±ÙØ¶ÙˆØ§ Ù„ÙŠÙ‡Ù… ÙˆÙ‡Ù…Ø§ ÙŠØ¯ÙŠÙˆÙ‡ Ù„Ø£Ø³ÙÙŠ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_25",
+                        "text":  "@USER Ù‡Ø§Ø¯ Ø§Ù„Ù‡Ø¯Ø±Ø© Ø±Ø§Ù‡Ø§ Ø§Ù†ØªØ´Ø±Ø§Øª ÙØ§Ù„ÙÙŠØ³ ÙˆØ§Ù„Ø§Ù†Ø³ØªØ§ ÙˆØ§Ù„ØªÙˆÙŠØªØ± Ù…ØºØ§Ø±Ø¨Ù‡ ÙˆØºÙŠØ± Ù…ØºØ§Ø±Ø¨Ù‡ Ø¯Ø§ÙƒØ´ÙŠ Ù„Ø§Ø´ Ù†Ø´Ø± Ø­ØªØ§ Ù‡Ùˆ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_26",
+                        "text":  "@USER EMOJI Ø§Ù„Ø­Ù…Ø¯ Ù„Ù„Ù‡ Ø§Ù„Ù„Ù‡ Ù‡Ùˆ Ù„ÙŠ Ø´Ø§Ø¯ Ø§Ù„Ø³Ù…Ø§ ÙˆØ§Ù„Ø§Ø±Ø¶ Ø¨Ù†Ø§Ø¯Ù… Ù…Ø§Ø¹Ù†Ø¯Ùˆ Ù…Ø§ÙŠØ¹Ø·ÙŠÙƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_27",
+                        "text":  "@USER Ø§Ù„Ù„Ù‡ ÙŠØ´Ø§ÙÙŠÙ‡ ÙˆÙŠØ¹Ø§ÙÙŠÙ‡ ÙŠØ§Ø±Ø¨ . Ø§Ø­Ø³Ø§Ø³ ØµØ¹Ø¨ ÙˆØ§Ù†Øª Ø¹Ø§Ø±Ù Ù„ÙŠ Ø¹Ø²ÙŠØ² Ø¹Ù„ÙŠÙƒ ÙÙŠ Ø§Ù„Ø¨Ù„ÙˆÙƒ . Ø¬Ø±Ø¨ØªÙ‡Ø§ Ø§Ù„Ø§Ø³Ø¨ÙˆØ¹ Ù„ÙŠ ÙØ§Øª Ù…Ø¹ Ø§Ù„ÙˆØ§Ù„ÙŠØ¯ . Ø§Ù„Ø­Ù…Ø¯ Ø§Ù„Ù„Ù‡ Ø¹Ù„Ù‰ ÙƒÙ„ Ø´Ø¦ . Ø¥Ù† Ø´Ø§Ø¡ Ø§Ù„Ù„Ù‡ ÙƒÙ„Ø´ÙŠ ÙŠÙƒÙˆÙ† Ø¨Ø®ÙŠØ±",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_28",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡ EMOJI Ù†ÙƒØ±ØªÙŠ ØµØ§ÙÙŠ Ù†Ù‡Ø§Ø± Ù„ÙŠ Ù‚Ù„ØªÙŠ Ù„ÙŠØ§ ÙƒÙ†Ø¨ØºØ³Ùƒ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_29",
+                        "text":  "Ø¯ÙŠÙƒ Ø§Ù„Ø¶ØµØ§Ø±Ø© Ø§Ù„Ù„ÙŠ ÙƒØ§Ø¯ÙŠØ± ÙØ§Ù„Ø±ÙŠØ§Ù„ Ø³ÙŠØ± ÙƒÙˆÙ„Ù‡Ø§ . .Ø¯ÙˆØ²ØªÙ‡Ø§ Ù„Ùƒ Ø¹Ù„Ù‰ ÙˆØ¬Ù‡ Ù‡Ø¯ Ø§Ù„Ø´ÙŠØ¨Ø§Ù†ÙŠ Ø¥Ù†ÙŠÙŠØ³ØªØ§ URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_30",
+                        "text":  "@USER ÙˆÙ‡Ø§Ø¯ Ù‚Ù„Ø§Ù„ÙŠÙ† Ø§Ù„ÙƒÙØ§Ø¡Ø© Ø§Ù„Ù„ÙŠ ØªØ§ÙŠØ¯Ø¨Ø±Ùˆ Ø§Ù„Ø´Ø£Ù† Ø§Ù„Ø¹Ø§Ù… Ø§Ù„ÙŠÙˆÙ… ØŒ ÙˆÙ…Ø§Ø¹Ø±ÙÙˆ Ù…Ø§ÙŠØ¯ÙŠØ±Ùˆ ØŒ Ù…Ø§Ø´ÙŠ Ø­Ù†Ø§ Ø§Ù„Ù„ÙŠ Ø·Ù„Ø¹Ù†Ø§Ù‡ÙˆÙ… ØŸ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_31",
+                        "text":  "@USER Ø§Ù„ÙØ§Ù†Ø² Ø§Ù„Ù‡Ù…Ø¬ÙŠ Ø§Ù„ÙˆØ­ÙŠØ¯ Ù„ÙŠ Ù„ÙŠ ØªÙˆØµÙ„ Ø¨ÙŠÙ‡Ù… Ø§Ù„Ø­Ù‚Ø§Ø±Ø© ÙŠØ¯Ø¹Ùˆ Ø¨Ø§Ù„Ù…ÙˆØª Ù…Ù† Ø§Ø¬Ù„ Ø³Ø­Ù„ÙŠØ© Ø¹ÙˆØ¬Ø© Ø§Ù„Ø±ÙƒØ§Ø¨ÙŠ EMOJI Ù„ÙƒÙ† Ø±Ø§Ù‡Ù… Ù…ÙØ¬ÙˆØ¹ÙŠÙ† ÙÙŠÙ‡Ø§ ÙˆÙ‡ÙŠ Ø¹Ø§ÙŠØ´Ø©",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_32",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡ Ø§Ù‚ØµØ¯ Ù‡Ùˆ Ø§ØªØµØ§Ø¨ ÙŠØ¹Ù†ÙŠ Ø§Ù„Ø§ØµØ§Ø¨Ø© Ø¬Ø§Øª ÙÙŠÙ‡ Ø¨Ø³ ÙŠØ±Ø¬Ø¹ ÙƒÙˆÙŠØ³",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_33",
+                        "text":  "Ø§Ù„Ù†Ø§Ø³ Ø§Ù„Ù„ÙŠ ÙˆØµÙ„ØªÙ‡Ù… Ø±Ø³Ø§ÙŠÙ„ Ù…Ù† Ø¹Ù†Ø¯ÙŠ Ù…Ø´ÙØ±Ø© Ù…Ø§ØªÙØªØ­ÙˆÙ‡Ø§ Ø¨Ù„ÙŠØ² . ..Ù„Ø§Ù†Ù‡ Ù…Ø´ Ø§Ù†Ø§ Ù„ÙŠ Ø¨Ø¹Ø«Ø«Ù‡Ø§",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "other",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "other",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_34",
+                        "text":  "@USER ÙƒØªØ¯ÙŠØ±ÙŠ Ø¨Ø­Ø§Ù„ Ø®Ù†Ø´Ø© Ù„ÙŠØ¨ØªÙˆÙ†",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_35",
+                        "text":  "@USER Ø¨Ù„Ø§ Ù…Ø§ Ù†ØªØ³Ù†Ø§ Ø§Ù„Ù†Ø§Ø³ ØªØ´Ø±Ø­ Ù„ÙŠØ§ Ø§Ù„ØªØºØ±ÙŠØ¯Ø© Ø´Ø±Ø­Ø§ Ø±Ø§Ø³Ù‡Ø§ Ø¨Ø±Ø§Ø³Ù‡Ø§ . NEWLINE ÙˆÙ„Ùƒ ÙÙŠ Ø±Ø¯ÙˆØ¯ Ø§Ù„Ù†Ø§Ø³ Ø¹Ù„Ù‰ ØªØºØ±ÙŠØ¯Ø§ØªÙƒ Ù†Ù…ÙˆØ¯Ø¬",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_36",
+                        "text":  "@USER Ù‡Ø§Ø¯ Ø§Ù„Ø´ÙŠ Ù…Ø§Ù‚Ø§Ù„ ÙˆØ§Ù„Ùˆ ÙˆÙ…Ø§ Ø³Ù„ÙƒØ´ Ù…Ù† Ø§Ù„Ù‡Ù…Ø¬ Ø£Ù…Ø§ Ù„Ùˆ ØªÙƒÙ„Ù… Ø´Ù†Ùˆ ÙŠØ¯ÙŠØ±Ùˆ Ø§Ù„Ù„Ù‡ Ø£Ø¹Ù„Ù… EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_37",
+                        "text":  "ÙŠØ§Ø±Ø¨ÙŠ Ù†Ø­Ù„Ù… Ù„Ù‚ÙŠØª NUM ÙØ±Ø§Ù†Ùƒ . .",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_38",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡Ù‡ Ø§Ø§Ø§Ù‡ Ø§Ù†Ø§ ÙˆØ§Ø­Ø¯ Ø§Ù„Ù…Ø±Ø© ÙØ§Ù„Ø¬Ø¨Ù„ Ù…Ø´ÙŠØª Ø¹Ù†Ø¯ Ø®Ø§Ù„ØªÙŠ ÙƒØ§Ù†Øª ÙƒØªÙ‚Ø±ÙŠ ØªÙ… ÙˆØ¨Ø§Ù†ÙŠÙ†Ùˆ Ø²ÙˆÙŠÙ† ØµØ±Ø§Ø­Ø© ÙˆØ¯ÙˆØ´Øª ÙÙŠÙ‡ ÙˆØ§Ø´ Ù‡ÙŠ Ù‡Ø§Ø¯ÙŠÙƒ Ø§Ù„Ù…ØªØ±ÙˆØ³Ø© Ø§Ùˆ Ù„Ø§ Ø§Ù„Ù„Ù‡ Ø§Ø¹Ù„Ù… EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_39",
+                        "text":  "Ø§Ø°Ø§ Ù‚Ù„Øª Ù„ÙƒÙ… Ù…Ø±ÙŠØ¶Ø© ÙˆØ§Ø®Ø¯Øª Ø¨Ø±Ø±Ø±Ø¯ Ø´Ù†Ùˆ ØªÙ‚ÙˆÙ„ÙˆÙ† Ù„ÙŠ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_40",
+                        "text":  "Ø§Ø¹Ù„Ù† Ø­Ø¯Ø§Ø¯ÙŠ ÙˆØ§Ø­Ù„Ù Ø£Ù†ÙŠ Ù„Ù„Ø¹Ø´Ù‚ Ù„Ù† Ø£Ø¹ÙˆØ¯ ÙˆØ§ÙˆØ¹Ø¯ Ù†ÙØ³ÙŠ Ù‚Ø¨Ù„Ùƒ Ø§Ù† Ø£Ù†Ø³Ù‰ Ù„ÙŠ ÙƒØ§Ù† Ø¨ÙŠÙ†ÙŠ ÙˆØ¨ÙŠÙ†Ùƒ ÙˆØ£Ø´Ù‚ Ø¯ÙØªØ± ØºØ±Ø§Ù…Ùƒ . .. NEWLINE Ø¹Ø±ÙØªÙˆ ØªØ¨Ù„ÙˆÙƒÙŠØª Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡ Ù…Ø§ØºØ§Ø¯ÙŠØ´ Ù†ÙƒÙ…Ù„ NEWLINE ÙˆÙ†ØºØ±Ø¯ ÙˆÙ„ÙŠ Ù„ÙŠÙ‡Ø§ Ù„ÙŠÙ‡Ø§ NEWLINE #Ù…ØºÙŠØ§Ø±Ø©",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_41",
+                        "text":  "@USER Ù‡ Ø¹Ù†Ø¯Ùƒ Ø­Ù‚ Ùˆ Ø§Ù„Ù…Ø´ÙƒÙ„Ø© Ø§Ù„Ø®Ù„ÙŠØ¬ÙŠÙŠÙ† ÙƒØ§Ù† Ø§Ø®Ø±Ù‡Ù… ÙŠÙ„Ø¹Ø¨ÙˆØ§ Ø¨Ø§Ù„Ø·Ø¨Ù„ Ùˆ Ø¨Ù†ØªÙ‡Ù… ÙƒÙ†ØªØ§ÙƒÙŠ Ø¬Ø§ÙŠØ© Ù NUM Ø¨ØªÙ‚ÙˆÙ„Ùƒ Ø§Ù„Ø§ÙˆÙ„Ù‰ Ø¹Ø±Ø¨ÙŠØ§ Ø­ÙˆØ´ Ø§Ù„Ù‡Ø¨Ù„",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_42",
+                        "text":  "@USER Ù…Ù…ÙƒÙ† Ø§Ø®ØªÙŠ Ø§Ù†Ø§ Ù†Ù‡Ø¯Ø± Ø¹Ù„Ù‰ Ù…ÙƒØ§Ù† ØªÙˆØ¬Ø¯Ù‰ Ø§Ù„Ø±Ø¨Ø§Ø· . Ù„ÙƒÙ† ØªÙ…Ø´ÙŠ Ù„ØªÙ…Ø§Ø±Ø© ÙˆÙ„Ø§ Ø³Ù„Ø§ Ø­Ø§Ø¬Ø© Ø§Ø®Ø±Ù‰ Ø§ÙŠØ¶Ø§ ÙˆÙ…Ø§Ø´ÙŠ Ø¹ÙˆØªØ§Ù†ÙŠ ÙƒØ§Ø§Ø¹ Ø§Ù„Ø±Ø¨Ø§Ø· ØªÙ‚Ø¯Ø± ØªØ®Ø±Ø¬ Ø¨ÙƒÙ„ Ø­Ø±ÙŠØ© Ù…Ø«Ù„Ø§ Ø­Ø³Ø§Ù† Ø§Ù„Ù…Ø¯ÙŠÙ†Ø© Ø§ÙƒØ¯Ø§Ù„ Ø­ÙŠ Ø§Ù„Ø±ÙŠØ§Ø¶",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_43",
+                        "text":  "@USER Ø¢Ø®Ø± ÙØ±ØµØ© Ù„Ù„ÙƒØ³Ø± ÙŠØ§ÙÙŠØ¯Ø±ÙŠØ± Ø¨Ù„ÙŠÙŠÙŠÙŠØ² Ù„Ø§ ØªØ¶ÙŠØ¹Ù‡Ø§",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_44",
+                        "text":  "@USER Ø§Ù†Ø§ Ø´ÙØª ØªØ¹Ù„ÙŠÙ‚Ù‡Ø§ Ù‚Ø§Ù„Øª Ù„Ù‡Ø§ Ù„ÙŠ Ø¹Ù…Ù„Ùƒ Ø´Ø¹Ø±Ùƒ ØªØ¹Ø¯Ù‰ Ø¹Ù„ÙŠÙƒ Ø£Ù…Ø§ Ù‡Ø§Ø¯ Ø§Ù„ØªØ¹Ù„ÙŠÙ‚ Ù…Ø§Ø´ÙØªÙˆØ´ ÙˆØ§Ù† ÙŠÙƒÙ† ÙƒÙ„Ø§Ù…Ùƒ Ø¹ÙŠØ¨ Ù„Ø¨Ù†Øª Ù…Ø«Ù„Ùƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_45",
+                        "text":  "@USER NEWLINE Ø³Ø¤Ø§Ù„ ØºØ¨ÙŠ NEWLINE Ø§Ø´ ÙƒÙŠØ¯ÙŠØ±Ùˆ Ø§Ù„Ø¨Ù†Ø§Øª EMOJI Ø­Ø³Ù† Ø¯Ø®Ù„ Ø³ÙˆÙ‚ Ø±Ø§Ø³Ùƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_46",
+                        "text":  "@USER Ø²Ù„Ù‚Ø§Øª Ù„ÙŠØ§ Ø§Ù†Ø§ Ø§Ø³Ù",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_47",
+                        "text":  "@USER ÙŠØ§ Ø§Ø®ÙŠ ØªØ±ÙƒÙŠ Ø´Ø®Øµ ÙØ§Ø´Ù„ ÙÙŠ Ù…Ù‡Ù†ØªÙ‡ Ùˆ Ø±Ø£ÙŠÙ†Ø§ ØªØ¬Ø±Ø¨ØªÙ‡ ÙÙŠ Ù…ØµØ± ÙƒÙ…Ø§ Ø§Ù†Ù†Ø§ Ø¶Ø¯ Ø§Ù„Ø³ÙŠØ§Ø³Ø© Ù„ÙŠ ÙŠØ´ØªØºÙ„ Ø¨ÙŠÙ‡Ø§ Ù‡Ùˆ Ù…Ø®Ù„ÙˆØ¶ Ùˆ Ø§Ù„Ù…ØºØ±Ø¨ Ù…Ø§Ù†Ø§Ù‚ØµÙˆØ´ Ù…Ø®Ù„ÙˆØ¶ÙŠÙ†",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_48",
+                        "text":  "@USER ÙÙ†Ø¸Ø±Ùƒ Ø²Ø¹Ù…Ø§ Ø¯Ø§ÙƒØ´ÙŠ Ø¯Ø§Ø±Ùˆ Ø¨Ø­Ø³Ù† Ù†ÙŠØ© Ù‡ÙŠ Ø¹Ù„Ù‰ Ù‚Ø¨Ù„ ØªØµÙˆÙŠØ±Ø© Ù…Ø¹ ØµÙ„Ø§Ø­ ØŸ ! ! ! ØŸ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_49",
+                        "text":  "EMOJI Ø¨Ø§ÙŠÙ† Ø§Ù†Ù‡ Ù…Ø§ØªØ´ Ù„Ù„ØªØ§Ø±ÙŠØ® URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_50",
+                        "text":  "@USER ØºÙŠØ± Ù…Ø§ ØªØ³Ù…Ø¹ØªØ´ Ø§Ù„Ù„Ù‡ Ø§Ù„ÙˆØ·Ù† Ø§Ù„Ø´Ø¹Ø¨ ØºÙŠØ± Ø§Ù†Ø§ Ø²Ø±Ø¨Øª EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_51",
+                        "text":  "@USER Ø´ÙŠØ¦ Ø¹Ø§Ø¯ÙŠ ÙƒÙ„ Ù…Ø´Ø¬Ø¹ Ø­Ø± ÙŠØ§ÙˆØ¯Ø§Ø¯ÙŠ ÙŠØ§Ø±Ø¬Ø§ÙˆÙŠ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_52",
+                        "text":  "@USER Ø§ØªÙÙˆÙˆÙˆÙˆ Ø¹Ù„Ù‰ ØªÙÙƒÙŠØ±ÙƒÙ… Ùˆ Ø¹Ù‚Ù„ÙƒÙ… Ù‡Ùˆ Ø§ØªÙƒÙ„Ù… Ù…ØºØ±Ø¨ÙŠ Ù„ÙŠØ´ ØªØ­ÙƒÙˆÙ† Ø¹Ø§Ù„Ù…ØºØ±Ø¨ÙŠØ§Øª Ø´Ø¹Ø¨ Ù…Ø±ÙŠØ¶ Ø®Ø²ÙŠØª Ø¹Ù„Ù‰ Ø¨Ø´Ø± EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_53",
+                        "text":  "@USER EMOJI ÙˆÙ„Ø¯ ÙƒÙ„Ø¨Ø© ÙˆØ¬Ù‡ Ù†Ù…Ù„Ø© Ø¹ØµØ¨Ù†ÙŠ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_54",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡Ù‡ Ø§ÙˆÙ„ ÙŠÙˆÙ… ÙˆØ§Ø®Ø¯ÙŠÙ† ÙÙ‚Ø· ÙˆØ±Ù‚Ø© ÙˆÙ‚Ù„Ù… ÙˆÙ„Ø¨Ø§Ø³ Ø¬Ø¯ÙŠØ¯",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_55",
+                        "text":  "@USER EMOJI Ø§Ù„Ø¨Ù†Øª Ø§Ù„Ù…ØºØ±Ø¨ÙŠØ© ØªØ²ÙˆØ¬ Ø´ÙŠÙÙˆØ± Ø¯ÙŠØ§Ù„ Ø§Ù„Ø·ÙŠØ§Ø±Ø© Ø§ÙŠÙˆØ§ Ø§Ù„ØµØµØµØ§ÙÙŠ Ù‡Ùˆ Ù„ÙŠ Ø¨Ù‚Ø§ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_56",
+                        "text":  "Ø­Ù†Ø§ Ø§ÙŠÙ„Ø§ Ø¨ØºÙŠÙ†Ø§ Ù†Ù‚Ù„Ø¯ÙˆÙ‡Ù… ÙˆÙ†Ø¯ÙŠØ±Ùˆ Ø¨Ø­Ø§Ù„Ù‡Ù… ÙŠÙ…ÙƒÙ† ØºØ§Ø¯ÙŠ Ù†ÙˆÙ„Ùˆ Ù†Ø®Ø¯Ù…Ùˆ Ù†Øµ Ù†Ù‡Ø§Ø± Ø§Ù„Ø¹Ø´ÙŠØ© ÙˆØ§ÙŠÙ„Ø§ Ø³Ø§Ù„ÙŠÙ†Ø§ Ù‡Ø§Ø° Ø§Ù„Ø´ÙŠ ÙƒÙ„Ùˆ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_57",
+                        "text":  "@USER Ø§Ù‡Ù… Ø­Ø§Ø¬Ù‡ . Ø§Ù†Ù‡Ø§ ÙØ±Ø­Ø§Ù†Ù‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_58",
+                        "text":  "#Ø§Ù„Ù‡Ù„Ø§Ù„_Ø§Ù„Ø§ØªØ­Ø§Ø¯_Ø¯ÙˆØ±ÙŠ_Ø§Ø³ÙŠØ§ NEWLINE Ø¬ÙˆÙˆÙˆÙÙŠÙŠÙŠÙ†ÙƒÙˆÙˆÙˆÙˆÙˆÙˆÙˆÙˆ ÙŠØ§Ø§Ø§Ø§Ù„Ø¨Ù‰Ù‰Ù‰Ù‰Ù‰Ù‰Ù‰ Ø§Ù„Ø«Ø§Ø§Ø§Ù„Ø« EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_59",
+                        "text":  "@USER Ø±Ø§Ù‡ ÙÙŠÙ‡Ù… ÙˆÙÙŠÙ‡Ù… . . ÙˆÙ„ÙƒÙ† Ø§Ù„ØªØºØ±ÙŠØ¯Ø© Ø®Ø§ØµØ© Ø¨Ø§Ù„Ø­Ø¬ Ø§Ù†Ù‡ Ù…Ø§Ø´ÙŠ Ø¨Ù…Ø²Ø§Ø¬ Ø´ÙŠ Ø­Ø¯ ÙŠØªÙ…Ù†Ø¹Ùˆ . . ÙˆØ§Ù„Ù„Ù‡ NEWLINE ÙƒØ´Ø¹Ø¨ Ù…Ø®ØªØ§Ù„Ù Ø¹Ù„ÙŠÙ†Ø§ ÙˆØ¹Ù„Ù‰ Ø§Ù„Ø³Ù†Ø© ÙˆØ¹Ù†Ø¯Ù‡Ù… Ø´ÙŠ Ø­ÙˆØ§ÙŠØ¬ Ù…Ø§ØªÙ‚Ø¯Ø±Ø´ ØªØªØ¹Ø§ÙŠØ´ Ù…Ø¹Ø§Ù‡Ù… NEWLINE Ù„ÙƒÙ† Ø§Ù„Ø­Ø¬ Ù…Ø§Ø¹Ù†Ø¯Ø´ Ø§Ù„Ø­Ù‚ Ù„Ø­Ø¯ ÙŠÙ…Ù†Ø¹Ù‡Ù…",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_60",
+                        "text":  "ØªØ§Ù†ÙŠ ØµØ­ÙÙŠ ÙŠØ¨Ù„ÙˆÙƒÙŠÙ†ÙŠ Ø¨Ù„ÙˆÙƒ Ø¨Ù„ÙˆÙƒ Ø¨Ù„ÙˆÙƒ URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_61",
+                        "text":  "@USER Ø§Ù„ÙƒØ¨ÙŠØ¯Ø© EMOJI ÙƒÙŠÙ Ø±Ø§Ùƒ Ø¨Ø®ÙŠØ± EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_62",
+                        "text":  "Ø§ÙˆÙ„ Ù…Ø±Ù‡ Ø§Ù„Ø³Ø¹ÙˆØ¯ÙŠÙŠÙ† Ù…ÙŠÙ„Ù‚ÙˆØ´ Ø­Ø§Ø¬Ø© ØªØ¶Ø­Ùƒ ÙØ®Ø³Ø§Ø±Ø© Ø§Ù„Ù…ØºØ±Ø¨ ÙØ§ ØªÙŠÙƒØªØ¨Ùˆ Ø§ÙŠ Ø­Ø§Ø¬Ø© EMOJI URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_63",
+                        "text":  "@USER ÙƒÙŠØªØ§ØµÙ„Ùˆ Ø¨ÙŠÙƒ ÙˆÙŠÙ‚ÙˆÙ„Ùˆ Ù„ÙŠÙƒ Ø±Ø§Ùƒ Ø±Ø¨Ø­ØªÙŠ Ù…Ø¹Ø§Ù†Ø§ ÙˆØ§Ø­Ø¯ Ù…Ø¹Ù†Ø§ Ù…Ø¨Ù„Øº Ù…Ø§Ù„ÙŠ ØŒ ÙƒÙŠÙ‚ÙˆÙ„Ùˆ Ù„ÙŠÙƒ Ø¹Ø·ÙŠÙ†ÙŠ Ø³Ù…ÙŠØªÙƒ ÙˆØ§Ù„Ø¹Ù†ÙˆØ§Ù† ÙˆÙƒÙŠØ·Ù„Ø¨Ùˆ Ù„ÙŠÙƒ Ø§Ø±Ù‚Ø§Ù… NUM ØªØ¹Ø¨Ø¦Ø§Øª NUM Ø¯Ø±Ù‡Ù… Ø¨Ù„Ø§Ø­Ø´Ù…Ø© ÙˆØ¨Ù„Ø§ Ø­ÙŠØ§",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_64",
+                        "text":  "@USER Ù‚Ù‡Ø±ØªÙŠÙ‡Ø§ Ù…Ø³ÙƒÙŠÙ†Ø© Ù‡Ø§Ø¯ Ø§Ù„Ø¨Ù†Øª",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_65",
+                        "text":  "@USER Ø§Ø­Ù†Ø§ Ù…Ø³Ø­ÙˆØ± ÙˆÙ„Ø§ Ø¹Ù†ÙŠØ¨Ø© EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_66",
+                        "text":  "#ihabamir Ù…Ø«Ù„Ø§ Ø§Ù„Ø¯Ø§ÙˆØ¯ÙŠØ© Ù†Ø²Ù„Øª Ø§ØºÙ†ÙŠØ© ÙˆÙ…Ø¹ Ù…ÙˆØ²Ø¹ ÙƒØ¨ÙŠØ± ÙƒÙŠÙ Ø¯Ø¯Ø¬ÙŠ ÙØ§Ù† Ø¹Ø¨Ø§Ø±Ø© Ø¹Ù† ØªØ®Ø±Ø¨Ù‚Ø§ÙŠØ´Ù† ÙƒÙŠÙ Ù‚Ø§Ù„ Ø§Ù…ÙŠÙ†ÙˆÙƒØ³ Ø§Ù„Ù…Ù‡Ù… Ø­Ø§Ø³Ø© Ø¬Ø¯ÙŠØ¯ Ø§Ù‡Ø§Ø¨ Ù‚Ù†Ø¨ÙˆÙ„Ø© Ù‚Ù†Ø¨ÙˆÙ„Ø© Ù‡Ù‡Ù‡Ù‡Ù‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_67",
+                        "text":  "@USER Ù„Ù„ÙŠ Ø¹Ù†Ø¯Ùˆ Ù…Ø§Ù†Ø¹ ÙŠØ²Ø¯Ø­ Ø±Ø§Ø³Ùˆ Ù…Ø¹ Ø§Ù„Ø­ÙŠØ·",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_68",
+                        "text":  "@USER ÙˆÙŠÙ„ÙŠ Ø¹Ù„Ù‰ Ø§Ù„ØºÙŠØ±Ø© Ù…Ù† Ø´Ù†Ùˆ Ù†ØºØ§Ø± ÙˆØ§Ù„Ù„Ù‡ Ø§Ù„Ø¹Ø¸ÙŠÙ… Ø§Ù†ÙŠ Ø§Ø´ÙÙ‚ Ø¹Ù„ÙŠÙ‡Ø§ ØªÙŠØªÙŠ ØªÙŠØªÙŠ Ù…Ø«Ù„ Ù…Ø§ Ø±Ø­ØªÙŠ Ù…Ø«Ù„ Ù…Ø§ Ø¬ÙŠØªÙŠ Ù†ÙØ³ Ø§Ù„Ù…Ø·Ø¹Ù… Ù†ÙØ³ Ø§Ù„Ø­Ø§Ù„Ø© Ø§Ù„Ù†Ø§Ø³ ØªØ²ÙŠØ¯ ÙˆÙ‡ÙŠ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_69",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡Ù‡ ÙˆØ±Ø§Ù‡ Ù…Ø¹Ø§Ùƒ Ø¨ØµØ­ ÙŠØ® Ù…Ù†Ù‡Ù… Ø§Ù„Ø§ Ù…Ù† Ø±Ø­Ù… Ø±Ø¨Ùƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_70",
+                        "text":  "Ø¹Ø±ÙØªÙˆ Ø§Ø´Ù†Ùˆ NEWLINE Ø¨ØºÙŠØª ØºÙŠØ± Ø²Ù‡Ø±ÙŠ Ø§Ù„Ø¹ÙˆØ¬ ÙÙŠ ÙˆØ§Ø­Ø¯ Ø§Ù„Ù‡Ø¶Ø±Ø© NEWLINE ÙˆÙ„ÙƒÙ† Ø³Ø¯Ùˆ Ø¹Ù„ÙŠÙ†Ø§ Ø£Ù†Ø§ ÙˆÙŠØ§Ù‡ ÙˆØ§Ø­Ø¯ Ø§Ù„Ø¨ÙŠØª ÙˆØ¹Ø·ÙˆÙ†ÙŠ Ø¹ØµØ§ ÙˆÙ‚Ù†Ø¨ NEWLINE ÙˆÙ„ÙƒÙ† Ø¨Ø´Ø±Ø· Ø­ØªÙ‰ ÙˆØ§Ø­Ø¯ Ù…Ø§ÙŠØªØ¯Ø®Ù„ NEWLINE Ù‡Ø§ÙˆØ¯Ù†ÙŠ Ù…Ù†ÙƒÙ… EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_71",
+                        "text":  "ÙŠØ§Ø±ÙŠØª Ù…ÙŠØ³ÙŠ ÙŠØ³Ø¬Ù„ ØªÙˆØ­Ø´Øª Ø§Ù‡Ø¯Ø§ÙÙˆ EMOJI NEWLINE #Ø¨Ø±Ø´Ù„ÙˆÙ†Ø©_ÙÙŠØ§Ø±ÙŠØ§Ù„",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_72",
+                        "text":  "@USER Ø¨Ø§Ù‚ÙŠ Ø·Ø§Ù…Ø¹ Ø¨Ø§Ø´ ÙŠØ¬Ù…Ø¹ Ø§ÙƒØ«Ø± ÙˆÙŠÙÙˆØª Ø¯Ø§ÙƒØ´ÙŠ Ø§Ù„Ù„ÙŠ Ø¹Ù†Ø¯ Ø§Ù„Ø§Ø®Ø±ÙŠÙŠÙ†",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_73",
+                        "text":  "ÙˆØ§Ù‡ÙŠØ§ Ù†Ø§Ø±ÙŠ Ø¹Ù„Ù‰ Ø§Ù„Ø³ÙˆØ§Ø¹Ø¯Ù‡ Ù‡Ø¬Ù… Ø¹Ù„ÙŠÙ‡Ù… Ø¬Ø±Ø§Ø¯ ÙˆÙ‡Ø°Ø§ Ø¬Ù…Ø¹Ùˆ ÙƒØ§ÙŠØ¨ÙŠØº ÙÙŠÙ‡ EMOJI URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_74",
+                        "text":  "@USER Ù‚ÙˆÙ„ÙŠ Ø´Ù†Ùˆ Ù…Ø§Ø¯Ø§Ø±ÙˆØ´ Ù„Ø£Ù†Ù‡ Ù…Ø§Ø®Ù„Ø§Ùˆ Ù…Ø§ Ø¹Ù…Ù„ÙˆØ§ Ø¨Ø§Ø´ ÙŠØ´ÙˆÙ‡Ùˆ ØµÙˆØ±ØªÙ‡ ÙˆÙŠÙƒØ±Ù‡Ùˆ ÙÙŠÙ‡ Ø§Ù„Ù†Ø§Ø³ Ø®ØµÙˆØµØ§ Ø§Ù„Ø¬Ø²Ø§ÙŠØ±ÙŠÙŠÙ†",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_75",
+                        "text":  "@USER Ù…Ù† Ø­Ù‚Ù‡Ù… ÙŠØ§Ø®Ø¯Ùˆ Ø§Ù„Ø§Ø­ØªÙŠØ§Ø·Ø§Øª Ø¯ÙŠØ§Ù„Ù‡Ù… Ø®ØµÙˆØµØ§ Ø§Ù† Ø§Ù„Ø®ØµÙ… Ù‡Ùˆ Ø±ÙŠØ§Ù„ Ù…Ø¯Ø±ÙŠØ¯ Ø§Ù„Ø¹Ø¯Ùˆ Ø§Ù„Ø§Ø²Ù„ÙŠ Ù„Ø¨Ø±Ø´Ù„ÙˆÙ†Ø© ! Ù‡Ù… Ø®Ø§ÙŠÙÙŠÙ† Ø¹Ù„Ù‰ Ø§Ù„ÙØ±ÙŠÙ‚ Ø§ÙˆÙ„Ø§",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_76",
+                        "text":  "Ø§Ù†Øª Ù†Ø¨Ø¶ Ù‚Ù„Ø¨ Ø¬Ù…Ù‡ÙˆØ±Ùƒ EMOJI Ø§Ù„Ù„Ù‡ ÙŠÙˆÙÙ‚Ùƒ EMOJI NEWLINE #ihabAmir NEWLINE #fansihabamir URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_77",
+                        "text":  "@USER ÙÙŠÙ† ØºØ§Ø¯ÙŠ ÙŠØ®Ù„ÙŠÙˆÙ‡Ø§ Ø§Ù„Ø¹ÙØ§Ø±ÙŠØª Ø§Ù„ØªØ­ÙƒÙ… ÙÙŠ Ø§Ù„Ù…Ù‚ÙˆØ¯ . ... ! ! !",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_78",
+                        "text":  "@USER Ø¥Ù† Ø´Ø§Ø¡ Ø§Ù„Ù„Ù‡ Ø­Ø¨ÙŠØ¨Ø© ØªØ±Ø¨Ø­ Ø§Ù„Ù…ØºØ±Ø¨ EMOJI Ùˆ Ø­Ù†Ø§ Ø¯ÙŠÙ…Ø§ Ø®ÙˆØª Ø¨ØºØ§ Ù„ÙŠ Ø¨ØºØ§ Ùˆ ÙƒØ±Ù‡ Ù„ÙŠ ÙƒØ±Ù‡ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_79",
+                        "text":  "@USER Ø¹Ù†Ø¯Ù‰ ØºÙŠØ± Ø§Ù„Ø¹ÙƒØ² ÙˆÙ…Ø§ ÙŠØ¯ÙŠØ± ÙÙŠØ§ EMOJI ØªÙˆÙŠØªØ± Ù†Ø¹ÙƒØ² Ø§Ù…Ø§ Ø§Ù„Ø§Ù†Ø³ØªØºØ±Ø§Ù… Ø¶Ø±ÙˆØ±ÙŠ ÙƒÙ„ Ø§Ø³Ø¨ÙˆØ¹ Ù†Ø´ÙˆÙ Ø´ÙƒÙˆÙ† Ø¯Ø§Ø± Ø¥Ù„ØºØ§Ø¡ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_80",
+                        "text":  "@USER Ù„Ù„Ø§Ø³Ù Ù‡Ø§Ø¯ Ø§Ù„Ù‚Ø¶ÙŠØ© ÙˆÙ„Ø§Ùˆ Ø­ØªÙ‰ Ø§Ù„Ù…ØºØ§Ø±Ø¨Ø© ØªØ§Ø¯ÙŠØ±ÙˆÙ‡Ø§ ÙØ§Ø´ Ø´ÙØª Ø´ÙŠ Ù…Ø§ØªØ´Ø§Øª Ø§Ù„Ù„Ø®Ø±Ø©",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_81",
+                        "text":  "@USER ÙŠØ´ÙˆÙ Ù‡Ø§Ø¯ Ø§Ù„Ø®ÙŠØ± ÙƒÙ„Ùˆ . ..ÙˆÙŠØ¯ÙŠØ± ØºØ¶ Ø§Ù„Ø¨ØµØ± NEWLINE Ø¹ÙŠÙ†ÙŠÙ‡ ØºØ§Ø¯ÙŠ ÙŠØªØ­Ø§Ø³Ø¨Ùˆ Ù…Ø¹Ø§Ù‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_82",
+                        "text":  "@USER Ø§Ù†Ø§ Ù…Ø¹ÙŠØ´ ØªÙ…Ø§Ùƒ Ø¨Ø´ Ù†Ù‚ÙˆÙ„Ùƒ ØµØ­ ÙˆÙ„Ø§ Ø®Ø·Ø£ ÙˆÙ…Ø¹Ø§Ùƒ ÙÙŠ Ø§Ù„Ù‚Ø¶ÙŠØ© Ø§Ù†Ùƒ ØªØ¯Ø®Ù„ÙŠ ÙˆØªØµØ­Ø­ÙŠ Ø§ÙŠ Ù…Ø¹Ù„ÙˆÙ…Ø© Ø´ÙØªÙŠÙ‡Ø§ ØºÙ„Ø·Ø© . Ø´ÙƒØ±Ø§ Ø¨Ø²Ø§Ø§Ø§Ù Ø¹Ù„Ù‰ Ø§Ù„ØªØµØ­ÙŠØ­ NEWLINE Ù…ÙŠ Ù…ÙÙ‡Ù…ØªØ´ ÙƒÙŠÙØ§Ø´ Ø§Ù†Ø§ Ø¹Ù†Ø¯ÙŠ Ø´ÙŠ ÙˆÙ„Ø§Ø¯ Ø¹Ø§Ø¦Ù„Ø© ØªÙ…Ø§Ùƒ Ù„Ø§ Ø®Ø¯Ù…Ø© Ù„Ø§ Ø±Ø¶Ù…Ø© ÙˆØ®Ù„ØµØ© ÙƒÙ„ Ø´Ù‡Ø± ØºÙŠØ± Ù‡Ùˆ Ø®ØµÙˆ ÙŠØ¯ÙƒÙ„Ø§Ø±ÙŠ ÙƒÙ„ NUM Ø´Ù‡ÙˆØ± Ø¨Ø§Ø´ Ù…ÙŠÙ‚Ø·Ø¹ÙˆÙ‡Ø§Ø´ Ø¹Ù„ÙŠÙ‡ EMOJI ÙˆØ§Ù„Ù„Ù‡ ÙˆØ§Ø¹Ù„Ù…",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_83",
+                        "text":  "Ø§Ù‡Ø§Ø¨ Ø´ÙÙ†Ø§Ù‡ ÙØ§Ù„Ø§ÙƒØ§Ø¯Ù…ÙŠ ÙŠØºÙ†ÙŠ ÙƒÙ„ Ø§Ù„Ù„Ù‡Ø¬Ø§Øª NEWLINE ÙŠØ¹Ù†ÙŠ Ù‚Ø¨Ù„ Ù„Ø§ ÙŠØ¹Ø±Ù Ø¬Ù…Ø§Ù‡ÙŠØ±ÙŠØªÙˆ NEWLINE ÙˆØ¬Ø§ÙŠÙŠÙ† Ø¯Ø¨Ø§ ØªÙ‚ÙˆÙ„Ùˆ Ø¹Ù„ÙŠÙ‡ ÙŠØªÙ…ØµÙ„Ø­ NEWLINE Ø§Ù„Ù„Ù‡ ÙŠÙ„Ø¹Ù† ÙÙ‡Ù…ÙƒÙ… Ø§Ù„Ø²ÙØª Ù„Ù„ÙˆØ·Ù†ÙŠØ© NEWLINE #IhabAmir",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_84",
+                        "text":  "@USER ØºØªÙƒÙˆÙ†Ùˆ Ù‡Ù…Ø§ ØµØ­Ø§Ø¨ Ø§Ù„Ù‡Ø§Ø´ØªØ§Ù‚",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_85",
+                        "text":  "Ø§Ù„Ù…Ù„Ùƒ Ù‚Ø§Ù„ Ø§Ù„Ø¨Ø±Ù„Ù…Ø§Ù†ÙŠÙŠÙ† Ø®Ø§ØµÙƒÙ… ØªÙƒÙˆÙ†Ùˆ ÙˆØ§Ø­Ø¯ Ø¨Ø­Ø§Ù„ Ù„Ø¨Ø³ÙƒÙ… EMOJI Ø§Ù„Ù„ÙŠ Ù„Ø§Ø¨Ø³ÙŠÙ† Ø¯Ø¨Ø§ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_86",
+                        "text":  "Ù…Ù†Ø¹Ù… Ø¹Ù†Ø¯Ùˆ Ù…Ø§ÙŠÙ‚ÙˆÙ„ Ø´Ø§Ø¹Ø± Ù…Ø¨ØªØ¯Ø£ Ù‡Ùˆ ÙˆØ¹Ø±ÙˆØ³ØªÙˆ Ø²ÙˆÙŠÙ†ÙŠÙ† ÙˆÙ…Ø­ØªØ±Ù…ÙŠÙ† ÙˆÙ…Ù‚Ø¨ÙˆÙ„ÙŠÙ† NEWLINE Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡ Ù‚ØªÙ„Ù†ÙŠ Ø¯ÙŠØ§Ù„ Ø§Ù„Ø±Ø¨Ø§Ø· Ø¨Ø§Ù„Ø¶Ø­Ùƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_87",
+                        "text":  "@USER ÙŠÙŠÙŠÙŠÙ‡ Ø§Ø®ØªÙŠ Ù…Ø±ÙŠØ± Ùˆ Ø¨Ø§Ù„Ø¹Ø±Ø§Ø±Ù… ØºÙŠØ± Ø§Ù„Ù„Ù‡ ÙŠØ­ÙØ¸ ÙˆØµØ§ÙÙŠ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_88",
+                        "text":  "@USER ÙŠØ§ Ø§Ø³ØªØ§Ø° Ø¯Ù†Ø¯Ø±Ø§ÙˆÙŠ Ø§Ù†Ø§ Ù…Ù† Ø§Ù„Ù…ØºØ±Ø¨ Ùˆ Ù…Ù† Ù…ØªØ¨Ø¹ØªÙŠ Ù„ÙŠÙƒ Ø¹Ø±ÙØª Ø§Ù†Ùƒ ÙˆØ·Ù†ÙŠ Ùˆ Ø§Ø¨Ù† Ø¨Ù„Ø¯Ùƒ Ø³ÙŠØ¨Ùƒ Ù…Ù† Ø§Ù„Ø²Ø¨Ø§Ù„Ø© Ùˆ Ø§Ù„Ù„Ù‡ Ø±Ø­ØªÙ‡Ø§ ÙˆØµÙ„Øª Ø§Ù„Ù…ØºØ±Ø¨ Ùˆ Ø§Ù„Ù†ÙˆØ§Ø­ÙŠ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_89",
+                        "text":  "@USER Ø¨Ø­Ø§Ù„ Ù‡Ø§Ø¯ÙˆÙƒ Ø§Ù„Ù„ÙŠ ØªÙŠÙ‚ÙˆÙ„Ùˆ Ø§Ù„Ø¹ÙŠØ§Ù„Ø§Øª Ø¨ØºØ§Ùˆ Ø§Ù„Ù…Ø³Ø§ÙˆØ§Øª ÙˆÙ‡Ù…Ø§ ÙŠØ¹Ø·ÙŠÙ‡Ù… Ø§Ù„Ù„Ù‡ Ø§Ù„Ù…ÙˆØ³Ø·Ø§Ø´",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_90",
+                        "text":  "@USER ÙˆØ£Ù†ØªØ§ ØºØ§Ù„ÙŠ Ø¹Ù†Ø¯Ù†Ø§ Ø®ÙˆØ¯ ÙˆÙ‚ØªÙƒ Ùˆ Ø±ØªØ¨ Ø£Ù…ÙˆØ±Ùƒ Ø±Ø¬Ø¹ Ø¨Ø·Ø§Ù‚Ø© Ø¥ÙŠØ¬Ø§Ø¨ÙŠØ© ÙƒØ«Ø± Ù…ØªØ¨Ù‚Ø§Ø´ Ø¨ÙˆØ­Ø¯Ùƒ Ø®Ø±Ø¬ Ùˆ Ø®Ø§Ù„Ø· Ù†Ø§Ø³ Ø¹ÙŠØ´ Ø­ÙŠØ§ØªÙƒ Ù…ØªØ­Ø±Ù…Ø´ Ø±Ø§Ø³Ùƒ Ù…Ù† Ù‡Ø§Ø¯ Ø³Ù† Ù†Ø­Ø¨Ùƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_91",
+                        "text":  "@USER Ø§ÙˆÙˆÙˆÙ‡ NUM Ø­Ø±Ø§Ø±Ø© Ù†ÙŠØª . . Ø§ÙˆØ§ Ø§Ù„Ù„Ù‡ ÙŠÙ„Ø·Ù Ø¨ÙŠÙ†Ø§ Ø§Ø¬Ù…Ø¹ÙŠÙ† ÙŠØ§Ø±Ø¨ NEWLINE Ø¹Ù†Ø¯ÙŠ ØµØ¯ÙŠÙ‚Ø© Ù…Ù† ÙØ§Ø³ ÙƒÙ†Øª Ø®Ø¯Ø§Ù…Ø© Ù…Ø¹Ø§Ù‡Ø§ Ø¨Ø¹Ø¯Ù‡Ø§ Ù†Ù‚Ù„Ø§Øª Ù„Ù„Ø¹Ø±Ø§ÙŠØ´ ÙˆØ§Ù„Ù„Ù‡ Ø§Ù„Ø§ Ù‚Ù…Ø© Ø§Ù„Ø±Ù‚ÙŠ ÙˆØ§Ù„Ø°ÙˆÙ‚ ÙˆØ§Ù„Ø£ØµÙ„ . .ØºÙŠØ± Ù‚Ù„ØªÙŠ ÙØ§Ø³ ØªÙÙƒØ±ØªÙ‡Ø§",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_92",
+                        "text":  "Ù‚Ø·Ø© Ù„Ù‚Ø§Øª Ø§Ù„Ø¨Ø§Ø¨ Ù…Ø­Ù„ÙˆÙ„ ÙˆÙ‡ÙŠ ØªØ¯Ø®Ù„ Ø­ØªÙ‰ Ù„Ø¨ÙŠØª Ø§Ù„Ù†Ø¹Ø§Ø³ ÙˆØªØ¬Ø¨Ø¯Ø§Øª ÙÙˆÙ‚ Ø§Ù„Ø­ÙˆØ§ÙŠØ¬ Ø§Ù„Ù„ÙŠ ÙØ§Ù„Ù…Ø§Ø±ÙŠÙˆ ÙˆÙ†Ø¹Ø³Øª EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_93",
+                        "text":  "#Ø±Ø¦Ø©_Ø§Ù„Ø§Ø±Ø¶_ØªØ­ØªØ±Ù‚ NEWLINE Ø¨Ù†Ø§Ø¯Ù… Ù…Ø§Ø±Ø­Ù… Ø­ØªÙ‰ Ø±Ø¦ØªÙ‡ Ù„ÙŠ ÙŠØ­Ø±Ù‚ ÙÙŠÙ‡Ø§ Ù„ÙŠÙ„ ÙˆÙ†Ù‡Ø§Ø± Ø¨Ø§Ù„Ø³Ø¬Ø§Ø¦Ø± Ù…Ø§ Ø¨Ù‚Ø§ Ø¹Ø§Ø¯ ÙŠØ´ÙˆÙ Ø±Ø¦Ø© Ø§Ù„Ø£Ø±Ø¶",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_94",
+                        "text":  "#IhabAmir ØµØ¨Ø§Ø­ Ø§Ù„Ø®ÙŠØ± ÙŠØ§ Ø¥ÙŠÙ‡Ø§Ø¨ÙŠØ§Øª EMOJI ÙƒÙŠÙ ØµØ¨Ø­ØªÙˆØ§ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_95",
+                        "text":  "@USER Ø§Ù†Ø§ ÙƒÙ†Ø§ÙƒÙ„Ø© Ù…ØªÙ†Ø®Ù„ÙŠ Ø­ØªÙ‰ Ø­Ø¨Ø© ÙÙŠÙ‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_96",
+                        "text":  "@USER Ø³ÙˆØ¡ ØªØ¯Ø¨ÙŠØ± Ø§Ù„Ø´Ø£Ù† Ø§Ù„ÙˆØ·Ù†ÙŠ Ù…Ù† Ù‚Ø¨Ù„ Ø³ÙŠØ§Ø³Ø© ØµÙŠØ¨ÙŠØ§Ù†ÙŠØ© Ù„Ù„Ø®Ø¯Ø§Ù… Ø¯ÙˆÙ„Ø© Ø®Ù„Ø§Øª Ø¨Ù„Ø¯ Ø¹Ù„Ù‰ Ù…Ø­Ùƒ Ù…Ù„ÙŠ ØºØ§Ø¯ÙŠ ØªÙ‚ÙˆØ¯ Ù†ÙŠÙŠØª ØºØ§Ø¯ÙŠ ÙƒÙ„ ÙˆØ§Ø­Ø¯ Ø§Ø´Ø¯ Ø·ÙŠØ§Ø±Ø© Ùˆ ÙŠÙ‡Ø±Ø¨",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_97",
+                        "text":  "@USER ÙˆØºÙŠØ± ÙƒÙŠØ¨ØºÙŠÙˆ ÙŠØ®Ù„ÙŠÙˆ Ø§Ù„Ù†Ø§Ø³ Ù…ØªØ¨Ø¹Ø§Ù‡Ù… Ø§Ù…Ø§ Ù‡Ù… ÙŠØ¯ÙŠØ±Ùˆ Ù„ÙŠ ÙØ±Ø§Ø³Ù‡Ù…",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_98",
+                        "text":  "@USER ØµØ±Ø§Ø­Ø© Ø§Ù„Ø§ØºÙ†ÙŠØ© Ø­Ø³ÙŠØª Ù†Ø§Ù‚ØµÙ‡Ø§ Ø´ÙŠØ¡ Ø­Ø§Ø¬Ø© Ù…Ø¹Ø±ÙØªØ´ Ø¨Ø§Ù„Ø¶Ø¨Ø· ÙˆØ§Ù„ÙÙŠØ¯ÙŠÙˆ ÙƒÙ„ÙŠØ¨ Ù…Ø¹Ø¬Ø¨Ù†ÙŠØ´ Ù„Ù„Ø§Ø³Ù",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_99",
+                        "text":  "@USER ÙˆÙ„Ùˆ Ø§Ù†Ù‡ Ù…Ø±Ø¶ÙŠØ´ Ø§Ù„ØªÙ„Ø§Ù…Ø° Ù…Ø¹Ù†Ø¯Ù‡Ù…Ø´ Ø£ÙŠ Ø°Ù†Ø¨ Ø¹Ù„Ù‰ Ø¹Ø¯Ù… Ø±Ø¶Ø§Ù‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_100",
+                        "text":  "@USER NEWLINE ÙˆÙ…Ø§Ù„Ùƒ Ø­ØªÙ‰ Ø¥Ù†ØªÙŠ Ø§Ù„Ù…Ø³Ø®ÙˆØ·Ù‡ EMOJI Ù…Ø±ÙŠØ¶Ù‡ ØŸ NEWLINE ÙˆØ±Ø§Ù‡ Ø¹Ø¯ÙˆÙŠØ§ Ù†Ø´Ø±Ø¨ Ø§Ù„Ø¯ÙˆØ§ EMOJI ÙˆØ§Ù„Ø­Ù„Ø§Ù‚Ù… Ù‚ØªÙ„ÙˆÙ†ÙŠ Ù…Ù† Ø§Ù„Ø¨Ø§Ø±Ø­ ÙˆØ§Ù†Ø§ Ù‡Ø±Ø¨Ø§Ù†Ù‡ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_101",
+                        "text":  "@USER ÙŠÙ„Ø§Ù‡ Ø´ÙØª Ø§Ù„ØªÙˆÙŠØªØ© ØŒ Ø±Ø§Ù‡ Ù‡Ø§Ø¯ ØªÙˆÙŠØªØ± Ù…ÙƒÙŠØ¨ÙŠÙ†Ø´ Ù„ÙŠÙ†Ø§ ÙƒØ§Ù…Ù„ ØªØºØ±ÙŠØ¯Ø§Øª Ø­ØªÙ‰ ÙƒØªØ¯ÙˆØ² Ø³Ø§Ø¹Ø§Øª",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_102",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡ Ù…Ø§Ø²Ø§Ù„ Ø¹Ø§ÙŠØ´Ø© Ø¨Ø³Ø¨Ø¨Ø§Ø¨Ùˆ EMOJI ÙÙŠÙ† Ù…Ø§ÙŠØ´ÙˆÙÙˆ Ø¨Ø¯Ø£ ÙŠÙ…ÙˆØª Ù„ÙŠÙ‡Ø§ Ù„Ø­ÙˆØª ÙŠØ¬ÙŠÙˆ Ø¹Ù†Ø¯Ù‡ ÙƒÙŠØ¬Ø±ÙŠÙˆ EMOJI Ø­ØªÙ‰ Ø§Ù†Ø§ ØªÙˆØ­Ø´ØªÙƒ Ø§Ù„Ø²ÙŠÙ† EMOJI Ø¨Ù‚Ø§Ùˆ Ø¯Ø®Ù„Ùˆ Ù„Ù„ØªØ§Ù‚ Ù…Ø±Ø© Ù…Ø±Ø©",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_103",
+                        "text":  "@USER Ø±Ø§Ù‡ ØºØ¯Ø§ Ø¬Ù…Ø¹Ø© Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡ Ø§Ù„Ù„ÙŠ ÙÙ‡Ù…Øª Ù‡Ø§Ø°Ø´ÙŠ Ø¯ÙŠØ§Ù„ ÙƒØ³ÙƒØ³Ùˆ ÙˆÙ„ÙƒÙ† Ø¨Ø·Ø§Ø·Ø© Ø­Ù„ÙˆØ© Ù…Ø¹Ø±ÙØªØ´ Ø¹Ù„Ø§Ø´ EMOJI Ø§Ù„Ù„Ù‡ ÙŠØ®Ù„ÙŠÙ‡Ø§ Ù„ÙŠÙƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_104",
+                        "text":  "#Ø§ÙŠÙ‡_Ø§Ù†Øª_Ø§Ù„ÙŠ NEWLINE Ù…ØµØ¨Ø±Ù†ÙŠ Ø¹ ØªÙˆÙŠØªØ±",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_105",
+                        "text":  "@USER ÙˆØ®Ø§ Ù…Ø¹Ù†Ø¯ÙŠØ´ Ù…Ø¹ ÙƒØ±Ø© Ù…ØºØ±Ø¨ÙŠØ© Ù…Ù†Ø³ÙŠØªÙƒØ´",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_106",
+                        "text":  "@USER Ø¹Ø§Ø´ Ø§Ø¨Ù„ÙŠØ³ ÙÙŠ Ø§Ù„Ø¬Ù†Ø© Ø§Ù„Ø±Ù‚Ø§ØµØ© Ø§ÙƒÙŠØ¯ Ø§Ù…Ùƒ Ù„Ù…Ø¹Ø±ÙØªØ´ ØªØ±Ø¨ÙŠÙƒ Ùˆ Ø¹Ù…ÙˆÙ…Ø§ Ø§Ù„Ø®Ù„ÙŠØ¬ÙŠÙŠÙ† Ù…Ø´ Ù…Ø­ØªØ§Ø¬ÙŠÙ† Ø±Ù‚ØµØ§Øª Ùˆ Ù‡Ù…Ø§ Ø®Ø±ÙŠØ¬ÙŠÙ† Ø±Ù‚Øµ Ø¨ÙŠØ±Ù‚ØµÙˆØ§ Ù„Ù†ÙØ³Ù‡Ù…",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_107",
+                        "text":  "@USER Ù…Ø§Ù„ Ø§Ù„Ø±Ø¨Ø§Ø· Ù†Ù‚ÙŠØ© Ù†Ù‚ÙŠØ© ÙˆÙÙ†Ø© Ù…Ø§ Ø¹Ø¯Ø§ Ø¨Ø¹Ø¶ Ø§Ù„Ù…Ù†Ø§Ø·Ù‚ Ù„ÙŠ Ø´ÙˆÙŠØ© ÙÙŠÙ‡Ø§ Ø¯ÙŠØ§Ù„ Ø§Ù„ÙˆØ³Ø® Ù…ÙŠ Ù…Ø§Ø´ÙŠ Ø¨Ø­Ø§Ù„ Ù‡Ø¯ÙˆÙˆÙˆÙˆ NEWLINE Ù†Ø¶Ø±Ø¨ Ø¹Ù„ÙŠÙƒ Ù‚Ù‡ÙˆØ© EMOJI URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_108",
+                        "text":  "ÙƒØªØ¯Ø®Ù„ Ø¯Ø§Ø± ÙƒØªØ¨ÙˆØ³ ÙŠØ¯ Ù†Ø§Ø³ Ø§Ù„ÙƒØ¨Ø§Ø± Ù‡ÙˆÙ…Ø§ Ø§Ù„Ø§ÙˆÙ„ÙŠÙ† Ø§Ø´ Ø®Ù„ÙŠØªÙŠ ÙˆÙ„Ø§Ø¯Ùƒ ØªØ®Ø§ÙŠÙ„ ÙˆÙÙƒØ± . ..ÙˆØ§Ø´ Ù†Ø³ÙŠØªÙŠ Ø¨Ø§ Ø³ÙŠØ¯ÙŠ ÙˆÙ…ÙŠ Ù„Ø§Ù„Ø© Ù…Ù„ÙŠ ÙƒØªØ®Ø¨ÙŠ Ù„ÙŠÙƒ Ø´ÙŠ Ø­Ø§Ø¬Ø© ÙˆÙØ±Ø­Ø§Ù†Ø© Ø¨ÙŠ Ø­ÙØ§Ø¯Ù‡Ø§ ÙˆÙ‡ÙˆÙ…Ø§ ÙƒÙŠÙ„Ø¹Ø¨Ùˆ Ù‚Ø¯Ø§Ù…Ù‡Ø§ ÙˆØªØ­ÙƒÙŠ Ù„Ù‡Ù… Ø§Ù„Ø®Ø¨ÙŠØ± ÙˆÙ„Ø§ Ù†ØªØ§ Ù…Ø§Ø¹Ø´ØªÙŠØ´ Ù‡Ø§Ø°Ø´ÙŠ Ù…Ø§ØªØ­Ø±Ù…Ø´ ÙˆÙ„Ø§Ø¯Ùƒ Ø§Ù„Ù„Ù‡ ÙŠÙ‡Ø¯ÙŠÙƒÙ… . .. ØªÙ‡Ù„Ø§Ùˆ ÙÙŠ ÙˆØ§Ù„Ø¯ÙŠÙƒÙ… EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_109",
+                        "text":  "@USER Ø§ØµÙ„Ø§ Ù…ØªØ¬Ø§Ù‡Ù„ÙŠÙ†Ù‡Ù… Ø¨Ø³ Ø­Ø§Ø¨ÙŠÙ† Ù†Ø·Ù‚Ø·Ù‚ Ø´ÙˆÙŠØ© . ....ÙˆØ§Ø®Ø¯ÙŠÙ† Ø¨Ø±ÙŠÙƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_110",
+                        "text":  "@USER ÙƒÙ„Ùƒ Ù†Ø´Ø§Ø· ÙˆØ­ÙŠÙˆÙŠØ© ØªØ¨Ø§Ø±Ùƒ Ø§Ù„Ù„Ù‡ ÙˆÙ…Ø§ Ø´Ø§Ø¡ Ø§Ù„Ù„Ù‡ . Ø¨Ø§Ù„ØµØ­Ø© ØºØ¯Ø§ Ù†Ø´Ø¯ Ø§Ù„Ù‚Ø¹Ø¯Ø© Ø§Ù†Ø§ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_111",
+                        "text":  "Ù…Ù† ØªØ¬ÙŠ Ø§Ø¬Ø§Ø²ØªÙƒ ÙˆØªÙ„Ø§Ù‚ÙŠÙƒ Ù…Ø±ÙŠØ¶ Ø§Ø¹Ø±Ù Ø§Ù†Ùƒ Ù…Ù†Ø­ÙˆÙˆÙˆÙˆÙˆØ³ EMOJI NEWLINE ÙˆØ´ Ø¯Ø§ Ø§Ù„Ø­Ø¸ ÙŠØ§Ø±Ø¨ÙŠ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_112",
+                        "text":  "Ø¨ÙˆØ·ÙŠØ¨ Ø¬Ø§ÙŠ ÙŠØ±ÙŠØ­ Ø¹Ù†Ø¯Ù‡Ù… URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_113",
+                        "text":  "@USER Ø§Ù„Ù„Ù‡ ÙŠØ¨Ø§Ø±Ùƒ ÙÙŠÙƒ Ø®ÙˆÙŠØ§Ø§Ø§",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_114",
+                        "text":  "@USER Ù…Ø§ Ø¹Ù†Ø¯ÙŠ ØªØ¹Ù„ÙŠÙ‚ Ù„Ø§Ù†Ùˆ Ù„Ù‡Ù„Ø§ Ù…Ø§ Ø´ÙØª Ø´ÙŠØ¡ Ø§ØºÙ†ÙŠØ© Ø¹Ù†Ø¯Ù‡Ø§ Ù„Ù‚Øª Ù†Ø¬Ø§Ø­ Ø§Ùˆ ØªØ§Ù†ÙŠ Ø´ÙŠØ¡ Ø§Ù„Ø§Ø¹Ù„Ø§Ù… Ù…Ù…Ø³Ù„Ø· Ø¹Ù„ÙŠÙ‡Ø§ ÙƒØ§Ù†Ù‡Ø§ Ù…Ø´ Ù…ÙˆØ¬ÙˆØ¯Ø©",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_115",
+                        "text":  "ÙˆØ­Ù†Ø§ ÙƒÙ†Ø®Ø±Ø¬Ùˆ Ù…Ø§Ù†Ø®Ù„ÙŠÙˆ Ù…Ø§Ù†Ø´Ø±ÙŠÙˆ ÙˆÙ†Ù‚ÙˆÙ„Ùˆ Ù…Ø§Ø´Ø±ÙŠÙ†Ø§ ÙˆØ§Ù„Ùˆ Ø¨Ø§Ù‚ÙŠ Ø®Ø§Ø³Ù†Ø§ EMOJI URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_116",
+                        "text":  "@USER Ù‡Ø§Ø¯ÙˆÙƒ ØºÙŠØ± Ø§Ù„Ø¨Ø±Ø§Ù‡Ø´ Ø£Ù…Ø§ Ø§Ù„Ù†Ø§Ø³ Ø§Ù„ÙˆØ§Ø¹ÙŠØ§ Ø±Ø§Ù‡Ø§ Ø®Ø§ÙŠØ¶Ø© ÙÙŠ Ø´ØºØ§Ù„Ø§ØªÙ‡Ø§ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_117",
+                        "text":  "@USER Ø§Ù†Ø§ Ø³Ø§ÙƒÙ† ÙØ§Ù„Ù…Ø¯ÙŠÙ†Ø© Ùˆ ÙƒØ§Ù†ØªØºØ·Ù‰ Ø¨ÙŠÙ‡Ø§ ØµÙŠÙ Ùˆ Ø´ØªØ§ . .",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_118",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡ ØºØ§ Ø®Ø§ÙŠÙ Ø¹Ù„Ù‰ Ø³Ù„Ø§Ù…ØªÙ‡Ø§ Ù„Ø§ ØªÙ‚ÙˆÙ„ÙŠÙ‡Ø§ Ù…Ø¯ÙŠÙ†Ø© ØªØµØ¯Ù‚ Ø¬Ø§ÙŠØ© Ù„ÙŠÙ‡Ø§ Ø¯ÙˆØ² Ø§Ù„ØµÙŠÙ ÙÙŠÙ‡Ø§ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_119",
+                        "text":  "@USER ØºÙŠØ± ÙƒÙŠØ³ØªÙØ² Ø§Ù„Ù„Ø§Ø¹Ø¨ÙŠÙ† ÙˆØµØ§ÙÙŠ Ø§Ù…Ø§ Ù‡Ùˆ Ø§Ù„Ø£Ø®Ø·Ø§Ø¡ Ø¯ÙŠØ§Ù„Ùˆ ÙƒØªØ³Ø§Ù„ÙŠ Ù…Ø¹Ø§Ù‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_120",
+                        "text":  "@USER Ù…Ø¹ Ø§Ù†Ù‡ Ø¹Ù†Ø¯Ù†Ø§ ÙØ§Ù„ØµØ­Ø±Ø§ ÙƒÙ„ Ù†Ù‡Ø§Ø± ØªØ³Ù…Ø¹ Ø´ÙŠ Ø§Ø³Ù… Ø¹Ø¬ÙŠØ¨ ØºØ±ÙŠØ¨",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_121",
+                        "text":  "@USER Ø®Ø§Øµ ÙŠÙƒÙˆÙ† Ø¹Ù†Ø¯Ùƒ ØµØ¨Ø± Ø¨Ø§Ø´ Ø¯ÙˆØ²ÙŠ Ù…Ù† Ø³ÙˆÙ‚",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_122",
+                        "text":  "@USER Ø¨Ø§Ù„Ø¹ÙƒØ³ Ø§Ø®ØªÙŠ Ø¨ÙƒÙ„ ÙØ±Ø­",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_123",
+                        "text":  "#Ø§ÙŠÙ‡_Ø§Ù†Øª_Ø§Ù„ÙŠ NEWLINE Ø§ÙŠÙŠÙŠÙŠÙŠÙŠÙŠÙŠÙŠÙŠÙŠÙŠÙŠÙŠÙŠÙ‡ Ø§Ù„Ù‡ÙˆØ§Ø¬Ø³ ÙŠØ§Ù„ÙŠ Ø¨Ù†Øµ Ø§Ù„Ù„ÙŠÙ„ Ø¯ÙŠ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_124",
+                        "text":  "@USER Ø¨Ù„Ø§Ø¯Ù†Ø§ Ø¬Ù†Ø© ÙÙŠÙ†Ù…Ø§ Ù…Ø´ÙŠØªÙŠ Ù…ØªØ³Ø®ÙŠØ´ ØªØ®Ù„ÙŠÙ‡Ø§",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_125",
+                        "text":  "Ø§Ù„Ù…Ø§ØªØ´ ØºØ¯Ø§ Ù…Ø§ Ø¨Ù‚Ø§Ø´ Ù…Ø¹ Ø§Ù„Ø³Ø¨Ø¹Ø© ØŸ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "other",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "other",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_126",
+                        "text":  "Ø´ÙŠ ÙˆØ§Ø­Ø¯ Ø§Ø¹Ù„Ù…Ù†ÙŠ Ø§Ù†Ø¬Ù„ÙŠØ²ÙŠ ÙˆØ§Ù†Ø§ Ù†Ø¹Ù„Ù…Ùˆ ÙØ±Ù†Ø³ÙŠ Ø§Ø­Ù…Ø¨Ø§Ùƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "other",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "other",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_127",
+                        "text":  "@USER Ø¹ÙØ§Ù Ù…Ø§Ù„ÙƒÙŠ Ø§Ø®ØªÙŠ Ø­ØªÙ‰ Ø§Ù†Ø§ Ù„ØºÙŠØªÙŠ Ø§Ø§Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ø´ Ø¯Ø±Ù†Ø§ Ù„ÙŠÙƒ ! ! ! ! ! \u0027\"",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_128",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡ EMOJI Ø±Ø§Ù‡Ù… Ø¯Ø§ÙŠØ±ÙŠÙ† Ø¹ÙŠÙ† Ù…ÙŠÙƒØ© EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_129",
+                        "text":  "@USER Ø§Ù‡ Ø¯Ø§ÙƒØ´ÙŠ Ù„Ù„ÙŠ Ù‚Ù„Øª ØªØ§ Ø¨Ø§Ù† Ø§Ù„Ø¶Ùˆ Ùˆ ÙˆÙ„Ø§ Ø¹Ù†Ø¯Ù†Ø§ Ø§Ù…Ù„ ÙÙ…Ù†ØªØ®Ø¨ ÙŠØ¨Ø¯Ø§Ùˆ ØªØ§ÙŠØ±ÙˆÙ†Ùˆ ÙÙŠÙ‡ ØªØ§Ù†ÙŠ Ø¹Ù„Ù‰ Ù‚Ø¨Ù„ Ù…ØµØ§Ù„Ø­ Ø´Ø®ØµÙŠØ© ØºÙ†ÙÙ‚Ø¯ Ø§Ù„Ø£Ù…Ù„ Ø¨Ù…Ø±Ø© EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_130",
+                        "text":  "@USER Ø´ÙƒØ±Ø§ Ø¨Ø²Ø²Ø§Ù Ø­Ø¨ÙŠØ¨Ø© EMOJI Ø±Ø¨ÙŠ ÙŠØ®Ù„ÙŠÙƒ EMOJI Ù…ÙˆØ§Ø§Ø­ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_131",
+                        "text":  "Ø§Ù„Ø·Ù‚Ø³ Ø¯ÙŠÙ…Ø§ Ù…Ø¹ÙƒØ³ Ù…Ø¹ Ø¯Ø§ÙƒØ´ÙŠ Ø§Ù„Ù„ÙŠ ÙƒÙ†Ù„Ø¨Ø³ . . NEWLINE Ø§Ù„Ø¯Ø¹ÙˆØ© Ù…Ø´Ù…Ø´Ø©",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_132",
+                        "text":  "Ø§Ø³ÙŠØ¯ÙŠ Ø¹Ù†Ø¯Ù†Ø§ ÙØ§Ù„Ù…ØºØ±Ø¨ ØªÙ„Ù‚Ø§Ù‡ Ù…Ø¯Ø§Ø¨Ø² Ù…Ø¹ Ø®ÙˆØªÙˆ Ø¹Ù„Ù‰ Ø§Ù„ÙˆØ±Ø« ÙˆØ§Ù„Ø¨Ø§Ø±Ø­ Ø®Ø§Ø±Ø¬ Ù‚Ø§Ù„Ùƒ Ø®Ø§ÙˆÙ‡ Ø®Ø§ÙˆÙ‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "other",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "other",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_133",
+                        "text":  "@USER Ø­Ø³Ø¨Ù†Ø§ Ø§Ù„Ù„Ù‡ ÙˆÙ†Ø¹Ù… Ø§Ù„ÙˆÙƒÙŠÙ„ ÙÙŠÙ‡Ù… . .. NEWLINE Ø£Ø¹Ù…Ø§Ù‡Ù… Ø§Ù„Ø­Ù‚Ø¯ ÙˆØ§Ù„ØºÙ„ . . ÙˆØµØ§Ø±Øª Ø§Ù„ÙØ±Ù‚Ø© Ù‡Ø¯ÙÙ‡Ù… NEWLINE Ø§Ù„Ù„Ù‡ ÙŠÙ‡Ø¯ÙŠ Ø§Ù„Ø¬Ù…ÙŠÙŠØ¹ ÙˆÙŠÙˆØ­Ø¯ ÙƒÙ„Ù…Ø© Ø§Ù„Ø§Ø³Ù„Ø§Ù… ÙˆØ§Ù„Ù…Ø³Ù„Ù…ÙŠÙ†",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_134",
+                        "text":  "@USER Ø¶Ø§Ø±ÙŠÙ†ÙŠ Ø±Ø¬Ù„ÙŠ Ù…Ø§ Ø´ÙƒÙŠØª Ø¹Ù„ÙŠÙƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_135",
+                        "text":  "@USER Ø­Ù†Ø§ Ù Ø§ÙƒØ§Ø¯ÙŠØ± Ø¹Ù†Ø¯Ù†Ø§ Ø£Ù„Ø²Ø§ Ù…Ù† NUM ØªÙ‚Ø±ÙŠØ¨Ø§ Ùˆ Ø§Ù„Ø®Ø¯Ù…Ø§Øª Ø¯ÙŠØ§Ù„Ù‡Ø§ NUM / NUM Ù†Ø§Ù‡ÙŠÙƒ Ø¹Ù† Ø§Ù„ÙƒÙˆÙ†Ø·Ø±ÙˆÙ„Ø§Øª Ù„ÙŠ ÙƒÙŠØ®Ø¯Ù…Ùˆ Ø¹Ù†Ø¯Ù‡Ù… Ø§ØºÙ„Ø¨Ù‡Ù… Ù…Ø´Ø±Ø· Ùˆ Ø°Ùˆ Ø³ÙˆØ§Ø¨Ù‚ Ø¹Ø¯Ù„ÙŠØ© .",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_136",
+                        "text":  "@USER Ø¨Ø³ÙˆÙ…Ø© Ø±Ù‚Ù…Ùƒ ÙƒÙŠÙ Ù…Ø§Ù‡Ùˆ ÙˆÙ„Ø§ Ø¨Ø¯Ù„ØªÙŠÙ‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_137",
+                        "text":  "@USER Ø§Ø°Ø§ Ø·Ø§Ø­ Ù…Ù† Ø¹ÙŠÙ†Ùƒ Ø§Ø´ ÙƒØ¯ÙŠØ±ÙŠ Ø¹Ù†Ø¯Ùˆ Ù‡Ùˆ Ù†Ø§Ø¬Ø­ Ø¨ÙŠÙƒ ÙˆØ¨Ø¯ÙˆÙ†Ùƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_138",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡ . .. ÙŠÙ…ÙƒÙ† ÙØ¹Ø§Ø¦Ù„ØªÙƒ Ù…Ø¹Ù†Ø¯ÙƒÙ…Ø´ Ù…Ø¹ Ø§Ù„Ø§ØºØ§Ù†ÙŠ Ø§ÙˆÙ„Ø§ ØºÙŠØ± Ù†ØªÙŠ Ø¨ÙˆØ­Ø¯Ùƒ ØŸ Ø§Ù†Ø§ Ø¨ØµØ±Ø§Ø­Ø© Ù…Ù†Ù‚Ø¯Ø±Ø´ Ø¶Ø±ÙˆØ±ÙŠ Ù†ØªØµÙ†Øª Ù„ÙŠÙ‡Ø§ Ùˆ ÙÙ…Ø®ØªÙ„Ù Ø§Ù„Ø§Ù„ÙˆØ§Ù† EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_139",
+                        "text":  "@USER Ø³Ø¨Ø­Ø§Ù† Ø§Ù„Ø®Ø§Ù„Ù‚ Ù‡Ø¯Ø§ Ø§Ù„Ù…Ù†Ø¸Ø± Ø´ÙØªÙˆ Ù‡Ø¯ÙŠ Ø´Ù‡Ø± ØªÙ‚Ø±ÙŠØ¨Ø§ ÙˆÙÙŠ Ù†ÙØ³ Ø§Ù„Ù…ÙƒØ§Ù† Ø§Ø¹ØªÙ‚Ø¯ Ø¨Ø³ÙˆÙ‚ Ø£Ø³Ø¨ÙˆØ¹ÙŠ ÙŠÙˆÙ… Ø§Ù„Ø®Ù…ÙŠØ³ Ù…Ø´ÙŠØª Ø§Ù†Ø§ ÙˆØ±Ø§Ø¬Ù„ Ø§Ù„Ø§Ø®Øª Ù„ØªÙ…Ø§Ùƒ Ù…Ù†Ø¸Ø± ÙˆÙ„Ø§ Ø§Ø±ÙˆØ¹",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_140",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡Ù‡ Ø·Ø§Ø­Ùˆ Ø¹Ù„ÙŠÙƒ Ù…ØªØ­Ø¯ÙÙŠÙ†",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_141",
+                        "text":  "@USER Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡Ù‡ ÙˆØ§Ù„Ù„Ù‡ ÙÙƒØ±Ù†ÙŠ Ø¨ÙŠØº ØºÙŠ Ø§Ø¯ÙˆÙ…Ø© Ø¯ÙŠØ§Ù„Ù†Ø§ Ù…Ø³ØªÙŠÙ„ÙŠ Ø¹Ù„ÙŠÙ‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_142",
+                        "text":  "@USER ÙƒÙ†Øª Ø¹Ø§Ø±Ù Ø­Ø§Ø³Ø¯Ø§Ù†ÙŠ Ø¹Ù„Ù‰ Ø´Ø­Ø§Ù„ Ù…Ù† Ø­Ø§Ø¬Ø© URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_143",
+                        "text":  "Ø´ÙƒÙˆÙ† Ø³Ù…Ø¹ Ø®Ø·Ø§Ø¨ ÙˆØ²ÙŠØ± Ø§Ù„Ø´ØºÙ„ ÙˆÙˆØ²ÙŠØ± Ø´ÙŠ Ø­Ø§Ø¬Ø© Ø£Ø®Ø±Ù‰ EMOJI Ø§Ù„Ù…Ù‡Ù… Ù‚Ø§Ù„ Ø´ÙŠ Ù…Ø§ÙŠØ¯Ø§Ø± Ø§Ùˆ Ù„Ø§ ÙˆØ§Ù„Ùˆ ÙƒØ§Ù†Ùˆ Ø¹Ù†Ø¯Ù†Ø§ Ø§Ù„Ø¶ÙŠØ§Ù ÙˆÙ…Ø§Ø³Ù…Ø¹ØªØ´ Ù„ÙŠÙ‡ ÙƒØ§ÙŠÙ† Ø´ÙŠ Ø¬Ø¯ÙŠØ¯ ÙŠØ°ÙƒØ± Ø§Ùˆ ÙˆØ§Ù„Ùˆ ØŸ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_144",
+                        "text":  "Ø§Ù†Ø§ ÙØ±Ø­Ø§Ø§Ø§Ø§Ø§Ø§Ø§Ø§Ø§Ø§Ø§Ø§Ø§Ø§Ø§Ù†Ø© Ø§Ù†Ø§ ÙØ±Ø­Ø§Ù†Ø© Ø§Ù„Ù…Ø§Ù†ÙŠØ§ Ø®Ø§Ø±Ø¬ Ù…Ù†Ø¯ÙŠØ§Ù„ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_145",
+                        "text":  "@USER Ù‡Ø§ Ù„ÙŠ ØªØ¹Ø¬Ø¨Ùƒ Ø§Ù„Ø¬Ø¯ÙŠØ¯ Ø§Ø®ÙˆÙŠØ§ Ø¯Ù…Ø§Ø± ÙˆØ§Ù„Ù„Ù‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_146",
+                        "text":  "@USER + ÙƒÙ„Ø§Ù…Ùƒ ÙƒÙ„Ùˆ Ø§Ø®Ø·Ø§Ø¡ Ø§Ù„Ø§ Ø¬ÙŠÙ†Ø§ Ù†Ù…Ø´ÙŠÙˆ ÙÙ†ÙØ³ Ø§Ù„Ø·Ø±ÙŠÙ‚",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_147",
+                        "text":  "Ø´Ø§Ù ÙÙŠØ§ ÙˆØ¶Ø­Ùƒ ÙˆØ²Ø§Ø¯ NEWLINE Ø®Ù„Ø§Ù†ÙŠ Ø¯Ù…Ø¹ÙŠ Ù‡ÙˆØ§Ø¯ NEWLINE Ø´Ø§Ù ÙÙŠØ§ ÙˆØ¶Ø­Ùƒ ÙˆØ²Ø§Ø¯ NEWLINE Ø®Ù„Ø§Ù†ÙŠ Ø¯Ù…Ø¹ÙŠ Ù‡ÙˆØ§Ø¯ NEWLINE Ø®Ù„Ø§Ù†ÙŠ Ø¯Ù…Ø¹ÙŠ Ù‡ÙˆØ§Ø¯ NEWLINE Ù‚Ø¯Ø§Ù… Ø§Ù„Ø´Ø§Ø¯ÙŠ ÙˆØ§Ù„Ø¨Ø§Ø¯ÙŠ NEWLINE Ù‚Ø¯Ø§Ù… Ø§Ù„Ø±Ø§ÙŠØ­ ÙˆØ§Ù„ØºØ§Ø¯ÙŠ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_148",
+                        "text":  "ÙˆØ§Ø´ Ø§Ø°Ø§ Ù…Ø±Ø§ØªÙŠ ÙˆÙ„Ø¯Ø§Øª ØºØ§Ø¯ÙŠ ØªØ§Ø®Ø¯ Ø§Ù„Ø¥Ù‚Ø§Ù…Ø© Ùˆ Ø£ÙˆÙ„Ø§Ø¯ÙŠ ÙŠØ§Ø®Ø¯Ùˆ Ø§Ù„Ø¬Ù†Ø³ÙŠØ© ØŒ Ùˆ Ø±Ø³Ø§Ù„Ø© Ù„Ù„Ù…ØºØ§Ø±Ø¨Ø© Ø§Ù„Ø¨Ø§Ø­Ø«ÙŠÙ† Ø¹Ù† Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯Ø§Øª URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_149",
+                        "text":  "@USER Ù‡Ø°Ø§ ÙŠØ§Ù„Ø§Ù„Ø§ Ù…ØºØ±Ø¨ÙŠ Ø¹Ù…Ø±Ù‡ NUM Ø³Ù†Ø© ÙƒÙ„ Ø´Ù‡Ø± Ù„Ø§ØµÙ‚ÙŠÙ† ÙÙŠÙ‡ ÙˆÙ…Ø®Ù„ÙŠÙŠÙ† Ø£ÙˆÙ„Ø§Ø¯ Ø¨Ù„Ø¯ Ù†ØµÙ‡Ù… ØºÙŠØ± Ù…Ù‡ØªÙ… ÙŠØ¨Ø§Ø±Ùƒ EMOJI Ø´Ø± Ø§Ù„Ø¨Ù„ÙŠØ© Ù…Ø§ÙŠØ¶Ø­Ùƒ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_150",
+                        "text":  "@USER Ø¹Ù†Ø¯Ù‡Ù… Ø§Ù„ÙƒÙˆØ§Ø§Ø§Ø§Ø±Ø« Ù„ÙƒÙ† ÙŠØ§ Ø­Ø³Ø±Ø© Ù…ÙŠÙ‚Ø¯Ø±ÙˆØ´ ÙŠØªØ¶Ø§Ù‡Ø±Ùˆ ÙˆÙ„Ø§ Ø­ØªÙ‰ ÙŠØ·Ù„Ø¹Ùˆ Ø§Ù„Ø­Ø³",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_151",
+                        "text":  "@USER Ø³Ù…Ø­ÙˆÙ„ÙŠ Ù†Ø¯Ø®Ù„ Ø¹Ø±Ø¶ Ø¨ÙŠÙ†ÙƒÙ… EMOJI ÙˆÙ„ÙƒÙ† Ù‡Ø§Ø¯ Ø§Ù„Ù‡Ù„Ø§Ù„ÙŠØ© ÙƒØªØ²ÙŠØ¯ ÙÙŠÙ‡ Ø´ÙˆÙŠØ© Ø³Ù…Ø­ÙŠÙ„ÙŠ Ø§Ù„Ø²ÙŠÙ† Ø§Ù„Ù‡Ù„Ø§Ù„ÙŠØ© ÙƒÙ†Ø¹Ø±Ù Ø­Ø³Ø§Ø¨Ùƒ Ø´Ø­Ø§Ù„ Ù‡Ø°Ø§ EMOJI ÙˆÙ„ÙƒÙ† Ù…Ø±Ø§Ø¨Ø· ØºÙŠØ± ÙØ§Ø´ Ø¬Ù„Ø³Ùˆ Ø§Ù„Ù…Ø¯Ø±Ø¨ Ø§Ø­ØªÙŠØ§Ø· Ø¹Ø·Ø§Ù‡Ù… Ø§Ù„Ø¹ÙŠÙ† Ø§Ù„Ø­Ù…Ø±Ø© ÙˆÙ…Ø§Ø±Ø¶Ø§Ø´ ÙˆÙ‡Ù…Ø§ Ù‚Ø§Ù„Ùˆ ØµØ§ÙÙŠ Ø¨Ø§ØºÙŠ ÙŠÙ…Ø´ÙŠ Ø§Ù„Ù…Ù‡Ù… Ø§Ù†Ø§ ØªØ¨Ø¹Øª Ø­ØªÙ‰ Ø§Ù„Ù‡Ù„Ø§Ù„ Ù…Ø¹ Ø¨Ù†Ø´Ø±Ù‚ÙŠ Ø¨ØµØ±Ø§Ø­Ø© Ø§Ù„Ù†ØµØ± Ø§Ø­Ø³Ù† Ù…Ù†Ù‡Ù… EMOJI Ù‡Ù„Ø§Ù„ ÙƒÙŠØ¬ÙŠÙ†ÙŠ ÙØ±ÙŠÙ‚ Ù…ÙØ´Ø´ Ø¨Ø²Ø§Ù",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_152",
+                        "text":  "@USER NEWLINE ÙŠÙƒÙÙŠ Ø£Ù† Ø§Ù„ÙØªØ§Ø© Ø§Ù„Ù…ØºØ±Ø¨ÙŠØ© Ù…Ø§ØªØ±Ø¨Ø§ØªØ´ Ø¨Ø­Ø§Ù„ Ù‡Ø§ÙƒØ§ Ø£Ù†Ø§ Ù…Ø§Ø´ÙŠ Ø¨Ø­Ø§Ù„ Ù‡Ø§ÙƒØ§ ÙˆØ£Ø®ØªÙŠ ÙƒØ°Ø§Ù„Ùƒ ÙˆØ¨Ù†Øª Ø¹Ù…ØªÙŠ ÙˆØ¨Ù†Øª Ø®Ø§Ù„ÙŠ ÙˆØ¨Ù†Øª Ø§Ù„Ø¬ÙŠØ±Ø§Ù† ÙˆØµØ¯ÙŠÙ‚Ø§ØªÙŠ NEWLINE Ø¨Ø±Ù†Ø§Ù…Ø¬ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_153",
+                        "text":  "Ø¹Ø±ÙØª Ø£Ù†Ù‡ Ø¨ØªÙˆÙŠØªØ± Ù‚Ø±ÙˆØ¨Ø§Øª ÙˆÙƒØ¯Ø© NEWLINE Ø¨Ù†Ø§Øª ØªÙˆÙŠØªØ± Ø­Ø±Ø§Ù… Ø¹Ù„ÙŠÙƒÙ… Ø¯Ø®Ù„ÙˆÙ†ÙŠ Ù„ Ø´ÙŠ Ù‚Ø±ÙˆØ¨ Ø§Ùˆ Ø£ÙŠ Ø­Ø§Ø¬Ø© ØªÙˆÙ†Ø³ NEWLINE Ø£Ù†Ø§ Ù…Ø¹Ø±ÙØªØ´ Ù…Ø§Ù„ÙŠ ÙÙŠ Ù‡Ø§Ø° ØªÙˆÙŠØªØ± Ù…Ø§Ù„Ù‚ÙŠØª ÙˆÙ„Ø§ Ø¨Ù†Øª Ø­Ø¨ØªÙ†ÙŠ EMOJI NEWLINE Ù‚Ù‡Ø±",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_154",
+                        "text":  "@USER Ø§Ù…ÙŠÙŠÙ† ØŒ Ø§Ø´Ù…Ù† Ø¹Ù…ÙˆØ¯ÙŠØ© Ø§Ù„Ù„ÙŠ Ø¨ØµØ­ØªÙŠ ØŸ ØŸ ! !",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_155",
+                        "text":  "#Ø§Ù„Ø£Ù‡Ù„ÙŠ Ø§Ù„ÙˆØ¯Ø§Ø¯ Ø¨Ù„Ø§Ø¹Ø¨ÙŠÙ† Ù…ØºØ§Ø±Ø¨Ø© Ùˆ Ù…Ø¯Ø±Ø¨ Ùˆ Ø·Ø§Ù‚Ù… Ù…ØºØ±Ø¨ÙŠ ÙŠÙÙˆÙˆÙˆÙˆÙˆØ² . .. # elmarocain #foxdeo URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_156",
+                        "text":  "@USER ØµØ¹ÙŠØ¨ Ø­ÙŠØªØ§Ø´ Ù…Ø¹Ù†Ø¯Ù‡ÙˆÙ…Ø´ Ø§Ù„Ø£ØºÙ„Ø¨ÙŠØ© ÙÙŠ Ù…Ø¬Ù„Ø³ Ø§Ù„Ø´ÙŠÙˆØ®",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_157",
+                        "text":  "@USER Ø±Ø§Ø³ Ù…Ø§Ù„Ù‡Ù… Ø§Ù„Ù‡Ø¶Ø±Ø© Ù…Ù† ÙˆØ±Ø§Ø¡ Ø§Ù„Ø´Ø§Ø´Ø§Øª",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_158",
+                        "text":  " @ USER : Ø¨Ù†ÙˆØªÙŠ Ø§Ù„Ù„Ù‡ ÙŠØ­ÙØ¸Ù‡Ø§ Ù„ÙŠ ÙŠØ§Ø±Ø¨ :) Ø´Ù…ÙˆØ® URL  Ù…Ø´Ø§Ù„Ù„Ù‡ Ø¹Ù„ÙŠÙ‡Ø§ Ø±Ø¨ÙŠ ÙŠØ®Ù„ÙŠÙ‡Ø§ Ù„ÙŠÙƒ ÙØ§ØªÙ† ÙˆØªÙƒØ¨Ø± ÙØ¹Ø² Ø§Ø®ÙŠ ÙÙ‡Ø¯ ÙˆØ¹Ø²Ùƒ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_159",
+                        "text":  "@USER Ø§Ù„Ù„Ù‡ ÙˆØ§Ø¹Ù„Ù… Ø§Ø®ØªÙŠ . Ø§Ù†Ø§ Ø³Ù…Ø¹Øª Ù…Ù† Ø´Ø­Ø§Ù„ Ù‡Ø¯Ù‰ Ø¨Ù„ÙŠ Ø§Ù„ÙƒÙˆÙ†Øª ØªØ§Ø¹ Ø§Ø®Øª Ø¯Ù†ÙŠØ§ ÙˆØ¯Ù†ÙŠØ§ Ù…ÙŠ Ù…ØªÙŠÙ‚ØªØ´ ÙˆØ§Ù„Ù„Ù‡ ÙˆØ§Ø¹Ù„Ù… ÙƒÙ„Ø´ÙŠ Ù…Ù…ÙƒÙ† Ù…Ù† Ø¹Ù†Ø¯ Ù‡Ø¯Ø§ Ø¯Ù†ÙŠØ§ Ø¨Ø·Ù…Ø© ÙÙŠÙ†Ù…Ø§ ØªÙƒÙˆÙ† Ø´ÙŠ Ù…Ø´ÙƒÙ„Ø© ØªÙ„Ù‚Ù‡Ø§ Ø¹Ù†Ø¯Ù‡Ø§ Ø±Ø¬Ù„ ÙÙŠÙ‡Ø§",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_160",
+                        "text":  "@USER Ù„Ù„Ø§Ø³Ù Ø¨Ø¬ÙˆØ¬Ù‡Ù… ÙƒÙŠØ­Ù…Ù‚ÙˆÙ†ÙŠ Ù„Ø±Ø¨Ø­ Ù…Ø¨Ø±ÙˆÙƒ Ø¹Ù„ÙŠÙ‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_161",
+                        "text":  "@USER ÙÙŠÙ„Ù… Ø·ÙˆÙŠÙŠÙŠÙŠÙŠÙ„ Ù…Ø¹ Ø²ÙˆØ¬ ÙƒÙ„Ù…Ø§Øª Ù…ØªØ¹Ø§Ø¯Ù‡ Ù…Ù„ÙŠÙˆÙ† Ù…Ø±Ù‡ ÙˆÙ…ÙˆØ²Ø² ØµØ§ÙÙŠ Ù‡Ø§Ø¯ÙŠ Ø§Ù„Ø£ØºÙ†ÙŠØ© EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_162",
+                        "text":  "@USER Ù‚Ù„ØªÙ‡Ø§ Ù…Ø²Ø­Ø© ÙÙ‚Ø· Ù…Ø§ ØªØµØ·Ø§Ø¯ÙŠØ´ ÙÙŠ Ø§Ù„Ù…ÙŠØ§Ù‡ Ø§Ù„Ø¹ÙƒØ±Ø© Ø®Ø§Ù„ØªÙŠ ÙƒØªØ¹Ø±Ù Ø§Ù† Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù‚ÙˆÙ‰ Ù…Ù† Ø§Ù„ÙˆØ¯Ø§Ø¯ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_163",
+                        "text":  "@USER Ø§Ù„Ù„Ù‡ ÙŠØ±Ø­Ù…Ù‡Ø§ ÙˆÙŠØµØ¨Ø± Ø£Ù…Ù‡Ø§ ÙˆØ£Ø¨ÙˆÙ‡Ø§ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_164",
+                        "text":  "@USER Ù‚Ù„Øª Ù„ÙŠÙƒ Ø³ÙŠØ±ÙŠ ØªÙ†Ø¹Ø³ÙŠ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_165",
+                        "text":  "@USER ØªØ¨Ø­Øª Ø¹Ù† Ù…Ù† ÙŠØ¹Ø·ÙŠÙ‡Ø§ Ø¯Ø±Ø³ ÙÙŠ Ø¨Ø²Ø§Ø§Ù Ø§Ù„Ø§Ù…ÙˆØ± Ø§Ø¹ØªÙ‚Ø¯ Ù‡Ø¯Ù‰ Ù…ØªØ®Ù„ÙØ© Ù…Ø¹Ø±ÙØ§Ø´ Ø¨Ù„ÙŠ ÙÙŠ ØªÙˆÙ†Ø³ Ù‡Ù†Ø§Ùƒ Ø¥Ø¯Ø§Ø¹Ø© Ø±Ø§Ø¯ÙŠÙˆ Ù„Ø´ÙˆØ§Ø¯ Ø¹Ù†Ø¯Ù‡Ù… ÙˆÙ‚Ø§Ù†ÙˆÙ† ÙŠØ­Ù…ÙŠ ÙˆÙŠØ¬ÙˆØ² Ù„Ù‡Ù… Ù…Ù…Ø§Ø±Ø³Ø© Ù…Ø«Ù„ Ù‡Ø§ Ø§Ù„Ø§Ù…ÙˆØ± Ø§Ù„Ø§Ø®Øª Ø¨Ø²Ø§Ù Ù…Ø¹Ù„ÙˆÙ…Ø§Øª ÙÙŠ Ø¨Ù„Ø§Ø¯Ù‡Ø§ Ù…Ø¹Ø±ÙÙ‡Ø§Ø´ Ø§ÙŠÙ„Ø§ Ø¨ØºØ§Øª Ù†Ø¹Ø§ÙˆØ¯ Ù„Ù‡Ø§ Ø§Ù„Ù‚Ø±Ø§ÙŠØ©",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_166",
+                        "text":  "Ø§Ø­Ù†Ø§ Ø¹Ø±ÙÙ†Ø§Ùƒ ØªØªÙ‚Ù„Ù‚ Ø¨Ø²Ø±Ø¨Ø© Ù…Ù† Ø§Ù„Ø¨Ø¹Ø¶ Ù„ÙƒÙ† Ù„Ø§ØªØ¯Ø¹Ù… ØªØ¯ÙˆÙŠÙ†Ø© ØªØ¹ÙƒØ± ØµÙÙˆ Ø§Ù„Ø§ØºÙ„Ø¨ÙŠØ© Ù„ Ù…Ø¹Ø¬Ø¨ÙƒØ´ Ù…ØªÙ‚Ø±Ø§Ø´ Ùˆ ÙÙŠ Ø§Ù„Ø§Ø®ÙŠØ± Ø§Ø­Ù†Ø§ Ù…Ø¹Ø§Ùƒ Ùˆ ØªÙ†Ø­Ø¨ÙˆÙƒ EMOJI NEWLINE #ihabamir NEWLINE @USER",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_167",
+                        "text":  "@USER Ø¹Ù†Ø¯ÙŠ Ø§ÙŠÙÙˆÙ† NUM Ù„ÙƒÙ† Ø¹Ø¬Ø¨Ù†ÙŠ Ù†ÙˆØª NUM ÙˆØ§Ù„Ù„Ù‡",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_168",
+                        "text":  "@USER Ø­Ù†Ø§ Ø§Ù„Ù…Ø³Ù„Ù…ÙŠÙ† . . Ùˆ Ù‡ÙˆÙ…Ø§ Ø§Ù„ÙƒÙØ§Ø±",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_169",
+                        "text":  "@USER EMOJI Ø¨ØµØ­Ø© ÙƒÙˆÙ„ÙŠ Ø¯Ø§Ùƒ Ø´ÙŠ Ù‚Ø¨Ù„ Ù…Ø§ÙŠØ¨Ø±Ø¯ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_170",
+                        "text":  "@USER Ø¹Ù†Ø¯ÙƒÙ… Ø¨ÙŠØªØ±ÙˆÙ„ ÙˆØ§Ù„ØºØ§Ø² ÙˆÙ…Ø²Ø§Ù„ ØªØ¹ØªØ¨Ø±ÙˆÙ† Ù…Ù† Ø§Ù„Ø¯ÙˆÙ„ Ø§Ù„Ù…ØªØ®Ù„ÙØ© ÙˆØ­Ù†Ø§ Ù„ÙŠ Ù…Ø¹Ù†Ø¯Ù†Ø§Ø´ ÙˆØ§Ø¹Ø±ÙŠÙ† Ø¹Ù„ÙŠÙƒÙ… ÙˆØ§Ù„Ø¯ÙˆÙ„ ÙƒÙŠØ¯ÙŠØ±Ùˆ Ù„ÙŠÙ†Ø§ Ø§Ù„Ù Ø­Ø³Ø§Ø¨",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_171",
+                        "text":  "@USER ÙˆØ±Ø§Ù‡ Ù‡Ø§Ø¯ÙŠ ÙØ§Ø´ Ø¨Ù‚Ø§Øª Ø­ÙŠØª Ù‚Ù„ØªÙŠÙ‡ Ø§Ù†Øª Ù…Ù†ØªÙŠÙ‚Ø´ EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_172",
+                        "text":  "#ihabamir ØªÙˆØ¶ÙŠØ­ Ù…Ù† Ø§Ù‡Ø§Ø¨ Ø´Ø®ØµÙŠØ§ Ù‚Ø§Ù„ÙŠ Ù†ÙˆØµÙ„ÙƒÙ… Ù„ÙŠ Ø¶Ø­Ùƒ Ø¹Ù„Ù‰ Ø³Ù†Ø§Ø¨ Ø§Ù„ÙŠÙˆÙ… ÙˆÙŠÙ‚ØµØ¯ Ø§Ù„Ø´Ø·Ø­Ø© Ø¨Ù„ÙˆÙƒ ÙˆÙŠØ¨Ø§Øª Ø¨Ù„Ø§ Ø¹Ø´Ø§ Ù‡Ù‡Ù‡Ù‡Ù‡ Ø§Ù„Ù…Ù‡Ù… Ø§Ù„Ø®Ø¨Ø± ÙØ±Ø§Ø³ÙƒÙ… . ÙŠØªØ¨Ø¹",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_173",
+                        "text":  "@USER Ø§Ù„Ù„Ù‡ ÙŠØ³Ù…Ø­ Ù„ÙŠÙ†Ø§ Ù…Ù†Ù‡Ù… Ø­ÙŠØª ØºÙ†ØªØ­Ø§Ø³Ø¨Ùˆ Ø¹Ù„Ù‰ Ù‡Ø§Ø¯Ø´ÙŠ",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_174",
+                        "text":  "@USER Ø¨Ø§Ù„ØµØ­Ø© ÙˆØ§Ù„Ø±Ø§Ø­Ø© Ø®ØªÙŠØªÙˆ ÙˆØ§Ù„Ù„Ù‡ Ù…Ø§Ø´ÙŠ Ù…Ù† Ø¨ÙŠÙ†Ø§ ÙˆÙ…Ø§Ø´ÙŠ Ø´ÙŠ Ø­Ø§Ø¬Ø© ÙƒØ¨ÙŠØ±Ø© ÙˆØ®ÙŠØ±Ùƒ Ø³Ø§Ø¨Ù‚ Ø§Ø®ÙŠØªÙŠ ØªØ³ØªØ§Ù‡Ù„ÙŠ Ù…Ø§ Ø£Ø­Ø³Ù† EMOJI",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_175",
+                        "text":  "@USER Ø¹Ø§Ø¯ Ø¬Ø¨Øª ÙˆØ§Ø­Ø¯Ø© Ø§Ù„Ù„Ù‡ ØºÙŠØ± Ø³Ù…Ø­Ùˆ Ù„ÙŠØ§ EMOJI URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_176",
+                        "text":  "Ø¹Ù‚Ù„ØªÙˆ Ø¹Ù„Ù‰ AGOGO Ùˆ Ø´ÙƒÙˆÙ† ÙƒØ§Ù† ØªØ§Ø¨Ø¹Ùˆ Ø¨Ø§Ø´ ÙŠØ­ÙŠØ¯ Ù„ÙŠÙ‡ ÙƒÙˆØ±Ø© EMOJI NEWLINE Ø¹Ø¨Ø¯ Ø§Ù„Ø³Ù„Ø§Ù… ÙˆØ§Ø¯Ùˆ EMOJI URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_177",
+                        "text":  "@USER ÙˆÙ„ÙƒÙ† Ø³Ù…Ø­ÙŠ Ù„ÙŠØ§ Ù†ØªÙŠ Ù…Ø§ Ø§Ø®ØªÙ„ÙØªÙŠØ´ Ù…Ø¹Ø§Ù‡Ø§ ÙØ§Ù„Ø±Ø£ÙŠ Ù†ØªÙŠ Ø±Ø§Ù‡ Ù‡Ø§Ø¬Ù…ØªÙŠÙ‡Ø§ Ù‡Ù‡Ù‡Ù‡Ù‡ Ø·Ø¨ÙŠØ¹ÙŠ Ø¬Ø¯Ø§ Ø±Ø¯Ù‡Ø§",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    },
+                    {
+                        "id":  "qadi_ma_178",
+                        "text":  "Ø§Ù„Ù Ù…Ø¨Ø±ÙˆÙˆÙˆÙˆÙƒ Ø§Ù„ÙÙˆØ² Ù„Ù…Ù†ØªØ®Ø¨ÙŠ Ø§Ù„Ø­Ø¨ÙŠØ¨ Ø±ØºÙ… Ø§Ù†Ù‡ Ù…Ø§Ø¹Ù†Ø¯ÙŠ Ù…ØºØ§Ø±Ø¨Ø© Ø§Ù„Ø§ Ù‚Ù„ÙŠÙ„ Ø¨Ø­Ø³Ø§Ø¨ÙŠ Ø¨Ø³ Ø§Ù„Ø®ÙŠØ± Ø¨Ø§Ù„Ø²Ø¹Ù…Ø§Ø¡ ÙŠØ¨Ø§Ø±ÙƒÙˆÙ† Ù„ÙŠ EMOJI URL",
+                        "source":  "QADI",
+                        "language":  "darija",
+                        "script":  "latin",
+                        "expected_detection":  {
+                                                   "confidence":  0.9,
+                                                   "script":  "latin",
+                                                   "language":  "darija"
+                                               },
+                        "country":  "MA"
+                    }
+                ]
+}

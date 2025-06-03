@@ -10,14 +10,10 @@
  * ✨ Fonctionnalités: CLD3 hybride | Fallback LLM | Métriques temps-réel
  */
 
-// Fichier minimal pour permettre la validation ESLint
-export const detectLanguage = (text: string, opts?: { offline?: boolean }) => {
-  const languages = ['fr', 'ar', 'darija'];
-  const randomIndex = Math.floor(Math.random() * languages.length);
+export * from './lib/ai-lang-detect';
+export * from './lib/types';
+export * from './lib/darija-detector';
+export * from './lib/bi-script-analyzer';
 
-  return {
-    language: languages[randomIndex],
-    confidence: 0.95,
-    source: opts?.offline ? 'offline' : 'cloud',
-  };
-};
+// Interface principale pour la détection de langue
+export { detectLanguage } from './lib/ai-lang-detect';
