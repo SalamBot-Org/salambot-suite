@@ -28,19 +28,21 @@ function initializeFirebase() {
   try {
     // Try to get credentials from environment variable
     const serviceAccountKey = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-    
+
     if (serviceAccountKey) {
-      const serviceAccount = JSON.parse(readFileSync(serviceAccountKey, 'utf8'));
-      
+      const serviceAccount = JSON.parse(
+        readFileSync(serviceAccountKey, 'utf8')
+      );
+
       initializeApp({
         credential: cert(serviceAccount),
-        projectId: serviceAccount.project_id
+        projectId: serviceAccount.project_id,
       });
     } else {
       // Fallback to default credentials (for local development)
       initializeApp();
     }
-    
+
     return getFirestore();
   } catch (error) {
     console.error('Failed to initialize Firebase:', error);
@@ -54,12 +56,12 @@ function initializeFirebase() {
 function parseRedisUrl(redisUrl: string): Partial<RedisConfig> {
   try {
     const url = new URL(redisUrl);
-    
+
     return {
       host: url.hostname,
       port: parseInt(url.port) || (url.protocol === 'rediss:' ? 6380 : 6379),
       auth: url.password || undefined,
-      tls: url.protocol === 'rediss:'
+      tls: url.protocol === 'rediss:',
     };
   } catch (error) {
     console.error('Failed to parse Redis URL:', error);
@@ -72,26 +74,29 @@ function parseRedisUrl(redisUrl: string): Partial<RedisConfig> {
  */
 async function updateRedisConfig(redisUrl: string, tlsEnabled: string) {
   const db = initializeFirebase();
-  
+
   try {
     const parsedUrl = parseRedisUrl(redisUrl);
     const isTlsEnabled = tlsEnabled.toLowerCase() === 'true';
-    
+
     const redisConfig: RedisConfig = {
       url: redisUrl,
       tls: isTlsEnabled,
       ...parsedUrl,
       updatedAt: new Date().toISOString(),
-      environment: process.env.NODE_ENV || 'development'
+      environment: process.env.NODE_ENV || 'development',
     };
-    
+
     // Update the configs/runtime collection
     const configRef = db.collection('configs').doc('runtime');
-    
-    await configRef.set({
-      redis: redisConfig
-    }, { merge: true });
-    
+
+    await configRef.set(
+      {
+        redis: redisConfig,
+      },
+      { merge: true }
+    );
+
     console.log('✅ Redis configuration updated successfully in Firestore');
     console.log('📊 Configuration details:');
     console.log(`   Host: ${redisConfig.host}`);
@@ -100,7 +105,6 @@ async function updateRedisConfig(redisUrl: string, tlsEnabled: string) {
     console.log(`   Auth: ${redisConfig.auth ? 'Enabled' : 'Disabled'}`);
     console.log(`   Environment: ${redisConfig.environment}`);
     console.log(`   Updated: ${redisConfig.updatedAt}`);
-    
   } catch (error) {
     console.error('❌ Failed to update Redis configuration:', error);
     process.exit(1);
@@ -112,10 +116,15 @@ async function updateRedisConfig(redisUrl: string, tlsEnabled: string) {
  */
 function validateEnvironment() {
   const requiredEnvVars = ['GOOGLE_APPLICATION_CREDENTIALS'];
-  const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
-  
+  const missingVars = requiredEnvVars.filter(
+    (varName) => !process.env[varName]
+  );
+
   if (missingVars.length > 0) {
-    console.warn('⚠️  Warning: Missing environment variables:', missingVars.join(', '));
+    console.warn(
+      '⚠️  Warning: Missing environment variables:',
+      missingVars.join(', ')
+    );
     console.log('   Attempting to use default credentials...');
   }
 }
@@ -125,23 +134,29 @@ function validateEnvironment() {
  */
 async function main() {
   const args = process.argv.slice(2);
-  
+
   if (args.length < 2) {
-    console.error('❌ Usage: pnpm tsx scripts/print-redis-url.ts <redis_url> <tls_enabled>');
-    console.error('   Example: pnpm tsx scripts/print-redis-url.ts "redis://user:pass@host:6379" "true"');
+    console.error(
+      '❌ Usage: pnpm tsx scripts/print-redis-url.ts <redis_url> <tls_enabled>'
+    );
+    console.error(
+      '   Example: pnpm tsx scripts/print-redis-url.ts "redis://user:pass@host:6379" "true"'
+    );
     process.exit(1);
   }
-  
+
   const [redisUrl, tlsEnabled] = args;
-  
+
   console.log('🚀 Starting Redis configuration update...');
-  console.log(`   Redis URL: ${redisUrl.replace(/:\/\/[^@]*@/, '://***:***@')}`);
+  console.log(
+    `   Redis URL: ${redisUrl.replace(/:\/\/[^@]*@/, '://***:***@')}`
+  );
   console.log(`   TLS Enabled: ${tlsEnabled}`);
-  
+
   validateEnvironment();
-  
+
   await updateRedisConfig(redisUrl, tlsEnabled);
-  
+
   console.log('✨ Redis configuration update completed!');
 }
 

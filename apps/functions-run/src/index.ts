@@ -12,10 +12,10 @@ export { detectLanguage } from './genkit/lang-detect-flow';
 export { generateReply } from './genkit/reply-flow';
 
 // Exporter les types
-export { 
+export {
   SupportedLanguage,
   LanguageDetectionInput,
   LanguageDetectionResult,
   ReplyFlowInput,
-  ReplyFlowOutput
+  ReplyFlowOutput,
 } from './genkit/types';

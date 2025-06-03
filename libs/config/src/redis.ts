@@ -1,13 +1,22 @@
 /**
- * @file        Client Redis configuré pour SalamBot
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-01-27
- * @updated     2025-01-27
- * @project     SalamBot - AI CRM for Moroccan SMEs
+ * ⚡ SALAMBOT REDIS CORE ⚡
+ *
+ * @description  Client Redis haute performance avec observabilité avancée
+ * @author       SalamBot Infrastructure Team <infra@salambot.ma>
+ * @version      2.1.0-enterprise
+ * @created      2025-06-02
+ * @license      Propriétaire - SalamBot Team
+ *
+ * ✨ Fonctionnalités: Auto-reconnect | Métriques | Clustering | Sécurité
  */
 
 import Redis, { RedisOptions } from 'ioredis';
-import { RedisConfig, RedisClientOptions, RedisMetrics, RedisEventCallback } from './types';
+import {
+  RedisConfig,
+  RedisClientOptions,
+  RedisMetrics,
+  RedisEventCallback,
+} from './types';
 import { getEnvConfig, maskSensitiveValue } from './env';
 import { getRedisConfigFromFirestore } from './runtime';
 import { getCached, setCached } from './cache';
@@ -24,7 +33,7 @@ let redisMetrics: RedisMetrics = {
   averageResponseTime: 0,
   errorCount: 0,
   lastError: undefined,
-  lastConnectedAt: undefined
+  lastConnectedAt: undefined,
 };
 
 /**
@@ -48,31 +57,32 @@ async function getRedisConfig(): Promise<RedisConfig> {
   }
 
   const envConfig = getEnvConfig();
-  
+
   // Priorité aux variables d'environnement
   if (envConfig.redisUrl) {
     const config: RedisConfig = {
       url: envConfig.redisUrl,
       tls: envConfig.redisTls || false,
-      environment: envConfig.nodeEnv
+      environment: envConfig.nodeEnv,
     };
-    
+
     // Parser l'URL pour extraire les détails
     try {
       const url = new URL(envConfig.redisUrl);
       config.host = url.hostname;
-      config.port = parseInt(url.port) || (url.protocol === 'rediss:' ? 6380 : 6379);
+      config.port =
+        parseInt(url.port) || (url.protocol === 'rediss:' ? 6380 : 6379);
       config.auth = url.password || undefined;
       // TLS is enabled if explicitly set in env config OR if URL uses rediss protocol
       config.tls = envConfig.redisTls || url.protocol === 'rediss:';
     } catch (error) {
       console.warn('Failed to parse Redis URL from environment:', error);
     }
-    
+
     setCached(CACHE_KEY_REDIS_CONFIG, config, CACHE_TTL_REDIS_CONFIG);
     return config;
   }
-  
+
   // Sinon, récupérer depuis Firestore
   try {
     const config = await getRedisConfigFromFirestore();
@@ -96,27 +106,27 @@ export async function getRedisClient(
     return globalRedisClient;
   }
 
-  const config = options.config || await getRedisConfig();
-  
+  const config = options.config || (await getRedisConfig());
+
   try {
     // Configuration du client Redis
     const redisOptions: RedisOptions = {
       connectTimeout: options.connectTimeout || 10000,
       lazyConnect: true,
       maxRetriesPerRequest: options.retryAttempts || 3,
-      enableReadyCheck: true
+      enableReadyCheck: true,
     };
 
     // Configuration TLS
     if (config.tls) {
       redisOptions.tls = {
-        rejectUnauthorized: true
+        rejectUnauthorized: true,
       };
     }
 
     // Créer le client Redis
     let redis: Redis;
-    
+
     if (config.url) {
       redis = new Redis(config.url, redisOptions);
     } else if (config.host && config.port) {
@@ -124,7 +134,7 @@ export async function getRedisClient(
         host: config.host,
         port: config.port,
         password: config.auth,
-        ...redisOptions
+        ...redisOptions,
       });
     } else {
       throw new Error('Invalid Redis configuration: missing URL or host/port');
@@ -132,42 +142,43 @@ export async function getRedisClient(
 
     // Configurer les événements
     setupRedisEvents(redis, options.debug || false);
-    
+
     // Connecter
     await redis.connect();
-    
+
     // Tester la connexion
     await redis.ping();
-    
+
     globalRedisClient = redis;
     redisMetrics.connected = true;
     redisMetrics.lastConnectedAt = new Date().toISOString();
-    
+
     if (options.debug) {
       console.log('Redis client connected successfully', {
         host: config.host,
         port: config.port,
         tls: config.tls,
-        environment: config.environment
+        environment: config.environment,
       });
     }
-    
+
     return redis;
   } catch (error) {
     redisMetrics.connected = false;
     redisMetrics.errorCount++;
-    redisMetrics.lastError = error instanceof Error ? error.message : 'Unknown error';
-    
+    redisMetrics.lastError =
+      error instanceof Error ? error.message : 'Unknown error';
+
     console.error('Failed to connect to Redis:', {
       error: error instanceof Error ? error.message : error,
       config: {
         host: config.host,
         port: config.port,
         tls: config.tls,
-        url: config.url ? maskSensitiveValue(config.url) : 'not-set'
-      }
+        url: config.url ? maskSensitiveValue(config.url) : 'not-set',
+      },
     });
-    
+
     throw error;
   }
 }
@@ -179,58 +190,58 @@ function setupRedisEvents(redis: Redis, debug: boolean) {
   redis.on('connect', () => {
     redisMetrics.connected = true;
     redisMetrics.lastConnectedAt = new Date().toISOString();
-    
+
     if (debug) {
       console.log('Redis connected');
     }
-    
-    eventCallbacks.forEach(callback => callback('connect'));
+
+    eventCallbacks.forEach((callback) => callback('connect'));
   });
 
   redis.on('ready', () => {
     if (debug) {
       console.log('Redis ready');
     }
-    
-    eventCallbacks.forEach(callback => callback('ready'));
+
+    eventCallbacks.forEach((callback) => callback('ready'));
   });
 
   redis.on('error', (error) => {
     redisMetrics.connected = false;
     redisMetrics.errorCount++;
     redisMetrics.lastError = error.message;
-    
+
     console.error('Redis error:', error);
-    eventCallbacks.forEach(callback => callback('error', error));
+    eventCallbacks.forEach((callback) => callback('error', error));
   });
 
   redis.on('close', () => {
     redisMetrics.connected = false;
-    
+
     if (debug) {
       console.log('Redis connection closed');
     }
-    
-    eventCallbacks.forEach(callback => callback('close'));
+
+    eventCallbacks.forEach((callback) => callback('close'));
   });
 
   redis.on('reconnecting', () => {
     if (debug) {
       console.log('Redis reconnecting...');
     }
-    
-    eventCallbacks.forEach(callback => callback('reconnecting'));
+
+    eventCallbacks.forEach((callback) => callback('reconnecting'));
   });
 
   redis.on('end', () => {
     redisMetrics.connected = false;
     globalRedisClient = null;
-    
+
     if (debug) {
       console.log('Redis connection ended');
     }
-    
-    eventCallbacks.forEach(callback => callback('end'));
+
+    eventCallbacks.forEach((callback) => callback('end'));
   });
 }
 
@@ -283,32 +294,33 @@ export async function checkRedisHealth(): Promise<{
       return {
         healthy: false,
         connected: false,
-        error: 'Redis client not connected'
+        error: 'Redis client not connected',
       };
     }
 
     const start = Date.now();
     await globalRedisClient.ping();
     const responseTime = Date.now() - start;
-    
+
     // Mettre à jour les métriques
     redisMetrics.commandsExecuted++;
-    redisMetrics.averageResponseTime = 
+    redisMetrics.averageResponseTime =
       (redisMetrics.averageResponseTime + responseTime) / 2;
-    
+
     return {
       healthy: true,
       connected: true,
-      responseTime
+      responseTime,
     };
   } catch (error) {
     redisMetrics.errorCount++;
-    redisMetrics.lastError = error instanceof Error ? error.message : 'Unknown error';
-    
+    redisMetrics.lastError =
+      error instanceof Error ? error.message : 'Unknown error';
+
     return {
       healthy: false,
       connected: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error ? error.message : 'Unknown error',
     };
   }
 }
@@ -323,6 +335,6 @@ export function resetRedisMetrics(): void {
     averageResponseTime: 0,
     errorCount: 0,
     lastError: undefined,
-    lastConnectedAt: redisMetrics.lastConnectedAt
+    lastConnectedAt: redisMetrics.lastConnectedAt,
   };
 }

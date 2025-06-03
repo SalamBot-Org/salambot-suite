@@ -9,6 +9,7 @@ Ce document décrit le système de rotation automatique des mots de passe Redis 
 ### Composants
 
 1. **Script de Rotation** (`scripts/rotate-redis-password.ts`)
+
    - Génère de nouveaux mots de passe sécurisés
    - Met à jour Google Secret Manager
    - Synchronise la configuration Firestore
@@ -16,6 +17,7 @@ Ce document décrit le système de rotation automatique des mots de passe Redis 
    - Vérifie la connectivité Redis
 
 2. **Workflow GitHub Actions** (`.github/workflows/redis-password-rotation.yml`)
+
    - Exécution planifiée mensuelle (1er de chaque mois à 02:00 UTC)
    - Déclenchement manuel possible
    - Support multi-environnements (dev, staging, production)
@@ -31,26 +33,31 @@ Ce document décrit le système de rotation automatique des mots de passe Redis 
 ### Étapes Automatiques
 
 1. **Préparation**
+
    - Vérification des variables d'environnement
    - Initialisation des clients (Firebase, Secret Manager)
    - Récupération de la configuration actuelle
 
 2. **Génération du Nouveau Mot de Passe**
+
    - Longueur: 32 caractères
    - Caractères: lettres, chiffres, symboles spéciaux
    - Génération cryptographiquement sécurisée
 
 3. **Mise à Jour des Secrets**
+
    - Création d'une nouvelle version dans Google Secret Manager
    - Mise à jour de la configuration Firestore
    - Incrémentation du numéro de version
 
 4. **Application Infrastructure**
+
    - Exécution de `terraform plan`
    - Application des changements via `terraform apply`
    - Mise à jour de l'instance Redis
 
 5. **Vérification**
+
    - Test de connectivité Redis
    - Validation du nouveau mot de passe
    - Vérification de la santé du service
@@ -143,10 +150,12 @@ output "prometheus_target_tag" {
 ### Alertes Recommandées
 
 1. **Échec de Rotation**
+
    - Déclencheur: Exit code != 0
    - Action: Notification équipe DevOps
 
 2. **Santé Redis Dégradée**
+
    - Déclencheur: Health check failed
    - Action: Investigation immédiate
 
@@ -159,16 +168,19 @@ output "prometheus_target_tag" {
 ### Bonnes Pratiques Implémentées
 
 1. **Mots de Passe Forts**
+
    - 32 caractères minimum
    - Caractères spéciaux inclus
    - Génération cryptographique
 
 2. **Gestion des Secrets**
+
    - Google Secret Manager pour le stockage
    - Versioning automatique
    - Accès contrôlé par IAM
 
 3. **Authentification**
+
    - Workload Identity pour GitHub Actions
    - Service accounts dédiés
    - Permissions minimales
@@ -247,16 +259,19 @@ cd infra/terraform && terraform show
 ### Améliorations Prévues
 
 1. **Notifications Avancées**
+
    - Intégration Slack/Teams
    - Alertes email personnalisées
    - Dashboard de statut
 
 2. **Rotation Intelligente**
+
    - Détection automatique des problèmes
    - Rollback automatique en cas d'échec
    - Rotation basée sur les métriques
 
 3. **Multi-Cloud Support**
+
    - Support AWS Secrets Manager
    - Intégration Azure Key Vault
    - Rotation cross-cloud

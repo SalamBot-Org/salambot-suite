@@ -12,6 +12,6 @@ export const useAuth = () => {
     user: null,
     login: async () => console.log('Login non implémenté'),
     logout: async () => console.log('Logout non implémenté'),
-    isAuthenticated: false
+    isAuthenticated: false,
   };
 };

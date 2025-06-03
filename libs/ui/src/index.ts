@@ -12,7 +12,7 @@ export const Button = ({ children, onClick }) => {
     type: 'button',
     props: {
       onClick,
-      children
-    }
+      children,
+    },
   };
 };

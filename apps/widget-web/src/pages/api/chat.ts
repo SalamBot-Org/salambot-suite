@@ -17,7 +17,7 @@ interface ChatResponse {
 
 /**
  * Endpoint /api/chat (mock)
- * 
+ *
  * Cette version est un mock qui sera remplacé par l'intégration réelle
  * avec les flows Genkit (lang-detect et reply) dans une future itération.
  */
@@ -32,11 +32,12 @@ export default function handler(
 
   // Récupération du message de l'utilisateur
   const { message } = req.body;
-  
+
   if (!message || typeof message !== 'string') {
     return res.status(400).json({
-      reply: 'Erreur: Le message est requis et doit être une chaîne de caractères.',
-      lang: 'fr'
+      reply:
+        'Erreur: Le message est requis et doit être une chaîne de caractères.',
+      lang: 'fr',
     });
   }
 
@@ -51,20 +52,24 @@ export default function handler(
   // Génération d'une réponse mock basée sur la langue détectée
   const modelUsed = 'mock';
   let reply = '';
-  
+
   switch (detectedLang) {
     case 'fr':
-      reply = 'Merci pour votre message. Je suis SalamBot, un assistant virtuel pour les PME marocaines. Cette réponse est générée par un mock et sera remplacée par une IA réelle dans une future version.';
+      reply =
+        'Merci pour votre message. Je suis SalamBot, un assistant virtuel pour les PME marocaines. Cette réponse est générée par un mock et sera remplacée par une IA réelle dans une future version.';
       break;
     case 'ar':
-      reply = 'شكرا على رسالتك. أنا سلام بوت، مساعد افتراضي للشركات الصغيرة والمتوسطة المغربية. هذا الرد تم إنشاؤه بواسطة نموذج وسيتم استبداله بذكاء اصطناعي حقيقي في إصدار مستقبلي.';
+      reply =
+        'شكرا على رسالتك. أنا سلام بوت، مساعد افتراضي للشركات الصغيرة والمتوسطة المغربية. هذا الرد تم إنشاؤه بواسطة نموذج وسيتم استبداله بذكاء اصطناعي حقيقي في إصدار مستقبلي.';
       break;
     case 'darija':
       // Pour Darija, on répond en arabe classique selon les exigences
-      reply = 'شكرا على رسالتك. أنا سلام بوت، مساعد افتراضي للشركات الصغيرة والمتوسطة المغربية. هذا الرد تم إنشاؤه بواسطة نموذج وسيتم استبداله بذكاء اصطناعي حقيقي في إصدار مستقبلي.';
+      reply =
+        'شكرا على رسالتك. أنا سلام بوت، مساعد افتراضي للشركات الصغيرة والمتوسطة المغربية. هذا الرد تم إنشاؤه بواسطة نموذج وسيتم استبداله بذكاء اصطناعي حقيقي في إصدار مستقبلي.';
       break;
     default:
-      reply = 'Merci pour votre message. Je suis SalamBot, un assistant virtuel pour les PME marocaines.';
+      reply =
+        'Merci pour votre message. Je suis SalamBot, un assistant virtuel pour les PME marocaines.';
   }
 
   // Ajout d'un délai aléatoire pour simuler le temps de traitement
@@ -72,7 +77,7 @@ export default function handler(
     res.status(200).json({
       reply,
       lang: detectedLang,
-      modelUsed
+      modelUsed,
     });
   }, Math.random() * 1000 + 500); // Délai entre 500ms et 1500ms
 }

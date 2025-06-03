@@ -1,0 +1,43 @@
+# <type>(<scope>): <subject>
+#
+# <body>
+#
+# <footer>
+
+# Types:
+# feat:     Nouvelle fonctionnalité
+# fix:      Correction de bug
+# docs:     Documentation
+# style:    Formatage, point-virgules manquants, etc.
+# refactor: Refactoring du code
+# test:     Ajout de tests
+# chore:    Maintenance, tâches de build, etc.
+# ci:       Changements CI/CD
+# perf:     Amélioration des performances
+# revert:   Annulation d'un commit précédent
+#
+# Scope (optionnel):
+# - Nom du package/module affecté
+# - Exemples: api, ui, docs, deps, config
+#
+# Subject:
+# - Utiliser l'impératif présent: "change" pas "changed" ou "changes"
+# - Ne pas capitaliser la première lettre
+# - Pas de point (.) à la fin
+# - Maximum 50 caractères
+#
+# Body (optionnel):
+# - Utiliser l'impératif présent
+# - Inclure la motivation pour le changement
+# - Contraster avec le comportement précédent
+# - Wrap à 72 caractères
+#
+# Footer (optionnel):
+# - Référencer les issues: "Closes #123", "Fixes #456"
+# - BREAKING CHANGE: décrire les changements incompatibles
+#
+# Exemples:
+# feat(api): add user authentication endpoint
+# fix(ui): resolve button alignment issue on mobile
+# docs: update installation instructions
+# chore(deps): bump react from 18.2.0 to 18.3.0

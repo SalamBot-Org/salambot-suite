@@ -1,44 +1,20 @@
-/**
- * @file        Configuration ESLint pour la bibliothèque UI
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-25
- * @updated     2025-05-25
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
 {
-  "extends": [
-    "plugin:@nx/react-typescript",
-    "../../.eslintrc.json"
-  ],
+  "extends": ["plugin:@nx/react-typescript", "../../.eslintrc.json"],
   "overrides": [
     {
-      "files": [
-        "*.ts",
-        "*.tsx",
-        "*.js",
-        "*.jsx"
-      ],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "parserOptions": {
-        "project": [
-          "libs/ui/tsconfig(.*)?.json"
-        ]
+        "project": ["libs/ui/tsconfig(.*)?.json"]
       },
       "rules": {}
     },
     {
-      "files": [
-        "*.ts",
-        "*.tsx"
-      ],
+      "files": ["*.ts", "*.tsx"],
       "rules": {}
     },
     {
-      "files": [
-        "*.js",
-        "*.jsx"
-      ],
+      "files": ["*.js", "*.jsx"],
       "rules": {}
     }
   ]
 }
-

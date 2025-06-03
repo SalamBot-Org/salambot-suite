@@ -17,8 +17,5 @@
     "jest.config.ts",
     "vitest.config.ts"
   ],
-  "files": [
-    "jest.config.ts",
-    "vitest.config.ts"
-  ]
+  "files": ["jest.config.ts", "vitest.config.ts"]
 }

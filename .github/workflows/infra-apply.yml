@@ -1,5 +1,9 @@
-# Infrastructure deployment workflow for SalamBot
-# Handles Terraform operations for Redis and other infrastructure components
+# @file        .github/workflows/infra-apply.yml
+# @description Infrastructure Apply Workflow - Handles Terraform operations for Redis and other infrastructure components
+# @author      SalamBot Team (contact: info@salambot.ma)
+# @created     2025-01-20
+# @updated     2025-01-20
+# @project     SalamBot - AI CRM for Moroccan SMEs
 
 name: Infrastructure Apply
 

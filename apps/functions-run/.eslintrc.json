@@ -6,40 +6,22 @@
  * @project     SalamBot - AI CRM for Moroccan SMEs
  */
 {
-  "extends": [
-    "plugin:@nx/typescript",
-    "../../.eslintrc.json"
-  ],
-  "ignorePatterns": [
-    "!**/*"
-  ],
+  "extends": ["plugin:@nx/typescript", "../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
   "overrides": [
     {
-      "files": [
-        "*.ts",
-        "*.tsx",
-        "*.js",
-        "*.jsx"
-      ],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "parserOptions": {
-        "project": [
-          "./tsconfig(.*)?.json"
-        ]
+        "project": ["./tsconfig(.*)?.json"]
       },
       "rules": {}
     },
     {
-      "files": [
-        "*.ts",
-        "*.tsx"
-      ],
+      "files": ["*.ts", "*.tsx"],
       "rules": {}
     },
     {
-      "files": [
-        "*.js",
-        "*.jsx"
-      ],
+      "files": ["*.js", "*.jsx"],
       "env": {
         "node": true,
         "jest": true
@@ -48,4 +30,3 @@
     }
   ]
 }
-

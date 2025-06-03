@@ -11,10 +11,10 @@ module.exports = {
     return {
       generate: jest.fn(async (prompt) => {
         // Simulation simple
-        if (prompt.includes("bonjour")) return { text: "fr" };
-        if (prompt.includes("مرحبا")) return { text: "ar" };
-        if (prompt.includes("labas")) return { text: "darija" };
-        return { text: "fr" }; // Fallback
+        if (prompt.includes('bonjour')) return { text: 'fr' };
+        if (prompt.includes('مرحبا')) return { text: 'ar' };
+        if (prompt.includes('labas')) return { text: 'darija' };
+        return { text: 'fr' }; // Fallback
       }),
     };
   }),

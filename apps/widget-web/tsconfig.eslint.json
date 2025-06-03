@@ -23,4 +23,3 @@
     "jest.config.ts" // Exclure explicitement ici aussi par sécurité
   ]
 }
-

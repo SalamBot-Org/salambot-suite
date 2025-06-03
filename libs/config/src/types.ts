@@ -101,7 +101,7 @@ export interface CacheConfig {
 /**
  * Événements du client Redis
  */
-export type RedisEvent = 
+export type RedisEvent =
   | 'connect'
   | 'ready'
   | 'error'

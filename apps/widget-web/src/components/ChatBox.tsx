@@ -30,22 +30,22 @@ export const ChatBox: React.FC = () => {
   // Fonction pour envoyer un message
   const sendMessage = async () => {
     if (!inputValue.trim()) return;
-    
+
     // Générer un ID unique pour le message
     const messageId = Date.now().toString();
-    
+
     // Ajouter le message de l'utilisateur
     const userMessage: Message = {
       id: messageId,
       text: inputValue,
       sender: 'user',
-      timestamp: new Date()
+      timestamp: new Date(),
     };
-    
-    setMessages(prev => [...prev, userMessage]);
+
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setIsLoading(true);
-    
+
     try {
       // Appel à l'API mock (à remplacer par l'API réelle plus tard)
       const response = await fetch('/api/chat', {
@@ -55,34 +55,34 @@ export const ChatBox: React.FC = () => {
         },
         body: JSON.stringify({ message: inputValue }),
       });
-      
+
       if (!response.ok) {
         throw new Error('Erreur lors de la communication avec le serveur');
       }
-      
+
       const data = await response.json();
-      
+
       // Ajouter la réponse du bot
       const botMessage: Message = {
         id: Date.now().toString(),
         text: data.reply || 'Désolé, je n&apos;ai pas compris votre message.',
         sender: 'bot',
-        timestamp: new Date()
+        timestamp: new Date(),
       };
-      
-      setMessages(prev => [...prev, botMessage]);
+
+      setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error('Erreur:', error);
-      
+
       // Message d'erreur en cas d'échec
       const errorMessage: Message = {
         id: Date.now().toString(),
         text: 'Désolé, une erreur est survenue. Veuillez réessayer plus tard.',
         sender: 'bot',
-        timestamp: new Date()
+        timestamp: new Date(),
       };
-      
-      setMessages(prev => [...prev, errorMessage]);
+
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -100,22 +100,29 @@ export const ChatBox: React.FC = () => {
         <h2>SalamBot</h2>
         <p>Assistant virtuel pour PME</p>
       </div>
-      
+
       <div className={styles.messagesContainer}>
         {messages.length === 0 ? (
           <div className={styles.emptyState}>
             <p>Bonjour ! Comment puis-je vous aider aujourd&apos;hui ?</p>
           </div>
         ) : (
-          messages.map(message => (
-            <div 
-              key={message.id} 
-              className={`${styles.message} ${message.sender === 'user' ? styles.userMessage : styles.botMessage}`}
+          messages.map((message) => (
+            <div
+              key={message.id}
+              className={`${styles.message} ${
+                message.sender === 'user'
+                  ? styles.userMessage
+                  : styles.botMessage
+              }`}
             >
               <div className={styles.messageContent}>
                 <p>{message.text}</p>
                 <span className={styles.timestamp}>
-                  {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {message.timestamp.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
                 </span>
               </div>
             </div>
@@ -132,7 +139,7 @@ export const ChatBox: React.FC = () => {
         )}
         <div ref={messagesEndRef} />
       </div>
-      
+
       <form onSubmit={handleSubmit} className={styles.inputContainer}>
         <input
           type="text"
@@ -142,9 +149,9 @@ export const ChatBox: React.FC = () => {
           disabled={isLoading}
           className={styles.messageInput}
         />
-        <button 
-          type="submit" 
-          disabled={isLoading || !inputValue.trim()} 
+        <button
+          type="submit"
+          disabled={isLoading || !inputValue.trim()}
           className={styles.sendButton}
         >
           Envoyer

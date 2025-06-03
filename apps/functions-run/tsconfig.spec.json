@@ -1,17 +1,11 @@
-/**
- * @file        Configuration de test pour functions-run
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-26
- * @updated     2025-05-26
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
-
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "module": "commonjs",
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "composite": true,
+    "declaration": true
   },
   "include": [
     "jest.config.ts",

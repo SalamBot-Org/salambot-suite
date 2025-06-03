@@ -1,11 +1,3 @@
-/**
- * @file        Documentation du widget web SalamBot
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-26
- * @updated     2025-05-26
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
-
 # Widget Web SalamBot
 
 Ce module contient le widget web de SalamBot, une interface de chat légère et responsive qui peut être intégrée dans n'importe quel site web.
@@ -19,12 +11,12 @@ graph TD
     C -->|Future intégration| D[Flows Genkit]
     D --> E[lang-detect-flow]
     D --> F[reply-flow]
-    
+
     subgraph "Interface utilisateur"
         A
         B
     end
-    
+
     subgraph "Backend"
         C
         D
@@ -36,6 +28,7 @@ graph TD
 ## Fonctionnalités
 
 ### Version 0.1
+
 - Interface de chat responsive avec design moderne
 - Support des messages utilisateur et réponses bot
 - Indicateur de chargement pendant le traitement
@@ -43,6 +36,7 @@ graph TD
 - Tests unitaires complets
 
 ### Futures versions
+
 - Intégration avec les flows Genkit pour la détection de langue et la génération de réponses
 - Support complet du français, de l'arabe classique et du darija
 - Personnalisation des couleurs et du style

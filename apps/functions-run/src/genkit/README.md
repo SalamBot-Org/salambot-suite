@@ -1,10 +1,11 @@
-/**
- * @file        Documentation du module Genkit pour SalamBot
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-26
- * @updated     2025-05-26
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
+/\*\*
+
+- @file Documentation du module Genkit pour SalamBot
+- @author SalamBot Team (contact: info@salambot.ma)
+- @created 2025-05-26
+- @updated 2025-05-26
+- @project SalamBot - AI CRM for Moroccan SMEs
+  \*/
 
 # Module Genkit pour SalamBot
 
@@ -20,7 +21,7 @@ graph TD
     C -->|Darija| E[Llama 4 fine-tuné]
     D --> F[Réponse générée]
     E --> F
-    
+
     subgraph "Détection de langue"
         B --> G[CLD3 Offline]
         G --> H{Confiance > 70%?}
@@ -35,20 +36,23 @@ graph TD
 ### 1. Détection de langue (`lang-detect-flow.ts`)
 
 Ce flow permet de détecter automatiquement la langue d'un texte parmi les langues supportées par SalamBot :
+
 - Français (fr)
 - Arabe classique (ar)
 - Darija marocain (darija)
 
 #### Fonctionnement
+
 1. Utilise CLD3 (Compact Language Detector v3) en mode offline pour une détection rapide
 2. Si la confiance est faible ou si le Darija est suspecté, utilise un LLM (Gemini Pro) comme fallback
 3. Retourne la langue détectée, le niveau de confiance, la source de détection et la latence
 
 #### Exemple d'utilisation
+
 ```typescript
 import { detectLanguage } from './genkit/lang-detect-flow';
 
-const result = await detectLanguage("مرحبا كيف حالك");
+const result = await detectLanguage('مرحبا كيف حالك');
 console.log(result);
 // {
 //   detectedLanguage: 'ar',
@@ -61,6 +65,7 @@ console.log(result);
 ### 2. Génération de réponse (`reply-flow.ts`) - À implémenter
 
 Ce flow permettra de générer des réponses adaptées à la langue détectée :
+
 - Utilisation de Gemini Pro pour le français et l'arabe classique
 - Utilisation de Llama 4 fine-tuné pour le Darija
 

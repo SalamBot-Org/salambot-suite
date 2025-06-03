@@ -23,4 +23,3 @@ export default {
     '^genkit-openai$': '<rootDir>/src/__mocks__/genkit-openai.js',
   },
 };
-

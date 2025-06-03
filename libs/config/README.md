@@ -1,11 +1,3 @@
-/**
- * @file        Bibliothèque de configuration pour SalamBot
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-01-27
- * @updated     2025-01-27
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
-
 # Bibliothèque Config
 
 Bibliothèque de configuration centralisée pour SalamBot, incluant la gestion des connexions Redis, des variables d'environnement et des configurations runtime.
@@ -109,6 +101,7 @@ La configuration Redis est automatiquement mise à jour dans Firestore par le sc
 Crée et retourne un client Redis configuré.
 
 **Paramètres:**
+
 - `config` (optionnel): Configuration Redis personnalisée
 
 **Retourne:** Instance du client Redis (ioredis)
