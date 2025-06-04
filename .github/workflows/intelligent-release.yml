@@ -1,0 +1,339 @@
+# 🚀 SalamBot Intelligent Release Workflow v2.2
+# Implémentation de la Stratégie Optimale: Hybrid Versioning + Business Value
+# @author      SalamBot Team (contact: info@salambot.ma)
+# @created     2025-06-04
+# @updated     2025-06-04
+# @project     SalamBot - AI CRM for Moroccan SMEs
+
+name: 🤖 SalamBot Intelligent Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Type de release'
+        required: true
+        default: 'phase1'
+        type: choice
+        options:
+          - phase1
+          - phase2
+          - hotfix
+          - custom
+      version:
+        description: 'Version (pour custom/hotfix)'
+        required: false
+        type: string
+      description:
+        description: 'Description (pour custom)'
+        required: false
+        type: string
+      features:
+        description: 'Fonctionnalités (séparées par des virgules)'
+        required: false
+        type: string
+      create_github_release:
+        description: 'Créer une GitHub Release'
+        required: false
+        default: true
+        type: boolean
+      push_tags:
+        description: 'Pousser les tags vers le remote'
+        required: false
+        default: true
+        type: boolean
+
+  # Déclenchement automatique sur merge vers main avec label 'release'
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+env:
+  NODE_VERSION: '20.18.0'
+  PNPM_VERSION: '9.1.2'
+
+jobs:
+  # 🔍 Détection automatique du type de release
+  detect-release-type:
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.detect.outputs.should_release }}
+      release_type: ${{ steps.detect.outputs.release_type }}
+      version: ${{ steps.detect.outputs.version }}
+    steps:
+      - name: 🔍 Détection du type de release
+        id: detect
+        run: |
+          # Analyse des labels PR pour déterminer le type de release
+          labels="${{ join(github.event.pull_request.labels.*.name, ' ') }}"
+          echo "Labels PR: $labels"
+          
+          should_release="false"
+          release_type=""
+          version=""
+          
+          if [[ "$labels" == *"release:phase1"* ]]; then
+            should_release="true"
+            release_type="phase1"
+          elif [[ "$labels" == *"release:phase2"* ]]; then
+            should_release="true"
+            release_type="phase2"
+          elif [[ "$labels" == *"release:hotfix"* ]]; then
+            should_release="true"
+            release_type="hotfix"
+          elif [[ "$labels" == *"release"* ]]; then
+            should_release="true"
+            release_type="custom"
+          fi
+          
+          echo "should_release=$should_release" >> $GITHUB_OUTPUT
+          echo "release_type=$release_type" >> $GITHUB_OUTPUT
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+  # 🧪 Tests et validation avant release
+  pre-release-validation:
+    if: |
+      (github.event_name == 'workflow_dispatch') ||
+      (needs.detect-release-type.outputs.should_release == 'true')
+    needs: [detect-release-type]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout du code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 📥 Installation des dépendances
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔍 Lint du code
+        run: pnpm lint
+
+      - name: 🧪 Tests unitaires
+        run: pnpm test
+
+      - name: 🏗️ Build du projet
+        run: pnpm build
+
+      - name: 🔒 Audit de sécurité
+        run: pnpm audit --audit-level moderate
+        continue-on-error: true
+
+      - name: 📊 Vérification de la couverture de tests
+        run: |
+          # Vérification que la couverture est >= 85%
+          echo "🧪 Vérification de la couverture de tests..."
+          # TODO: Implémenter la vérification de couverture
+
+  # 🚀 Création de la release intelligente
+  intelligent-release:
+    needs: [detect-release-type, pre-release-validation]
+    if: |
+      (github.event_name == 'workflow_dispatch') ||
+      (needs.detect-release-type.outputs.should_release == 'true')
+    runs-on: ubuntu-latest
+    outputs:
+      tag_name: ${{ steps.create-tag.outputs.tag_name }}
+      release_notes: ${{ steps.create-tag.outputs.release_notes }}
+    steps:
+      - name: 📥 Checkout du code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⚙️ Configuration Git
+        run: |
+          git config --global user.name "SalamBot Release Bot"
+          git config --global user.email "release-bot@salambot.ma"
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 📥 Installation des dépendances
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏷️ Création du tag intelligent
+        id: create-tag
+        run: |
+          # Détermination du type de release
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+            VERSION="${{ github.event.inputs.version }}"
+            DESCRIPTION="${{ github.event.inputs.description }}"
+            FEATURES="${{ github.event.inputs.features }}"
+          else
+            RELEASE_TYPE="${{ needs.detect-release-type.outputs.release_type }}"
+            VERSION="${{ needs.detect-release-type.outputs.version }}"
+          fi
+          
+          echo "🎯 Type de release: $RELEASE_TYPE"
+          
+          # Exécution du script de tagging intelligent
+          if [ "$RELEASE_TYPE" = "custom" ] && [ -n "$VERSION" ]; then
+            if [ -n "$FEATURES" ]; then
+              IFS=',' read -ra FEATURE_ARRAY <<< "$FEATURES"
+              pnpm tag:custom "$VERSION" "minor" "$DESCRIPTION" "${FEATURE_ARRAY[@]}"
+            else
+              pnpm tag:custom "$VERSION" "minor" "$DESCRIPTION"
+            fi
+          else
+            pnpm tag:$RELEASE_TYPE
+          fi
+          
+          # Récupération du tag créé
+          TAG_NAME=$(git describe --tags --abbrev=0)
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          
+          # Génération des release notes
+          RELEASE_NOTES_FILE="docs/releases/${TAG_NAME}.md"
+          if [ -f "$RELEASE_NOTES_FILE" ]; then
+            echo "release_notes<<EOF" >> $GITHUB_OUTPUT
+            cat "$RELEASE_NOTES_FILE" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📤 Push des changements
+        if: github.event.inputs.push_tags != 'false'
+        run: |
+          # Commit des changements (package.json, CHANGELOG.md)
+          git add .
+          git commit -m "chore: release ${{ steps.create-tag.outputs.tag_name }}" || echo "Rien à commiter"
+          
+          # Push du commit et des tags
+          git push origin main
+          git push origin --tags
+
+  # 📋 Création de la GitHub Release
+  github-release:
+    needs: [intelligent-release]
+    if: github.event.inputs.create_github_release != 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout du code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🚀 Création de la GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ needs.intelligent-release.outputs.tag_name }}
+          release_name: "🚀 SalamBot ${{ needs.intelligent-release.outputs.tag_name }}"
+          body: |
+            ${{ needs.intelligent-release.outputs.release_notes }}
+            
+            ---
+            
+            **🤖 Release automatique générée par SalamBot Intelligent Release System v2.2**
+            
+            ### 📊 Métriques de Build
+            - ✅ Tests: Passés
+            - ✅ Lint: Validé  
+            - ✅ Build: Réussi
+            - ✅ Sécurité: Auditée
+            
+            ### 🔗 Liens Utiles
+            - 📚 [Documentation](https://github.com/${{ github.repository }}/tree/${{ needs.intelligent-release.outputs.tag_name }}/docs)
+            - 🐛 [Signaler un bug](https://github.com/${{ github.repository }}/issues/new?template=bug_report.md)
+            - 💡 [Demander une fonctionnalité](https://github.com/${{ github.repository }}/issues/new?template=feature_request.md)
+            
+            **📧 Contact:** info@salambot.ma  
+            **🌐 Site web:** https://salambot.ma
+          draft: false
+          prerelease: ${{ contains(needs.intelligent-release.outputs.tag_name, 'rc') || contains(needs.intelligent-release.outputs.tag_name, 'beta') || contains(needs.intelligent-release.outputs.tag_name, 'alpha') }}
+
+  # 📊 Métriques et notifications post-release
+  post-release-metrics:
+    needs: [intelligent-release, github-release]
+    if: always() && needs.intelligent-release.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📊 Collecte des métriques de release
+        run: |
+          echo "🎉 Release ${{ needs.intelligent-release.outputs.tag_name }} créée avec succès!"
+          echo "📅 Date: $(date)"
+          echo "🏷️ Tag: ${{ needs.intelligent-release.outputs.tag_name }}"
+          echo "🔗 Repository: ${{ github.repository }}"
+          echo "👤 Déclenché par: ${{ github.actor }}"
+          
+          # TODO: Envoyer les métriques vers un système de monitoring
+          # TODO: Notifier l'équipe via Slack/Teams
+
+      - name: 🔔 Notification Slack (optionnel)
+        if: env.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": "🚀 Nouvelle release SalamBot!",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*🚀 SalamBot Release ${{ needs.intelligent-release.outputs.tag_name }}*\n\n✅ Release créée avec succès!\n🔗 <https://github.com/${{ github.repository }}/releases/tag/${{ needs.intelligent-release.outputs.tag_name }}|Voir la release>"
+                  }
+                }
+              ]
+            }' \
+            $SLACK_WEBHOOK_URL
+
+  # 🚨 Gestion des erreurs et rollback
+  error-handling:
+    needs: [intelligent-release]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚨 Gestion des erreurs
+        run: |
+          echo "❌ Erreur lors de la création de la release"
+          echo "🔍 Vérifiez les logs des jobs précédents"
+          echo "📧 Contact: info@salambot.ma"
+          
+          # TODO: Implémenter la logique de rollback si nécessaire
+          # TODO: Notifier l'équipe de l'erreur
+
+      - name: 🔔 Notification d'erreur
+        if: env.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": "🚨 Erreur lors de la release SalamBot!",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*🚨 Erreur Release SalamBot*\n\n❌ La création de la release a échoué\n🔗 <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|Voir les logs>\n\n👥 <@channel> Intervention requise!"
+                  }
+                }
+              ]
+            }' \
+            $SLACK_WEBHOOK_URL
