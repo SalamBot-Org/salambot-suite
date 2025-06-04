@@ -63,7 +63,7 @@ export interface LanguageDetectionResult {
 }
 
 /**
- * Options de configuration pour la détection
+ * Options de configuration pour la détection - OPTIMISÉ PHASE 1
  */
 export interface DetectionOptions {
   /** Mode hors ligne (utilise uniquement les règles locales) */
@@ -78,6 +78,8 @@ export interface DetectionOptions {
   enableDetails?: boolean;
   /** Longueur minimale de texte pour une détection fiable */
   minTextLength?: number;
+  /** Contourner le cache (Phase 1 - optimisation performance) */
+  bypassCache?: boolean;
 }
 
 /**

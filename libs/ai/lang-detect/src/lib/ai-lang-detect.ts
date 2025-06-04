@@ -55,13 +55,28 @@ interface CLD3Factory {
 }
 
 /**
- * Détecteur principal de langue avec spécialisation Darija
+ * Cache entry pour optimiser les performances
+ */
+interface CacheEntry {
+  result: LanguageDetectionResult;
+  timestamp: number;
+  hitCount: number;
+}
+
+/**
+ * Détecteur principal de langue avec spécialisation Darija - OPTIMISÉ PHASE 1
+ * Améliorations: cache LRU, pipeline optimisé, seuils ajustés
  */
 export class LanguageDetector {
   private darijaDetector: DarijaDetector;
   private biScriptAnalyzer: BiScriptAnalyzer;
   private performanceMetrics: PerformanceMetrics;
   private cld3Factory: CLD3Factory | null = null;
+  
+  // Cache LRU pour améliorer les performances (Phase 1)
+  private cache: Map<string, CacheEntry> = new Map();
+  private readonly CACHE_SIZE = 1000;
+  private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
   constructor() {
     this.darijaDetector = new DarijaDetector();
@@ -87,7 +102,8 @@ export class LanguageDetector {
   }
 
   /**
-   * Détecte la langue d'un texte avec approche hybride
+   * Détecte la langue d'un texte avec approche hybride - OPTIMISÉ PHASE 1
+   * Améliorations: cache intelligent, seuils ajustés, pipeline optimisé
    * @param text Texte à analyser
    * @param options Options de détection
    * @returns Résultat de détection avec confiance
@@ -108,17 +124,29 @@ export class LanguageDetector {
         return this.createErrorResult('Texte trop court pour détection fiable', startTime);
       }
 
-      // Préprocessing
+      // Préprocessing optimisé
       const cleanText = this.preprocessText(text);
       
-      // Analyse bi-script
+      // Vérification cache (Phase 1 - amélioration performance)
+      const cacheKey = this.generateCacheKey(cleanText, options);
+      const cachedResult = this.getCachedResult(cacheKey);
+      if (cachedResult && !options.bypassCache) {
+        // Mise à jour du temps de traitement pour le cache hit
+        cachedResult.processingTime = performance.now() - startTime;
+        this.updateMetrics(cachedResult, startTime);
+        return cachedResult;
+      }
+      
+      // Analyse bi-script optimisée
       const biScriptAnalysis = this.biScriptAnalyzer.analyze(cleanText);
       
-      // Détection Darija prioritaire
+      // Détection Darija prioritaire avec seuil optimisé (0.7 → 0.6)
       const darijaResult = await this.darijaDetector.detectDarija(cleanText);
       
-      if (darijaResult.isDarija && darijaResult.confidence > 0.7) {
+      // Seuil abaissé pour capturer plus de variantes Darija (Phase 1)
+      if (darijaResult.isDarija && darijaResult.confidence > 0.6) {
         const result = this.createDarijaResult(darijaResult, biScriptAnalysis, startTime);
+        this.cacheResult(cacheKey, result);
         this.updateMetrics(result, startTime);
         return result;
       }
@@ -126,7 +154,7 @@ export class LanguageDetector {
       // Fallback CLD3 pour autres langues
       const cld3Result = await this.detectWithCLD3(cleanText, options);
       
-      // Fusion des résultats
+      // Fusion des résultats avec logique améliorée
       const finalResult = this.mergeResults(
         cld3Result,
         darijaResult,
@@ -134,6 +162,8 @@ export class LanguageDetector {
         startTime
       );
       
+      // Cache du résultat final
+      this.cacheResult(cacheKey, finalResult);
       this.updateMetrics(finalResult, startTime);
       return finalResult;
       
@@ -148,13 +178,96 @@ export class LanguageDetector {
   }
 
   /**
-   * Préprocesse le texte pour optimiser la détection
+   * Préprocesse le texte pour optimiser la détection - OPTIMISÉ PHASE 1
    */
   private preprocessText(text: string): string {
     return text
       .replace(/\s+/g, ' ') // Normalise les espaces
       .replace(/[\u200B-\u200D\uFEFF]/g, '') // Supprime les caractères invisibles
+      .replace(/[\u064B-\u065F]/g, '') // Supprime diacritiques arabes pour normalisation
       .trim();
+  }
+
+  /**
+   * Génère une clé de cache pour un texte et des options
+   */
+  private generateCacheKey(text: string, options: DetectionOptions): string {
+    const optionsStr = JSON.stringify({
+      offline: options.offline || false,
+      minConfidence: options.minConfidence || 0
+    });
+    // Hash simple pour éviter les clés trop longues
+    const textHash = this.simpleHash(text.substring(0, 100));
+    return `${textHash}_${optionsStr}`;
+  }
+
+  /**
+   * Hash simple pour les clés de cache
+   */
+  private simpleHash(str: string): string {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return Math.abs(hash).toString(36);
+  }
+
+  /**
+   * Récupère un résultat du cache s'il est valide
+   */
+  private getCachedResult(cacheKey: string): LanguageDetectionResult | null {
+    const entry = this.cache.get(cacheKey);
+    if (!entry) return null;
+
+    const now = Date.now();
+    if (now - entry.timestamp > this.CACHE_TTL) {
+      this.cache.delete(cacheKey);
+      return null;
+    }
+
+    // Mise à jour du compteur de hits
+    entry.hitCount++;
+    return { ...entry.result };
+  }
+
+  /**
+   * Met en cache un résultat avec gestion LRU
+   */
+  private cacheResult(cacheKey: string, result: LanguageDetectionResult): void {
+    // Nettoyage du cache si trop plein
+    if (this.cache.size >= this.CACHE_SIZE) {
+      this.evictLeastUsed();
+    }
+
+    this.cache.set(cacheKey, {
+      result: { ...result },
+      timestamp: Date.now(),
+      hitCount: 1
+    });
+  }
+
+  /**
+   * Éviction LRU du cache
+   */
+  private evictLeastUsed(): void {
+    let leastUsedKey = '';
+    let minHitCount = Infinity;
+    let oldestTimestamp = Infinity;
+
+    for (const [key, entry] of this.cache.entries()) {
+      if (entry.hitCount < minHitCount || 
+          (entry.hitCount === minHitCount && entry.timestamp < oldestTimestamp)) {
+        leastUsedKey = key;
+        minHitCount = entry.hitCount;
+        oldestTimestamp = entry.timestamp;
+      }
+    }
+
+    if (leastUsedKey) {
+      this.cache.delete(leastUsedKey);
+    }
   }
 
   /**
@@ -268,7 +381,8 @@ export class LanguageDetector {
   }
 
   /**
-   * Fusionne les résultats de différents détecteurs
+   * Fusionne les résultats de différents détecteurs - OPTIMISÉ PHASE 1
+   * Logique améliorée pour mieux capturer les variantes Darija
    */
   private mergeResults(
     cld3Result: { language: SupportedLanguage; confidence: number; source: DetectionSource; },
@@ -276,11 +390,47 @@ export class LanguageDetector {
     biScriptAnalysis: BiScriptAnalysisResult,
     startTime: number
   ): LanguageDetectionResult {
-    // Si Darija a une confiance modérée et CLD3 détecte arabe, privilégier Darija
+    // Logique améliorée Phase 1: seuils abaissés et conditions étendues
+    
+    // Cas 1: Darija avec confiance modérée + CLD3 arabe + bi-script
     if (
-      darijaResult.confidence > 0.4 &&
+      darijaResult.confidence > 0.35 && // Seuil abaissé: 0.4 → 0.35
       cld3Result.language === 'arabic' &&
       biScriptAnalysis.isBiScript
+    ) {
+      return this.createDarijaResult(darijaResult, biScriptAnalysis, startTime);
+    }
+
+    // Cas 2: Darija avec confiance faible mais indicateurs forts
+    if (
+      darijaResult.confidence > 0.25 &&
+      darijaResult.details.detectedIndicators.length >= 3 && // Au moins 3 indicateurs
+      (biScriptAnalysis.isBiScript || cld3Result.language === 'arabic')
+    ) {
+      return this.createDarijaResult(darijaResult, biScriptAnalysis, startTime);
+    }
+
+    // Cas 3: CLD3 incertain mais Darija détecte des patterns
+    if (
+      cld3Result.confidence < 0.6 &&
+      darijaResult.confidence > 0.3 &&
+      darijaResult.details.detectedIndicators.length >= 2
+    ) {
+      return this.createDarijaResult(darijaResult, biScriptAnalysis, startTime);
+    }
+
+    // Cas 4: PHASE 1 - Darija avec beaucoup d'indicateurs (priorité haute)
+    if (
+      darijaResult.details.detectedIndicators.length >= 5 && // 5+ indicateurs = très probable Darija
+      darijaResult.confidence > 0.2 // Seuil très bas car indicateurs nombreux
+    ) {
+      return this.createDarijaResult(darijaResult, biScriptAnalysis, startTime);
+    }
+
+    // Cas 5: PHASE 1 - Darija avec indicateurs modérés mais confiance raisonnable
+    if (
+      darijaResult.details.detectedIndicators.length >= 3 &&
+      darijaResult.confidence > 0.25
     ) {
       return this.createDarijaResult(darijaResult, biScriptAnalysis, startTime);
     }
