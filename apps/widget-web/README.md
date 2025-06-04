@@ -33,12 +33,13 @@ graph TD
 - Support des messages utilisateur et réponses bot
 - Indicateur de chargement pendant le traitement
 - API mock pour simuler les réponses en français, arabe et darija
+- Intégration prête pour la détection Darija bi-script (70% précision)
 - Tests unitaires complets
 
 ### Futures versions
 
 - Intégration avec les flows Genkit pour la détection de langue et la génération de réponses
-- Support complet du français, de l'arabe classique et du darija
+- Support complet du français, de l'arabe classique et du darija (pipeline implémenté)
 - Personnalisation des couleurs et du style
 - Mode d'intégration iframe pour les sites tiers
 

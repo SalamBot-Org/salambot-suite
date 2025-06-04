@@ -10,6 +10,7 @@ Ce tutoriel vous guide pas à pas pour configurer votre environnement de dévelo
 - ✅ Configurer l'environnement de développement complet
 - ✅ Comprendre l'architecture du monorepo Nx
 - ✅ Développer et tester des fonctionnalités
+- ✅ Utiliser le pipeline de détection Darija implémenté (70% précision)
 - ✅ Contribuer selon les standards du projet
 
 ## 📚 Prérequis

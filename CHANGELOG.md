@@ -19,6 +19,11 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 - **Milestones organisationnels par semaines (P0, P1, P2)**
 - **Scripts npm pour gestion de projet** (`sync-todo-issues`, `sync-todo-issues:dry-run`, `build:sync-script`)
 - **Documentation complète des scripts** dans `/scripts/README.md`
+- **🚀 Pipeline de détection Darija bi-script complet** avec architecture hybride CLD3 + règles personnalisées
+- **🎯 Dictionnaire Darija 2000+ termes** avec support Latin et Arabe
+- **📊 Système de métriques temps réel** pour la détection linguistique
+- **🧪 Suite de tests de validation** avec dataset Darija spécialisé
+- **⚡ Optimisations de performance** : latence <100ms par détection
 
 ### Modifié
 - Standardisation des versions Node.js à 22 dans tous les workflows

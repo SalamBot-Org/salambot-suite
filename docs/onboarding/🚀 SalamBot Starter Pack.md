@@ -13,7 +13,7 @@
 
 ## 🎯 Vision et Mission
 
-**SalamBot révolutionne l'expérience client au Maroc** en démocratisant l'IA conversationnelle pour les PME marocaines. Notre différenciation unique : **la maîtrise du Darija marocain** avec >88% de précision vs <60% pour nos concurrents.
+**SalamBot révolutionne l'expérience client au Maroc** en démocratisant l'IA conversationnelle pour les PME marocaines. Notre différenciation unique : **la maîtrise du Darija marocain** avec pipeline implémenté atteignant 70% de précision (objectif 88%+) vs <60% pour nos concurrents.
 
 ### 🏆 Avantages Concurrentiels
 

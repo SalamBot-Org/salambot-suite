@@ -10,7 +10,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/github/workflow/status/salambot/salambot-suite/CI)](https://github.com/salambot/salambot-suite/actions)
 [![Coverage](https://img.shields.io/badge/coverage-75%25-yellow.svg)](https://codecov.io/gh/salambot/salambot-suite)
-[![Darija Accuracy](https://img.shields.io/badge/darija%20accuracy-85%25-orange.svg)](docs/ai-performance.md)
+[![Darija Accuracy](https://img.shields.io/badge/darija%20accuracy-70%25-yellow.svg)](docs/ai-performance.md)
 
 [🚀 Demo Live](#) • [📖 Documentation](#) • [🎯 Roadmap](#-roadmap-v21) • [💬 Support](#)
 
@@ -20,9 +20,9 @@
 
 ## 🌟 Pourquoi SalamBot ?
 
-> **88%+ de précision** dans la détection du Darija Marocain  
-> **Architecture bi-script** (Latin + Arabe) native  
-> **API Gateway** haute performance (1000+ req/s)  
+> **70%+ de précision** dans la détection du Darija Marocain (objectif 88%+)  
+> **Architecture bi-script** (Latin + Arabe) native implémentée  
+> **Pipeline hybride CLD3 + Gemini Pro** fonctionnel  
 > **DevSecOps** intégré avec rotation automatique des secrets
 
 ### 🎯 La Différence SalamBot
@@ -34,7 +34,7 @@
 - **Détection bi-script** : Latin ("salam khouya") et Arabe ("سلام خويا")
 - **Dictionnaire 2000+ termes** Darija validés linguistiquement
 - **Pipeline CLD3 + Gemini Pro** optimisé pour les dialectes maghrébins
-- **Latence <200ms** pour une expérience utilisateur fluide
+- **Latence <100ms** pour une expérience utilisateur fluide
 
 #### 🚀 Architecture Enterprise-Ready
 

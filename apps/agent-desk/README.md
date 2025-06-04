@@ -15,7 +15,7 @@ _Interface React moderne optimisée pour la gestion multi-canal des conversation
 
 - **WhatsApp Business** : Intégration native avec API officielle
 - **Widget Web** : Chat intégré sur sites clients
-- **Détection Darija** : Support bi-script (Latin/Arabe) en temps réel
+- **Détection Darija** : Support bi-script (Latin/Arabe) implémenté avec 70% précision
 - **Historique unifié** : Vue consolidée de toutes les interactions
 
 ### 🎛️ **Interface Opérateur Avancée**

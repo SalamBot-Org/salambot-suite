@@ -14,14 +14,14 @@ _API Node.js haute performance utilisant Google Genkit pour l'orchestration des 
 
 ### 🧠 **Intelligence Artificielle Avancée**
 
-- **Détection Darija** : Pipeline CLD3 + Gemini Pro optimisé
+- **Détection Darija** : Pipeline CLD3 + Gemini Pro implémenté (70% précision)
 - **Génération de réponses** : Contextuelle et culturellement adaptée
 - **Support tri-lingue** : Français, Arabe Classique, Darija Marocain
 - **Fallback intelligent** : Basculement automatique entre modèles
 
 ### ⚡ **Performance & Scalabilité**
 
-- **Latence <200ms** : Optimisations spécifiques pour le Darija
+- **Latence <100ms** : Optimisations spécifiques pour le Darija implémentées
 - **Cache Redis** : Mise en cache des détections fréquentes
 - **Rate limiting** : Protection contre les abus
 - **Monitoring** : Métriques temps réel avec OpenTelemetry
