@@ -40,9 +40,9 @@ export interface LanguageDetectionResult {
   /** Métadonnées supplémentaires */
   metadata?: {
     /** Résultats CLD3 bruts */
-    cld3Result?: any;
+    cld3Result?: unknown;
     /** Indicateurs Darija détectés */
-    darijaIndicators?: any;
+    darijaIndicators?: unknown;
     /** Analyse bi-script */
     biScriptAnalysis?: {
       isBiScript: boolean;
@@ -55,7 +55,7 @@ export interface LanguageDetectionResult {
     /** Analyse Darija */
     darijaAnalysis?: {
       confidence: number;
-      indicators: any;
+      indicators: unknown;
     };
   };
   /** Message d'erreur si applicable */

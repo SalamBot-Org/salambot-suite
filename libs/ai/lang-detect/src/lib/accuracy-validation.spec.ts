@@ -81,9 +81,8 @@ function initializeDataset(): ValidationDataset {
   try {
     const datasetContent = fs.readFileSync(datasetPath, 'utf8');
     return JSON.parse(datasetContent);
-  } catch (error) {
+  } catch {
     console.warn('⚠️ Dataset QADI non trouvé, utilisation d\'échantillons de test');
-    console.warn('⚠️ Erreur:', error instanceof Error ? error.message : String(error));
     
     // Dataset de fallback pour les tests
     return {
@@ -219,8 +218,8 @@ describe('🎯 Validation d\'Accuracy - Dataset QADI', () => {
             validationMetrics.scriptAccuracy[scriptKey].correct++;
           }
           
-        } catch (error) {
-          validationMetrics.errors.push(`Erreur pour échantillon ${sample.id}: ${error}`);
+        } catch (_error) {
+          validationMetrics.errors.push(`Erreur pour échantillon ${sample.id}: ${_error instanceof Error ? _error.message : String(_error)}`);
         }
       }
       
@@ -293,7 +292,7 @@ describe('🎯 Validation d\'Accuracy - Dataset QADI', () => {
       
       if (validationMetrics.errors.length > 0) {
         console.log(`\n❌ Erreurs (${validationMetrics.errors.length}):`);
-        validationMetrics.errors.slice(0, 5).forEach(error => console.log(`   ${error}`));
+        validationMetrics.errors.slice(0, 5).forEach(_error => console.log(`   ${_error}`));
       }
       
       // Les métriques doivent être cohérentes

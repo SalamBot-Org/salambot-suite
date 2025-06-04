@@ -12,7 +12,7 @@
 
 import { loadModule } from 'cld3-asm';
 import { DarijaDetector } from './darija-detector';
-import { BiScriptAnalyzer } from './bi-script-analyzer';
+import { BiScriptAnalyzer, BiScriptAnalysisResult } from './bi-script-analyzer';
 import {
   LanguageDetectionResult,
   DetectionOptions,
@@ -21,6 +21,39 @@ import {
   PerformanceMetrics
 } from './types';
 
+// Types for CLD3 results - matching cld3-asm actual return type
+interface CLD3Result {
+  language: string;
+  probability: number;
+  is_reliable: boolean;
+}
+
+// Types for Darija detection results
+interface DarijaDetectionResult {
+  isDarija: boolean;
+  confidence: number;
+  details: {
+    keywordScore: number;
+    codeSwitchingScore: number;
+    morphologicalScore: number;
+    idiomaticScore: number;
+    scriptMixingScore: number;
+    detectedIndicators: string[];
+  };
+}
+
+// CLD3 Factory interface - matching cld3-asm actual types
+interface CLD3Factory {
+  create(): {
+    findLanguage(text: string): {
+      language: string;
+      probability: number;
+      is_reliable: boolean;
+    } | null;
+    dispose(): void;
+  };
+}
+
 /**
  * Détecteur principal de langue avec spécialisation Darija
  */
@@ -28,7 +61,7 @@ export class LanguageDetector {
   private darijaDetector: DarijaDetector;
   private biScriptAnalyzer: BiScriptAnalyzer;
   private performanceMetrics: PerformanceMetrics;
-  private cld3Factory: any = null;
+  private cld3Factory: CLD3Factory | null = null;
 
   constructor() {
     this.darijaDetector = new DarijaDetector();
@@ -176,7 +209,7 @@ export class LanguageDetector {
         source: 'cld3'
       };
       
-    } catch (error) {
+    } catch (_error) {
       return {
         language: 'unknown',
         confidence: 0.1,
@@ -211,8 +244,8 @@ export class LanguageDetector {
    * Crée un résultat pour Darija détecté
    */
   private createDarijaResult(
-    darijaResult: any,
-    biScriptAnalysis: any,
+    darijaResult: DarijaDetectionResult,
+    biScriptAnalysis: BiScriptAnalysisResult,
     startTime: number
   ): LanguageDetectionResult {
     return {
@@ -222,7 +255,7 @@ export class LanguageDetector {
       script: biScriptAnalysis.dominantScript,
       processingTime: performance.now() - startTime,
       metadata: {
-        darijaIndicators: darijaResult.indicators,
+        darijaIndicators: darijaResult.details.detectedIndicators,
         biScriptAnalysis: {
           isBiScript: biScriptAnalysis.isBiScript,
           latinRatio: biScriptAnalysis.latinRatio,
@@ -238,9 +271,9 @@ export class LanguageDetector {
    * Fusionne les résultats de différents détecteurs
    */
   private mergeResults(
-    cld3Result: any,
-    darijaResult: any,
-    biScriptAnalysis: any,
+    cld3Result: { language: SupportedLanguage; confidence: number; source: DetectionSource; },
+    darijaResult: DarijaDetectionResult,
+    biScriptAnalysis: BiScriptAnalysisResult,
     startTime: number
   ): LanguageDetectionResult {
     // Si Darija a une confiance modérée et CLD3 détecte arabe, privilégier Darija
@@ -263,7 +296,7 @@ export class LanguageDetector {
         cld3Result,
         darijaAnalysis: {
           confidence: darijaResult.confidence,
-          indicators: darijaResult.indicators
+          indicators: darijaResult.details.detectedIndicators
         },
         biScriptAnalysis: {
            isBiScript: biScriptAnalysis.isBiScript,

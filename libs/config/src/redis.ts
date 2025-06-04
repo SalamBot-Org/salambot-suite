@@ -88,7 +88,7 @@ async function getRedisConfig(): Promise<RedisConfig> {
     const config = await getRedisConfigFromFirestore();
     setCached(CACHE_KEY_REDIS_CONFIG, config, CACHE_TTL_REDIS_CONFIG);
     return config;
-  } catch (error) {
+  } catch {
     throw new Error(
       'Redis configuration not found. Please set REDIS_URL environment variable or configure it in Firestore.'
     );

@@ -11,7 +11,7 @@
  * 🔬 Méthode: Patterns linguistiques + code-switching + morphologie
  */
 
-import { DarijaDetectorConfig, DarijaIndicators, SupportedLanguage } from './types';
+import { DarijaDetectorConfig } from './types';
 
 /**
  * Mots-clés Darija les plus discriminants
