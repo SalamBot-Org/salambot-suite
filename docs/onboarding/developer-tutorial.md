@@ -363,6 +363,43 @@ git push origin feature/SALA-123-nouvelle-fonctionnalite
 - **test** : Tests
 - **chore** : Maintenance
 
+## 🏷️ Système de Tagging Intelligent
+
+### Utilisation du système de release
+
+```bash
+# Tag Phase 1 Darija (automatique)
+npm run tag:phase1
+
+# Tag Phase 2 QADI (automatique)
+npm run tag:phase2
+
+# Tag Hotfix critique
+npm run tag:hotfix 2.2.1
+
+# Tag personnalisé
+npm run tag:custom 2.3.0 minor "Nouvelle fonctionnalité" "Feature A" "Feature B"
+```
+
+### Fonctionnalités du système
+
+- **Versioning hybride** : Combine SemVer + suffixes métier + noms créatifs
+- **Métriques intégrées** : Précision Darija, temps de réponse, couverture tests
+- **Release notes automatiques** : Générées avec détails techniques
+- **CHANGELOG automatique** : Mis à jour à chaque release
+- **GitHub Actions** : Déclenchement automatique des workflows
+
+### Exemple de tag généré
+
+```
+Tag: v2.2.0-darija-optimization-darija-master
+Type: MINOR
+Métriques:
+  - Précision Darija: 100%
+  - Temps de Réponse: 2.4ms
+  - Couverture Tests: 100%
+```
+
 ## 🚀 Déploiement Local
 
 ### Build de production
@@ -385,6 +422,42 @@ docker build -t salambot/widget-web .
 # Démarrer avec docker-compose
 docker-compose up --build
 ```
+
+## 🤖 CI/CD et Automation
+
+### GitHub Actions Workflows
+
+Le projet utilise plusieurs workflows automatisés :
+
+- **CI Pipeline** : Tests, linting, build sur chaque PR
+- **Intelligent Release** : Release automatique avec métriques
+- **Infrastructure** : Déploiement Terraform automatisé
+- **Security** : Rotation automatique des mots de passe Redis
+
+### Workflow de release automatisé
+
+```bash
+# 1. Créer un tag avec le système intelligent
+npm run tag:phase1
+
+# 2. Pousser vers GitHub
+git push origin --tags
+
+# 3. GitHub Actions se déclenche automatiquement
+# - Build et tests
+# - Génération release notes
+# - Notifications Slack
+# - Déploiement (si configuré)
+```
+
+### Monitoring et métriques
+
+Le système collecte automatiquement :
+
+- **Métriques de performance** : Temps de réponse, précision
+- **Couverture de tests** : Pourcentage et détails
+- **Statistiques Git** : Commits, auteurs, fichiers modifiés
+- **Métriques métier** : Adoption, satisfaction utilisateur
 
 ## 🆘 Dépannage
 
@@ -423,6 +496,8 @@ DEBUG=salambot:* pnpm nx serve functions-run
 - [Guide API](../api-reference.md)
 - [Guide de contribution](../contribution-guide.md)
 - [Bibliothèques internes](../internal-libraries.md)
+- [Stratégie Optimale SalamBot](../optimal-strategy-implementation.md)
+- [Guide détection Darija](../darija-detection-guide.md)
 
 ### Outils
 - [Nx Documentation](https://nx.dev)
@@ -446,6 +521,10 @@ Avant de soumettre votre contribution :
 - [ ] ✅ Documentation mise à jour
 - [ ] ✅ Commit conventionnel
 - [ ] ✅ Branch à jour avec main
+- [ ] ✅ Tag créé si nécessaire (npm run tag:*)
+- [ ] ✅ Release notes générées
+- [ ] ✅ Métriques validées (>88% précision Darija)
+- [ ] ✅ Workflow GitHub Actions réussi
 
 ---
 
