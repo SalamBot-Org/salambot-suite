@@ -105,28 +105,28 @@ src/gateway/
 
 ```bash
 # Installation des dépendances
-npm install
+pnpm install
 
 # Installation des types
-npm install --save-dev @types/express @types/node
+pnpm install --save-dev @types/express @types/node
 
 # Dépendances spécifiques au gateway
-npm install express cors helmet compression
-npm install express-rate-limit http-proxy-middleware
-npm install jsonwebtoken bcryptjs
-npm install winston pino
-npm install ioredis
-npm install prom-client
+pnpm install express cors helmet compression
+pnpm install express-rate-limit http-proxy-middleware
+pnpm install jsonwebtoken bcryptjs
+pnpm install winston pino
+pnpm install ioredis
+pnpm install prom-client
 ```
 
 ### Build
 
 ```bash
 # Build TypeScript
-npm run build
+pnpm run build
 
 # Build en mode watch
-npm run build:watch
+pnpm run build:watch
 ```
 
 ## ⚙️ Configuration
@@ -201,10 +201,10 @@ const config: GatewayConfig = {
 
 ```bash
 # Mode développement
-npm run dev
+pnpm run dev
 
 # Mode production
-npm start
+pnpm start
 
 # Avec PM2 (recommandé pour la production)
 pm2 start ecosystem.config.js
@@ -406,33 +406,33 @@ const schema = {
 
 ```bash
 # Exécuter tous les tests
-npm test
+pnpm test
 
 # Tests en mode watch
-npm run test:watch
+pnpm run test:watch
 
 # Coverage
-npm run test:coverage
+pnpm run test:coverage
 ```
 
 ### Tests d'Intégration
 
 ```bash
 # Tests d'intégration
-npm run test:integration
+pnpm run test:integration
 
 # Tests de charge
-npm run test:load
+pnpm run test:load
 ```
 
 ### Tests de Performance
 
 ```bash
 # Benchmark avec Artillery
-npm run benchmark
+pnpm run benchmark
 
 # Test de stress
-npm run stress-test
+pnpm run stress-test
 ```
 
 ### Exemple de Test
@@ -656,14 +656,14 @@ tar -czf gateway-logs-$(date +%Y%m%d).tar.gz logs/
 
 ```bash
 # Linting
-npm run lint
-npm run lint:fix
+pnpm run lint
+pnpm run lint:fix
 
 # Formatting
-npm run format
+pnpm run format
 
 # Type checking
-npm run type-check
+pnpm run type-check
 ```
 
 ### Commit Convention

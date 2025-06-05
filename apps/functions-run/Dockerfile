@@ -27,12 +27,13 @@ RUN addgroup -g 1001 -S nodejs && \
 WORKDIR /app
 
 # Copie des fichiers de dépendances
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
 COPY tsconfig*.json ./
 
 # Installation des dépendances (avec cache optimisé)
-RUN npm ci --only=production --silent && \
-    npm cache clean --force
+RUN corepack enable && \
+    pnpm install --prod --frozen-lockfile && \
+    pnpm store prune
 
 # -----------------------------------------------------------------------------
 # Stage 2: Build Application
@@ -43,18 +44,19 @@ WORKDIR /app
 
 # Copie des dépendances depuis le stage précédent
 COPY --from=dependencies /app/node_modules ./node_modules
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
 COPY tsconfig*.json ./
 
 # Copie du code source
 COPY src/ ./src/
 
 # Installation des dépendances de développement pour le build
-RUN npm ci --silent
+RUN corepack enable && \
+    pnpm install --frozen-lockfile
 
 # Build de l'application TypeScript
-RUN npm run build && \
-    npm prune --production
+RUN pnpm run build && \
+    pnpm prune --prod
 
 # -----------------------------------------------------------------------------
 # Stage 3: Production Runtime
@@ -121,13 +123,14 @@ RUN apk add --no-cache \
     && rm -rf /var/cache/apk/*
 
 # Copie de tous les fichiers
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
 COPY tsconfig*.json ./
 COPY src/ ./src/
 COPY tests/ ./tests/
 
 # Installation de toutes les dépendances (dev + prod)
-RUN npm ci
+RUN corepack enable && \
+    pnpm install --frozen-lockfile
 
 # Variables d'environnement pour le développement
 ENV NODE_ENV=development
@@ -137,4 +140,4 @@ ENV LOG_LEVEL=debug
 EXPOSE 3000 9229
 
 # Commande de développement avec hot reload
-CMD ["npm", "run", "dev"]
+CMD ["pnpm", "run", "dev"]
