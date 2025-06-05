@@ -239,22 +239,31 @@ export interface AuthenticatedUser {
   id: string;
   
   /** 📧 Email */
-  email: string;
+  email?: string;
   
   /** 👤 Nom d'utilisateur */
-  username: string;
+  username?: string;
+  
+  /** 🎭 Rôle principal */
+  role: 'admin' | 'user' | 'service' | 'guest';
   
   /** 🏷️ Rôles */
-  roles: string[];
+  roles?: string[];
   
   /** 🔑 Permissions */
   permissions: string[];
   
+  /** 🔑 Clé API */
+  apiKey?: string;
+  
+  /** 🏢 Tenant */
+  tenant?: string;
+  
   /** ⏰ Date de création du token */
-  iat: number;
+  iat?: number;
   
   /** ⏰ Date d'expiration du token */
-  exp: number;
+  exp?: number;
   
   /** 🏢 Organisation */
   organization?: string;
