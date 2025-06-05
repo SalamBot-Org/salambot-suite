@@ -269,7 +269,7 @@ export interface AuthenticatedUser {
   organization?: string;
   
   /** 📊 Métadonnées */
-  metadata?: { [key: string]: any };
+  metadata?: Record<string, string | number | boolean | null>;
 }
 
 /**
