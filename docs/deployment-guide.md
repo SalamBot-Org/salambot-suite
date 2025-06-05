@@ -761,7 +761,7 @@ jobs:
       
       - name: 🧪 Run E2E Tests
         run: |
-          export API_BASE_URL="https://api.salambot.ma"
+          export API_BASE_URL="https://api.salambot.app"
           pnpm nx run functions-run:test:e2e
         env:
           E2E_API_KEY: ${{ secrets.E2E_API_KEY }}
@@ -1518,7 +1518,7 @@ gcloud monitoring metrics list --filter="metric.type:run.googleapis.com"
 
 # Test de connectivité
 curl -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-  https://api.salambot.ma/health
+  https://api.salambot.app/health
 
 # Vérification des secrets
 gcloud secrets versions list redis-password

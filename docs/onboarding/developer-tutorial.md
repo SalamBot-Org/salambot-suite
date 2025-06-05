@@ -4,6 +4,25 @@
 
 Ce tutoriel vous guide pas à pas pour configurer votre environnement de développement et contribuer efficacement au projet SalamBot Suite.
 
+## 🌐 Architecture des Domaines
+
+### **salambot.ma** - Site Vitrine
+- **🎯 Usage** : Site marketing, landing pages, SEO local
+- **👥 Audience** : Prospects, visiteurs, clients potentiels
+- **📍 Contenu** : Présentation produit, pricing, blog, contact
+- **🔗 Redirection** : Vers salambot.app pour accéder à l'application
+
+### **salambot.app** - Écosystème Applicatif
+- **🎯 Usage** : Application web complète et services techniques
+- **👥 Audience** : Utilisateurs authentifiés, développeurs, équipes
+- **📍 Services** :
+  - `salambot.app` - Interface utilisateur principale
+  - `api.salambot.app` - API REST et WebSocket
+  - `docs.salambot.app` - Documentation technique
+  - `grafana.salambot.app` - Monitoring et métriques
+
+> **💡 Note pour les développeurs** : Lors du développement local, utilisez `localhost` avec les ports appropriés. En production, respectez cette séparation des domaines.
+
 ## 🎯 Objectifs d'apprentissage
 
 À la fin de ce tutoriel, vous serez capable de :
@@ -509,6 +528,10 @@ DEBUG=salambot:* pnpm nx serve functions-run
 - **Discord** : [Communauté SalamBot](https://discord.gg/salambot)
 - **GitHub Issues** : [Signaler un problème](https://github.com/salambot/salambot-suite/issues)
 - **Email** : dev-support@salambot.ma
+- **Application** : https://salambot.app
+- **Site Vitrine** : https://salambot.ma
+- **API** : https://api.salambot.app
+- **Documentation** : https://docs.salambot.app
 
 ## ✅ Checklist de validation
 

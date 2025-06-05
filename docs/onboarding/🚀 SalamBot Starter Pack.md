@@ -24,17 +24,37 @@
 
 ---
 
+## 🌐 Stratégie des Domaines
+
+### **salambot.ma** - Site Vitrine
+- **🎯 Usage** : Site marketing et présentation
+- **👥 Audience** : Prospects, visiteurs, SEO local
+- **📍 Contenu** : Landing pages, pricing, blog, contact
+- **🔗 Redirection** : Vers salambot.app pour l'application
+
+### **salambot.app** - Écosystème Applicatif
+- **🎯 Usage** : Application web et services
+- **👥 Audience** : Utilisateurs authentifiés, développeurs
+- **📍 Services** : Interface chat, API, dashboards, documentation
+- **🔧 Sous-domaines** :
+  - `api.salambot.app` - API principale
+  - `docs.salambot.app` - Documentation technique
+  - `grafana.salambot.app` - Monitoring et métriques
+
+---
+
 ## 🏗️ Architecture Globale
 
 ```mermaid
 graph TB
     subgraph "🌐 Points d'Entrée"
-        W[Widget Web]
+        V[salambot.ma - Site Vitrine]
+        W[salambot.app - Application Web]
         E[Extension Chrome]
         A[Agent Desk]
     end
 
-    subgraph "🚪 API Gateway"
+    subgraph "🚪 API Gateway (salambot.app)"
         G[Kong/Tyk Gateway]
         G --> Auth[Authentification]
         G --> Rate[Rate Limiting]
@@ -990,7 +1010,7 @@ interface DebuggingToolkit {
   debugMetrics: {
     // Dashboard développeur
     devDashboard: {
-      url: 'https://grafana.salambot.ma/d/dev-debug';
+      url: 'https://grafana.salambot.app/d/dev-debug';
       panels: ['Darija Accuracy (Last 1h)', 'API Gateway Latency (P95)', 'AI Provider Status', 'Error Rate by Endpoint', 'Active Users Real-time'];
     };
 
@@ -1238,7 +1258,7 @@ const postmanCollection = {
   },
 
   variables: [
-    { key: 'baseUrl', value: 'https://api.salambot.ma' },
+    { key: 'baseUrl', value: 'https://api.salambot.app' },
     { key: 'apiKey', value: '{{API_KEY}}' },
   ],
 
@@ -1446,7 +1466,7 @@ interface UpdatedSuccessMetrics {
 const metricsConfig = {
   dashboards: {
     executive: {
-      url: "https://grafana.salambot.ma/d/executive",
+      url: "https://grafana.salambot.app/d/executive",
       refresh: "5m",
       panels: [
         "Darija Accuracy Trend",
@@ -1457,7 +1477,7 @@ const metricsConfig = {
     };
 
     technical: {
-      url: "https://grafana.salambot.ma/d/technical",
+      url: "https://grafana.salambot.app/d/technical",
       refresh: "1m",
       panels: [
         "API Latency P95",
@@ -1468,7 +1488,7 @@ const metricsConfig = {
     };
 
     business: {
-      url: "https://grafana.salambot.ma/d/business",
+      url: "https://grafana.salambot.app/d/business",
       refresh: "1h",
       panels: [
         "Daily Active Users",
@@ -1536,7 +1556,7 @@ curl -X POST http://localhost:3000/api/detect-language \
   -d '{"text": "واش كاين شي مشكل؟"}'
 
 echo "✅ Setup terminé ! Prêt à développer 🚀"
-echo "📚 Documentation: https://docs.salambot.ma"
+echo "📚 Documentation: https://docs.salambot.app"
 echo "💬 Support: #salambot-dev sur Slack"
 ```
 

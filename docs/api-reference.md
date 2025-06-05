@@ -357,7 +357,7 @@ Content-Type: application/json
 
 **URL de connexion :**
 ```
-wss://api.salambot.ma/ws?token={jwt_token}
+wss://api.salambot.app/ws?token={jwt_token}
 ```
 
 ### 📡 Événements Disponibles
@@ -510,7 +510,7 @@ X-RateLimit-Retry-After: 45
 
 | Environnement | URL | Description |
 |---------------|-----|-------------|
-| **Production** | `https://api.salambot.ma` | Environnement de production |
+| **Production** | `https://api.salambot.app` | Environnement de production |
 | **Staging** | `https://api-staging.salambot.ma` | Tests pré-production |
 | **Development** | `https://api-dev.salambot.ma` | Développement et tests |
 
@@ -580,7 +580,7 @@ class SalamBotAPI {
 }
 
 // Utilisation
-const api = new SalamBotAPI('https://api.salambot.ma', 'your-jwt-token');
+const api = new SalamBotAPI('https://api.salambot.app', 'your-jwt-token');
 
 try {
   const result = await api.sendMessage('Salam, kifach ndir?', 'session_123');
@@ -635,7 +635,7 @@ class SalamBotAPI:
         return response.json()
 
 # Utilisation
-api = SalamBotAPI('https://api.salambot.ma', 'your-jwt-token')
+api = SalamBotAPI('https://api.salambot.app', 'your-jwt-token')
 
 try:
     result = api.send_message('Salam, kifach ndir?', 'session_123')
@@ -648,7 +648,7 @@ except requests.exceptions.RequestException as e:
 
 ```bash
 # Envoyer un message
-curl -X POST https://api.salambot.ma/api/v1/chat/message \
+curl -X POST https://api.salambot.app/api/v1/chat/message \
   -H "Authorization: Bearer your-jwt-token" \
   -H "Content-Type: application/json" \
   -d '{
@@ -661,7 +661,7 @@ curl -X POST https://api.salambot.ma/api/v1/chat/message \
   }'
 
 # Détecter la langue
-curl -X POST https://api.salambot.ma/api/v1/ai/detect-language \
+curl -X POST https://api.salambot.app/api/v1/ai/detect-language \
   -H "Authorization: Bearer your-jwt-token" \
   -H "Content-Type: application/json" \
   -d '{
@@ -708,9 +708,9 @@ go get github.com/salambot/sdk-go
 
 ### 🔗 Liens Utiles
 
-- **🌐 Playground API** : [https://api.salambot.ma/playground](https://api.salambot.ma/playground)
-- **📖 Documentation OpenAPI** : [https://api.salambot.ma/docs](https://api.salambot.ma/docs)
-- **🧪 Collection Postman** : [Télécharger](https://api.salambot.ma/postman)
+- **🌐 Playground API** : [https://api.salambot.app/playground](https://api.salambot.app/playground)
+- **📖 Documentation OpenAPI** : [https://api.salambot.app/docs](https://api.salambot.app/docs)
+- **🧪 Collection Postman** : [Télécharger](https://api.salambot.app/postman)
 - **💬 Support Développeur** : [Discord](https://discord.gg/salambot)
 - **📧 Contact API** : api-support@salambot.ma
 
@@ -718,14 +718,14 @@ go get github.com/salambot/sdk-go
 
 ```bash
 # Tester l'API localement
-curl -X GET https://api.salambot.ma/health
+curl -X GET https://api.salambot.app/health
 
 # Valider un token JWT
-curl -X POST https://api.salambot.ma/api/v1/auth/validate \
+curl -X POST https://api.salambot.app/api/v1/auth/validate \
   -H "Authorization: Bearer your-token"
 
 # Obtenir les métriques API
-curl -X GET https://api.salambot.ma/api/v1/system/metrics \
+curl -X GET https://api.salambot.app/api/v1/system/metrics \
   -H "Authorization: Bearer your-token"
 ```
 

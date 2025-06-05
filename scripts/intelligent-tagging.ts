@@ -424,7 +424,8 @@ class IntelligentTagger {
     lines.push('');
     lines.push('**🤖 Généré automatiquement par SalamBot Intelligent Tagging System v2.2**');
     lines.push('**📧 Contact:** info@salambot.ma');
-    lines.push('**🌐 Site web:** https://salambot.ma');
+    lines.push('**🌐 Site vitrine:** https://salambot.ma');
+lines.push('**🚀 Application:** https://salambot.app');
 
     return lines.join('\n');
   }

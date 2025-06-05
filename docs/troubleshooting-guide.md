@@ -49,7 +49,7 @@ terraform plan -detailed-exitcode
    ./scripts/rollback.sh production previous
    
    # Vérifier le retour à la normale
-   curl -f https://api.salambot.ma/health
+   curl -f https://api.salambot.app/health
    ```
 
 2. **Redéploiement d'Urgence**
@@ -159,7 +159,7 @@ gcloud monitoring metrics list --filter="metric.type:redis.googleapis.com"
 **Diagnostic :**
 ```bash
 # Tester la détection de langue
-curl -X POST https://api.salambot.ma/api/v1/ai/detect-language \
+curl -X POST https://api.salambot.app/api/v1/ai/detect-language \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"text": "Salam, kifach ndir?"}'
@@ -322,7 +322,7 @@ WHERE NOT blocked_locks.granted;
 gcloud logs read "resource.type=cloud_run_revision AND jsonPayload.component=\"websocket\"" --limit=50
 
 # Tester la connectivité WebSocket
-wscat -c wss://api.salambot.ma/ws?token=$TOKEN
+wscat -c wss://api.salambot.app/ws?token=$TOKEN
 
 # Vérifier Redis pour les rooms WebSocket
 redis-cli --scan --pattern "ws:room:*" | wc -l
@@ -654,7 +654,7 @@ case $COMPONENT in
         
         # Test de détection
         echo "  🧪 Test de détection Darija:"
-        DETECTION_RESULT=$(curl -s -X POST https://api.salambot.ma/api/v1/ai/detect-language \
+        DETECTION_RESULT=$(curl -s -X POST https://api.salambot.app/api/v1/ai/detect-language \
             -H "Authorization: Bearer $API_TOKEN" \
             -H "Content-Type: application/json" \
             -d '{"text": "Salam, kifach ndir?"}' | jq -r '.data.confidence // "error"')
