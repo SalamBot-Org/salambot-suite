@@ -125,8 +125,8 @@ async function checkSystemRequirements(): Promise<void> {
       name: 'Environment Variables',
       check: () => {
         // Vérification des variables d'environnement critiques en production
-        if (process.env.NODE_ENV === 'production') {
-          return !!(process.env.JWT_SECRET && process.env.JWT_SECRET.length >= 32);
+        if (process.env['NODE_ENV'] === 'production') {
+          return !!(process.env['JWT_SECRET'] && process.env['JWT_SECRET'].length >= 32);
         }
         return true;
       },
@@ -263,7 +263,7 @@ function displayStartupInfo(): void {
   const packageInfo = {
     name: 'SalamBot API Gateway Enterprise',
     version: '2.1.0',
-    environment: process.env.NODE_ENV || 'development',
+    environment: process.env['NODE_ENV'] || 'development',
     nodeVersion: process.version,
     platform: process.platform,
     arch: process.arch

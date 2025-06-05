@@ -82,7 +82,7 @@ export class GatewayLogger {
   /**
    * 📊 Log structuré avec métadonnées
    */
-  private log(level: LogLevel, message: string, metadata?: any) {
+  public log(level: LogLevel, message: string, metadata?: any) {
     if (this.shouldLog(level)) {
       const logEntry = {
         timestamp: new Date().toISOString(),

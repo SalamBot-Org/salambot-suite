@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "name": "@salambot/functions-run",
   "version": "2.1.0",
   "description": "SalamBot API Gateway Enterprise - Gestion centralisée des microservices IA",
@@ -22,7 +23,10 @@
     "gateway:start": "node dist/gateway/index.js",
     "gateway:build": "tsc -p tsconfig.gateway.json",
     "benchmark": "artillery run tests/load/benchmark.yml",
-    "stress-test": "artillery run tests/load/stress.yml"
+    "stress-test": "artillery run tests/load/stress.yml",
+    "install:deps": "pnpm install",
+    "install:dev": "pnpm install --dev",
+    "update:deps": "pnpm update"
   },
   "keywords": [
     "api-gateway",
@@ -40,7 +44,7 @@
   "private": true,
   "engines": {
     "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "pnpm": ">=8.0.0"
   },
   "dependencies": {
     "express": "^4.18.2",

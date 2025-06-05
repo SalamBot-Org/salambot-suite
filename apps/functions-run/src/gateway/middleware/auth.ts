@@ -144,7 +144,7 @@ async function authenticateJWT(req: Request, config?: GatewayConfig): Promise<Au
   const token = authHeader.substring(7); // Remove 'Bearer '
   
   try {
-    const jwtSecret = config?.security.jwtSecret || process.env.JWT_SECRET || 'default-secret';
+    const jwtSecret = config?.security.jwtSecret || process.env['JWT_SECRET'] || 'default-secret';
     const decoded = jwt.verify(token, jwtSecret) as any;
     
     // Validation du payload JWT
@@ -160,7 +160,7 @@ async function authenticateJWT(req: Request, config?: GatewayConfig): Promise<Au
       tenant: decoded.tenant
     };
   } catch (error) {
-    console.warn('⚠️ JWT invalide:', error.message);
+    console.warn('⚠️ JWT invalide:', error instanceof Error ? error.message : String(error));
     return null;
   }
 }
@@ -261,6 +261,7 @@ export const requireAdmin = (req: Request, res: Response, next: NextFunction) =>
     });
   }
   next();
+  return;
 };
 
 /**

@@ -33,7 +33,7 @@ import { GatewayConfigFactory } from '../config/gateway-config';
  * 🔖 Version: 2.1.0-enterprise
  */
 
-const router = Router();
+const router: Router = Router();
 const config = GatewayConfigFactory.create();
 
 /**
@@ -478,7 +478,7 @@ router.get('/stats', async (req: Request, res: Response) => {
 router.get('/config', async (req: Request, res: Response) => {
   try {
     // Vérification des permissions admin
-    if (!req.user?.roles?.includes('admin')) {
+    if (req.user?.role !== 'admin') {
       return res.status(403).json({
         success: false,
         error: {
@@ -497,13 +497,11 @@ router.get('/config', async (req: Request, res: Response) => {
     const publicConfig = {
       environment: config.environment,
       port: config.port,
-      cors: {
-        enabled: config.cors.enabled,
-        origins: config.cors.origins
-      },
       rateLimit: {
-        windowMs: config.rateLimit.windowMs,
-        max: config.rateLimit.max
+        global: config.rateLimit.global,
+        ai: config.rateLimit.ai,
+        api: config.rateLimit.api,
+        websocket: config.rateLimit.websocket
       },
       services: Object.keys(config.services),
       features: {
@@ -521,7 +519,7 @@ router.get('/config', async (req: Request, res: Response) => {
       }
     };
 
-    res.json({
+    return res.json({
       success: true,
       data: publicConfig,
       meta: {
@@ -536,7 +534,7 @@ router.get('/config', async (req: Request, res: Response) => {
       requestId: req.headers['x-request-id']
     });
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: {
         code: 'CONFIG_ERROR',

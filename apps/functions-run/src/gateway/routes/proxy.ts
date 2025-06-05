@@ -35,7 +35,7 @@ import { MetricsCollector } from '../middleware/metrics';
  * 🔖 Version: 2.1.0-enterprise
  */
 
-const router = Router();
+const router: Router = Router();
 const config = GatewayConfigFactory.create();
 const metrics = MetricsCollector.getInstance();
 
@@ -360,7 +360,7 @@ function createServiceProxy(serviceName: string, config: ProxyConfig): any {
       
       metrics.incrementCounter('proxy_errors_total', {
         service: serviceName,
-        error: err.code || 'unknown'
+        error: (err as any).code || 'unknown'
       });
       
       updateCircuitBreakerState(serviceName, true, 0);
@@ -413,7 +413,7 @@ function createServiceProxy(serviceName: string, config: ProxyConfig): any {
 router.use('/api/ai',
   circuitBreakerMiddleware('genkitFlows'),
   proxyMonitoringMiddleware('genkitFlows'),
-  createServiceProxy('genkitFlows', proxyConfigs.genkitFlows)
+  createServiceProxy('genkitFlows', proxyConfigs['genkitFlows'])
 );
 
 /**
@@ -427,7 +427,7 @@ router.use('/api/ai',
 router.use('/api/rest',
   circuitBreakerMiddleware('restApi'),
   proxyMonitoringMiddleware('restApi'),
-  createServiceProxy('restApi', proxyConfigs.restApi)
+  createServiceProxy('restApi', proxyConfigs['restApi'])
 );
 
 /**
@@ -441,7 +441,7 @@ router.use('/api/rest',
 router.use('/api/ws',
   circuitBreakerMiddleware('websocket'),
   proxyMonitoringMiddleware('websocket'),
-  createServiceProxy('websocket', proxyConfigs.websocket)
+  createServiceProxy('websocket', proxyConfigs['websocket'])
 );
 
 /**
@@ -554,7 +554,7 @@ router.post('/proxy/circuit-breaker/reset', async (req: Request, res: Response) 
     }
     
     // Vérification des permissions admin
-    if (!req.user?.roles?.includes('admin')) {
+    if (req.user?.role !== 'admin') {
       return res.status(403).json({
         success: false,
         error: {
@@ -582,7 +582,7 @@ router.post('/proxy/circuit-breaker/reset', async (req: Request, res: Response) 
       service: serviceName
     });
     
-    res.json({
+    return res.json({
       success: true,
       message: `Circuit breaker ${serviceName} réinitialisé`,
       data: {
@@ -597,7 +597,7 @@ router.post('/proxy/circuit-breaker/reset', async (req: Request, res: Response) 
       requestId: req.headers['x-request-id']
     });
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: {
         code: 'CIRCUIT_BREAKER_RESET_ERROR',

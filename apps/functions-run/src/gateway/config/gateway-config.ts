@@ -104,7 +104,7 @@ export class GatewayConfigFactory {
    * 🔧 Crée la configuration pour l'environnement spécifié
    */
   static create(environment?: string): GatewayConfig {
-    const env = environment || process.env.NODE_ENV || 'development';
+    const env = environment || process.env['NODE_ENV'] || 'development';
     
     switch (env) {
       case 'production':
@@ -121,7 +121,7 @@ export class GatewayConfigFactory {
    */
   private static createProductionConfig(): GatewayConfig {
     return {
-      port: parseInt(process.env.PORT || '3000'),
+      port: parseInt(process.env['PORT'] || '3000'),
       environment: 'production',
       isDevelopment: false,
       allowedDomains: [
@@ -132,11 +132,11 @@ export class GatewayConfigFactory {
         'https://grafana.salambot.app'
       ],
       services: {
-        genkitFlows: process.env.GENKIT_FLOWS_URL || 'http://localhost:3001',
-        restApi: process.env.REST_API_URL || 'http://localhost:3002',
-        websocket: process.env.WEBSOCKET_URL || 'http://localhost:3003',
-        metrics: process.env.METRICS_URL || 'http://localhost:9090',
-        logging: process.env.LOGGING_URL || 'http://localhost:3100'
+        genkitFlows: process.env['GENKIT_FLOWS_URL'] || 'http://localhost:3001',
+        restApi: process.env['REST_API_URL'] || 'http://localhost:3002',
+        websocket: process.env['WEBSOCKET_URL'] || 'http://localhost:3003',
+        metrics: process.env['METRICS_URL'] || 'http://localhost:9090',
+        logging: process.env['LOGGING_URL'] || 'http://localhost:3100'
       },
       rateLimit: {
         global: 1000, // 1000 req/15min par IP
@@ -145,9 +145,9 @@ export class GatewayConfigFactory {
         websocket: 50 // 50 connexions simultanées
       },
       security: {
-        jwtSecret: process.env.JWT_SECRET || 'salambot-super-secret-key-production',
+        jwtSecret: process.env['JWT_SECRET'] || 'salambot-super-secret-key-production',
         jwtExpiration: 3600, // 1 heure
-        apiKeys: (process.env.API_KEYS || '').split(',').filter(Boolean),
+        apiKeys: (process.env['API_KEYS'] || '').split(',').filter(Boolean),
         authEnabled: true,
         httpsOnly: true
       },
@@ -165,7 +165,7 @@ export class GatewayConfigFactory {
    */
   private static createStagingConfig(): GatewayConfig {
     return {
-      port: parseInt(process.env.PORT || '3000'),
+      port: parseInt(process.env['PORT'] || '3000'),
       environment: 'staging',
       isDevelopment: false,
       allowedDomains: [
@@ -176,10 +176,10 @@ export class GatewayConfigFactory {
         'https://grafana-staging.salambot.app'
       ],
       services: {
-        genkitFlows: process.env.GENKIT_FLOWS_URL || 'http://localhost:3001',
-        restApi: process.env.REST_API_URL || 'http://localhost:3002',
-        websocket: process.env.WEBSOCKET_URL || 'http://localhost:3003',
-        metrics: process.env.METRICS_URL || 'http://localhost:9090'
+        genkitFlows: process.env['GENKIT_FLOWS_URL'] || 'http://localhost:3001',
+        restApi: process.env['REST_API_URL'] || 'http://localhost:3002',
+        websocket: process.env['WEBSOCKET_URL'] || 'http://localhost:3003',
+        metrics: process.env['METRICS_URL'] || 'http://localhost:9090'
       },
       rateLimit: {
         global: 2000, // Plus permissif en staging
@@ -188,9 +188,9 @@ export class GatewayConfigFactory {
         websocket: 100
       },
       security: {
-        jwtSecret: process.env.JWT_SECRET || 'salambot-staging-secret-key',
+        jwtSecret: process.env['JWT_SECRET'] || 'salambot-staging-secret-key',
         jwtExpiration: 7200, // 2 heures
-        apiKeys: (process.env.API_KEYS || '').split(',').filter(Boolean),
+        apiKeys: (process.env['API_KEYS'] || '').split(',').filter(Boolean),
         authEnabled: true,
         httpsOnly: true
       },
@@ -208,7 +208,7 @@ export class GatewayConfigFactory {
    */
   private static createDevelopmentConfig(): GatewayConfig {
     return {
-      port: parseInt(process.env.PORT || '3000'),
+      port: parseInt(process.env['PORT'] || '3000'),
       environment: 'development',
       isDevelopment: true,
       allowedDomains: [
@@ -220,9 +220,9 @@ export class GatewayConfigFactory {
         'http://127.0.0.1:4201'
       ],
       services: {
-        genkitFlows: process.env.GENKIT_FLOWS_URL || 'http://localhost:3001',
-        restApi: process.env.REST_API_URL || 'http://localhost:3002',
-        websocket: process.env.WEBSOCKET_URL || 'http://localhost:3003'
+        genkitFlows: process.env['GENKIT_FLOWS_URL'] || 'http://localhost:3001',
+        restApi: process.env['REST_API_URL'] || 'http://localhost:3002',
+        websocket: process.env['WEBSOCKET_URL'] || 'http://localhost:3003'
       },
       rateLimit: {
         global: 10000, // Très permissif en dev
@@ -231,7 +231,7 @@ export class GatewayConfigFactory {
         websocket: 500
       },
       security: {
-        jwtSecret: process.env.JWT_SECRET || 'salambot-dev-secret-key-not-for-production',
+        jwtSecret: process.env['JWT_SECRET'] || 'salambot-dev-secret-key-not-for-production',
         jwtExpiration: 86400, // 24 heures
         apiKeys: ['dev-api-key-1', 'dev-api-key-2'],
         authEnabled: false, // Désactivé en dev pour faciliter les tests

@@ -11,7 +11,6 @@
 
 import { Router, Request, Response } from 'express';
 import { performance } from 'perf_hooks';
-import { metrics } from '../middleware/metrics';
 
 /**
  * 🌟 ROUTES DE SANTÉ ENTERPRISE 🌟
@@ -33,7 +32,7 @@ import { metrics } from '../middleware/metrics';
  * 🔖 Version: 2.1.0-enterprise
  */
 
-const router = Router();
+const router: Router = Router();
 
 /**
  * 🏥 Interface pour le statut de santé
@@ -79,7 +78,7 @@ export interface HealthCheck {
   status: 'pass' | 'fail' | 'warn';
   duration: number;
   message?: string;
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 /**
@@ -102,7 +101,7 @@ router.get('/', async (req: Request, res: Response) => {
       timestamp: new Date().toISOString(),
       uptime: Math.floor(process.uptime()),
       version: '2.1.0',
-      environment: process.env.NODE_ENV || 'development',
+      environment: process.env['NODE_ENV'] || 'development',
       responseTime: `${duration}ms`,
       message: getHealthMessage(basicHealth.status)
     });
@@ -128,7 +127,6 @@ router.get('/detailed', async (req: Request, res: Response) => {
     const duration = Math.round(performance.now() - startTime);
     
     // Ajout des métriques de performance
-    const currentMetrics = metrics.getMetrics();
     
     const response: HealthStatus = {
       ...detailedHealth,
@@ -271,15 +269,22 @@ async function performDetailedHealthCheck(): Promise<HealthStatus> {
     overallStatus = 'healthy';
   }
   
+  const duration = Math.round(performance.now() - startTime);
+  
   return {
     status: overallStatus,
     timestamp: new Date().toISOString(),
     uptime: Math.floor(process.uptime()),
     version: '2.1.0',
-    environment: process.env.NODE_ENV || 'development',
+    environment: process.env['NODE_ENV'] || 'development',
     services: serviceChecks,
     system: systemHealth,
-    checks: allChecks
+    checks: [...allChecks, {
+      name: 'detailed_health_check_performance',
+      status: duration < 2000 ? 'pass' as const : duration < 5000 ? 'warn' as const : 'fail' as const,
+      duration,
+      message: `Health check completed in ${duration}ms`
+    }]
   };
 }
 
@@ -373,7 +378,10 @@ function checkCpuUsage(): HealthCheck {
     status: 'pass', // Difficile de déterminer sans baseline
     duration: 0,
     message: `CPU usage: ${totalUsage.toFixed(2)}s`,
-    details: cpuUsage
+    details: {
+      user: cpuUsage.user,
+      system: cpuUsage.system
+    } as Record<string, unknown>
   };
 }
 
@@ -387,15 +395,15 @@ async function checkExternalServices(): Promise<ServiceHealth[]> {
   const servicesToCheck = [
     {
       name: 'genkit_flows',
-      url: process.env.GENKIT_FLOWS_URL || 'http://localhost:3001/health'
+      url: process.env['GENKIT_FLOWS_URL'] || 'http://localhost:3001/health'
     },
     {
       name: 'rest_api',
-      url: process.env.REST_API_URL || 'http://localhost:3002/health'
+      url: process.env['REST_API_URL'] || 'http://localhost:3002/health'
     },
     {
       name: 'websocket',
-      url: process.env.WEBSOCKET_URL || 'http://localhost:3003/health'
+      url: process.env['WEBSOCKET_URL'] || 'http://localhost:3003/health'
     }
   ];
   
@@ -475,5 +483,5 @@ function getHealthMessage(status: string): string {
   }
 }
 
-export const healthCheck = router;
+export const healthCheck: Router = router;
 export default router;

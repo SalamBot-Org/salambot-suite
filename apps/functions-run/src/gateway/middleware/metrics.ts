@@ -266,6 +266,29 @@ export class MetricsCollector {
   }
 
   /**
+   * 📊 Incrémenter un compteur avec labels
+   */
+  incrementCounter(name: string, labels: Record<string, string> = {}) {
+    // Pour l'instant, on log les métriques personnalisées
+    // Dans une implémentation complète, on utiliserait Prometheus client
+    console.debug(`📊 Counter ${name}`, labels);
+  }
+
+  /**
+   * 📈 Enregistrer une valeur d'histogramme
+   */
+  recordHistogram(name: string, value: number, labels: Record<string, string> = {}) {
+    console.debug(`📈 Histogram ${name}: ${value}ms`, labels);
+  }
+
+  /**
+   * 📏 Enregistrer une valeur de gauge
+   */
+  recordGauge(name: string, value: number, labels: Record<string, string> = {}) {
+    console.debug(`📏 Gauge ${name}: ${value}`, labels);
+  }
+
+  /**
    * 🔄 Reset des métriques
    */
   reset() {
@@ -332,7 +355,7 @@ export const metricsEndpoint = (req: Request, res: Response) => {
   const collector = MetricsCollector.getInstance();
   
   // Format demandé
-  const format = req.query.format as string || 'prometheus';
+  const format = req.query['format'] as string || 'prometheus';
   
   switch (format) {
     case 'json':
