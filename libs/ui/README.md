@@ -1,4 +1,4 @@
-# 🎨 SalamBot UI - Design System
+# 🎨 SalamBot UI - Design System v2.2.0
 
 **Système de design unifié et composants React pour l'écosystème SalamBot**
 

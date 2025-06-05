@@ -85,7 +85,7 @@ interface GatewayInfo {
  * ```json
  * {
  *   "name": "SalamBot API Gateway Enterprise",
- *   "version": "2.1.0",
+ *   "version": "2.2.0",
  *   "environment": "production",
  *   "uptime": 3600,
  *   "services": {...},

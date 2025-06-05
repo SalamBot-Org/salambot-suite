@@ -1,4 +1,6 @@
-# Widget Web SalamBot
+# 🌐 SalamBot Widget Web v2.2.0
+
+**Interface de chat intelligente et responsive pour intégration sur sites web**
 
 Ce module contient le widget web de SalamBot, une interface de chat légère et responsive qui peut être intégrée dans n'importe quel site web.
 

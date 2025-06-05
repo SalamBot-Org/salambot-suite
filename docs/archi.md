@@ -3,7 +3,7 @@
 **📋 Document:** Architecture Technique Détaillée  
 **🎯 Audience:** Développeurs, Architectes, DevOps  
 **📅 Dernière mise à jour:** 27 janvier 2025  
-**🔄 Version:** 2.1.0
+**🔄 Version:** 2.2.0
 
 ---
 

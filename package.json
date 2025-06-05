@@ -31,7 +31,12 @@
     "sync:todo-issues:preview": "npm run sync:todo-issues:dry-run",
     "sync-todo-issues": "node dist/sync-todo-issues.js",
     "sync-todo-issues:dry-run": "node dist/sync-todo-issues.js --dry-run",
-    "build:sync-script": "npx tsc scripts/sync-todo-issues.ts --outDir dist --target es2020 --module commonjs --esModuleInterop true --skipLibCheck true"
+    "build:sync-script": "npx tsc scripts/sync-todo-issues.ts --outDir dist --target es2020 --module commonjs --esModuleInterop true --skipLibCheck true",
+    "version:sync": "node -e \"const pkg = require('./package.json'); const fs = require('fs'); ['apps/functions-run', 'apps/agent-desk', 'apps/widget-web'].forEach(app => { try { const appPkg = require('./' + app + '/package.json'); appPkg.version = pkg.version; fs.writeFileSync(app + '/package.json', JSON.stringify(appPkg, null, 2) + '\\n'); console.log('✅ Synced version for ' + app); } catch(e) { console.log('⚠️ No package.json in ' + app); } });\"",
+    "deps:audit": "pnpm audit --audit-level moderate",
+    "deps:update": "pnpm update --latest",
+    "apps:build-all": "nx run-many --target=build --projects=functions-run,agent-desk,widget-web --parallel",
+    "apps:test-all": "nx run-many --target=test --projects=functions-run,agent-desk,widget-web --parallel"
   },
   "private": true,
   "devDependencies": {
