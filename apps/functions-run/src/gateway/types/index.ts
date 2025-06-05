@@ -518,13 +518,13 @@ export interface ExtendedRequest extends Request {
   startTime?: number;
   
   /** 📊 Métadonnées de la requête */
-  metadata?: { [key: string]: any };
+  metadata?: Record<string, string | number | boolean | null>;
 }
 
 /**
  * 📤 Réponse API standardisée
  */
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   /** ✅ Succès */
   success: boolean;
   
@@ -566,7 +566,7 @@ export interface ApiError {
   message: string;
   
   /** 📋 Détails */
-  details?: any;
+  details?: Record<string, unknown>;
   
   /** 📍 Chemin de l'erreur */
   path?: string;
@@ -616,7 +616,7 @@ export interface HealthCheck {
   message?: string;
   
   /** 📊 Détails */
-  details?: any;
+  details?: Record<string, unknown>;
   
   /** ⏰ Dernière vérification */
   lastCheck: string;
@@ -688,7 +688,7 @@ export interface ValidationRule {
     pattern?: string;
     
     /** 📋 Valeurs autorisées */
-    enum?: any[];
+    enum?: unknown[];
   };
   
   /** 📝 Message d'erreur personnalisé */
@@ -703,7 +703,7 @@ export interface ValidationError {
   field: string;
   
   /** 💰 Valeur fournie */
-  value: any;
+  value: unknown;
   
   /** 📝 Message d'erreur */
   message: string;
@@ -733,10 +733,10 @@ export interface GatewayEvent {
   timestamp: number;
   
   /** 📊 Données de l'événement */
-  data: any;
+  data: Record<string, unknown>;
   
   /** 📝 Métadonnées */
-  metadata?: { [key: string]: any };
+  metadata?: Record<string, string | number | boolean | null>;
 }
 
 /**
@@ -748,8 +748,8 @@ export interface RequestEvent extends GatewayEvent {
     method: string;
     path: string;
     headers: { [key: string]: string };
-    query: { [key: string]: any };
-    body?: any;
+    query: { [key: string]: string | string[] };
+    body?: Record<string, unknown>;
     ip: string;
     userAgent: string;
     requestId: string;
@@ -808,14 +808,14 @@ export type DeepRequired<T> = {
  * 🔧 Clés optionnelles
  */
 export type OptionalKeys<T> = {
-  [K in keyof T]-?: {} extends Pick<T, K> ? K : never;
+  [K in keyof T]-?: Record<string, never> extends Pick<T, K> ? K : never;
 }[keyof T];
 
 /**
  * 🔧 Clés requises
  */
 export type RequiredKeys<T> = {
-  [K in keyof T]-?: {} extends Pick<T, K> ? never : K;
+  [K in keyof T]-?: Record<string, never> extends Pick<T, K> ? never : K;
 }[keyof T];
 
 /**
@@ -832,13 +832,4 @@ export type WithRequired<T, K extends keyof T> = T & Required<Pick<T, K>>;
 // 📤 EXPORTS
 // ═══════════════════════════════════════════════════════════════
 
-export default {
-  GatewayConfig,
-  AuthenticatedUser,
-  ApiResponse,
-  HealthStatus,
-  Metric,
-  ProxyConfig,
-  ValidationRule,
-  GatewayEvent
-};
+// Types exportés individuellement - pas d'export par défaut nécessaire
