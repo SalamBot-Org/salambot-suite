@@ -84,7 +84,7 @@ const serviceHealth = new Map<string, {
  */
 const proxyConfigs: { [key: string]: ProxyConfig } = {
   genkitFlows: {
-    target: config.services.genkitFlows,
+    target: config.services.genkitFlows || 'http://localhost:3000',
     pathRewrite: { '^/api/ai': '' },
     changeOrigin: true,
     timeout: 30000,
@@ -101,7 +101,7 @@ const proxyConfigs: { [key: string]: ProxyConfig } = {
     }
   },
   restApi: {
-    target: config.services.restApi,
+    target: config.services.restApi || 'http://localhost:3001',
     pathRewrite: { '^/api/rest': '' },
     changeOrigin: true,
     timeout: 15000,
@@ -118,7 +118,7 @@ const proxyConfigs: { [key: string]: ProxyConfig } = {
     }
   },
   websocket: {
-    target: config.services.websocket,
+    target: config.services.websocket || 'http://localhost:3002',
     pathRewrite: { '^/api/ws': '' },
     changeOrigin: true,
     timeout: 5000,

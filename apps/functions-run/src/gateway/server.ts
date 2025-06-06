@@ -9,17 +9,17 @@
  * ╰─────────────────────────────────────────────────────────────╯
  */
 
-import express, { Application, Request, Response } from 'express';
+import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { authMiddleware } from './middleware/auth';
-import { loggingMiddleware } from './middleware/logging';
+import { createLoggingMiddleware } from './middleware/structured-logging';
 import { errorHandler } from './middleware/error-handler';
-import { healthCheck } from './routes/health';
-import { metricsCollector } from './middleware/metrics';
+import { createHealthCheckMiddleware } from './middleware/health-check';
+import { metricsCollector, metricsEndpoint } from './middleware/metrics';
 import { validateRequest } from './middleware/validation';
 import { GatewayConfig } from './config/gateway-config';
 
@@ -44,13 +44,14 @@ import { GatewayConfig } from './config/gateway-config';
  */
 
 export class SalamBotAPIGateway {
-  private app: Application;
+  private app: Express;
   private config: GatewayConfig;
   private server?: any;
 
   constructor(config: GatewayConfig) {
     this.app = express();
     this.config = config;
+    this.setupHttpsEnforcement(); // HTTPS en premier pour la sécurité
     this.setupMiddleware();
     this.setupRoutes();
     this.setupProxies();
@@ -113,7 +114,7 @@ export class SalamBotAPIGateway {
     this.app.use(globalRateLimit);
 
     // Middlewares personnalisés
-    this.app.use(loggingMiddleware);
+    this.app.use(createLoggingMiddleware(this.config));
     this.app.use(metricsCollector);
   }
 
@@ -121,9 +122,20 @@ export class SalamBotAPIGateway {
    * 🛣️ Configuration des routes principales
    */
   private setupRoutes(): void {
-    // Health check et monitoring
-    this.app.use('/health', healthCheck);
-    this.app.use('/metrics', this.createMetricsEndpoint());
+    // Health check avancé avec vérification des services
+    this.app.use('/health', createHealthCheckMiddleware(this.config));
+    
+    // Métriques dynamiques (respecte la configuration prometheusEnabled)
+    if (this.config.monitoring.prometheusEnabled) {
+      this.app.use('/metrics', metricsEndpoint);
+    } else {
+      this.app.use('/metrics', (req: Request, res: Response) => {
+        res.status(404).json({ 
+          error: 'Métriques désactivées', 
+          message: 'Les métriques Prometheus sont désactivées dans la configuration' 
+        });
+      });
+    }
     
     // Route d'information sur la gateway
     this.app.get('/gateway/info', (req: Request, res: Response) => {
@@ -144,6 +156,11 @@ export class SalamBotAPIGateway {
           api: 'api.salambot.app',
           docs: 'docs.salambot.app',
           monitoring: 'grafana.salambot.app'
+        },
+        monitoring: {
+          prometheusEnabled: this.config.monitoring.prometheusEnabled,
+          logLevel: this.config.monitoring.logLevel,
+          tracingEnabled: this.config.monitoring.tracingEnabled
         }
       });
     });
@@ -163,68 +180,104 @@ export class SalamBotAPIGateway {
       }
     });
 
-    // Proxy vers les flows Genkit (IA)
-    this.app.use('/api/ai', 
-      aiRateLimit,
-      authMiddleware,
-      validateRequest,
-      createProxyMiddleware({
-        target: this.config.services.genkitFlows,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api/ai': '/'
-        },
-        onProxyReq: (proxyReq, req, _res) => { // eslint-disable-line @typescript-eslint/no-unused-vars
-          // Ajouter des headers de traçabilité
-          proxyReq.setHeader('X-Gateway-Request-ID', req.headers['x-request-id'] || 'unknown');
-          proxyReq.setHeader('X-Gateway-Timestamp', new Date().toISOString());
-        },
-        onError: (err, req, res) => {
-          console.error('Proxy error to Genkit flows:', err);
-          res.status(502).json({
-            error: 'Service IA temporairement indisponible',
-            code: 'AI_SERVICE_UNAVAILABLE'
-          });
-        }
-      })
-    );
+    // Vérification et configuration du proxy IA
+    if (this.isValidUrl(this.config.services.genkitFlows)) {
+      this.app.use('/api/ai', 
+        aiRateLimit,
+        authMiddleware,
+        validateRequest,
+        createProxyMiddleware({
+          target: this.config.services.genkitFlows,
+          changeOrigin: true,
+          pathRewrite: {
+            '^/api/ai': '/'
+          },
+          onProxyReq: (proxyReq, req, _res) => { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Ajouter des headers de traçabilité
+            proxyReq.setHeader('X-Gateway-Request-ID', req.headers['x-request-id'] || 'unknown');
+            proxyReq.setHeader('X-Gateway-Timestamp', new Date().toISOString());
+          },
+          onError: (err, req, res) => {
+            console.error(`❌ Erreur proxy IA: ${err.message}`);
+            if (!res.headersSent) {
+              res.status(502).json({
+                error: 'Service IA temporairement indisponible',
+                message: 'Veuillez réessayer dans quelques instants',
+                timestamp: new Date().toISOString()
+              });
+            }
+          }
+        })
+      );
+    } else {
+      this.app.use('/api/ai', (req: Request, res: Response) => {
+        res.status(503).json({
+          error: 'Service IA non configuré',
+          message: 'URL du service Genkit Flows invalide ou manquante'
+        });
+      });
+    }
 
     // Proxy vers l'API REST classique
-    this.app.use('/api/v1',
-      authMiddleware,
-      validateRequest,
-      createProxyMiddleware({
-        target: this.config.services.restApi,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api/v1': '/api'
-        },
-        onError: (err, req, res) => {
-          console.error('Proxy error to REST API:', err);
-          res.status(502).json({
-            error: 'Service API temporairement indisponible',
-            code: 'REST_API_UNAVAILABLE'
-          });
-        }
-      })
-    );
+    if (this.isValidUrl(this.config.services.restApi)) {
+      this.app.use('/api/v1',
+        authMiddleware,
+        validateRequest,
+        createProxyMiddleware({
+          target: this.config.services.restApi,
+          changeOrigin: true,
+          pathRewrite: {
+            '^/api/v1': '/api'
+          },
+          onError: (err, req, res) => {
+            console.error(`❌ Erreur proxy REST API: ${err.message}`);
+            if (!res.headersSent) {
+              res.status(502).json({
+                error: 'Service API temporairement indisponible',
+                message: 'Veuillez réessayer dans quelques instants',
+                timestamp: new Date().toISOString()
+              });
+            }
+          }
+        })
+      );
+    } else {
+      this.app.use('/api/v1', (req: Request, res: Response) => {
+        res.status(503).json({
+          error: 'Service API non configuré',
+          message: 'URL du service REST API invalide ou manquante'
+        });
+      });
+    }
 
     // Proxy vers les WebSockets (chat temps réel)
-    this.app.use('/ws',
-      authMiddleware,
-      createProxyMiddleware({
-        target: this.config.services.websocket,
-        ws: true,
-        changeOrigin: true,
-        onError: (err, req, res) => {
-          console.error('WebSocket proxy error:', err);
-          res.status(502).json({
-            error: 'Service WebSocket temporairement indisponible',
-            code: 'WEBSOCKET_UNAVAILABLE'
-          });
-        }
-      })
-    );
+    if (this.isValidUrl(this.config.services.websocket)) {
+      this.app.use('/ws',
+        authMiddleware,
+        createProxyMiddleware({
+          target: this.config.services.websocket,
+          ws: true,
+          changeOrigin: true,
+          onError: (err, req, res) => {
+            console.error(`❌ Erreur proxy WebSocket: ${err.message}`);
+            if (!res.headersSent) {
+              res.status(502).json({
+                error: 'Service WebSocket temporairement indisponible',
+                message: 'Veuillez réessayer dans quelques instants',
+                timestamp: new Date().toISOString()
+              });
+            }
+          }
+        })
+      );
+    } else {
+      this.app.use('/ws', (req: Request, res: Response) => {
+        res.status(503).json({
+          error: 'Service WebSocket non configuré',
+          message: 'URL du service WebSocket invalide ou manquante'
+        });
+      });
+    }
   }
 
   /**
@@ -247,28 +300,42 @@ export class SalamBotAPIGateway {
   }
 
   /**
-   * 📊 Endpoint de métriques Prometheus
+   * 🔍 Validation des URLs de services
    */
-  private createMetricsEndpoint() {
-    return (req: Request, res: Response) => {
-      // TODO: Intégrer avec Prometheus metrics
-      res.set('Content-Type', 'text/plain');
-      res.send(`
-# HELP salambot_gateway_requests_total Total number of requests
-# TYPE salambot_gateway_requests_total counter
-salambot_gateway_requests_total{method="GET",status="200"} 1000
-salambot_gateway_requests_total{method="POST",status="200"} 500
+  private isValidUrl(url?: string): boolean {
+    if (!url) return false;
+    try {
+      const parsedUrl = new URL(url);
+      return ['http:', 'https:'].includes(parsedUrl.protocol);
+    } catch {
+      return false;
+    }
+  }
 
-# HELP salambot_gateway_request_duration_seconds Request duration in seconds
-# TYPE salambot_gateway_request_duration_seconds histogram
-salambot_gateway_request_duration_seconds_bucket{le="0.1"} 800
-salambot_gateway_request_duration_seconds_bucket{le="0.5"} 1400
-salambot_gateway_request_duration_seconds_bucket{le="1.0"} 1500
-salambot_gateway_request_duration_seconds_bucket{le="+Inf"} 1500
-salambot_gateway_request_duration_seconds_sum 150.5
-salambot_gateway_request_duration_seconds_count 1500
-      `);
-    };
+  /**
+   * 🔒 Middleware HTTPS enforcement
+   */
+  private setupHttpsEnforcement(): void {
+    if (this.config.security.httpsOnly) {
+      this.app.use((req: Request, res: Response, next: NextFunction) => {
+        // Vérifier si la requête est en HTTPS
+        const isHttps = req.secure || 
+                       req.headers['x-forwarded-proto'] === 'https' ||
+                       req.headers['x-forwarded-ssl'] === 'on';
+        
+        if (!isHttps && this.config.environment === 'production') {
+          const httpsUrl = `https://${req.get('host')}${req.originalUrl}`;
+          return res.redirect(301, httpsUrl);
+        }
+        
+        // Ajouter des headers de sécurité HTTPS
+        if (isHttps) {
+          res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+        }
+        
+        next();
+      });
+    }
   }
 
   /**
@@ -316,7 +383,7 @@ salambot_gateway_request_duration_seconds_count 1500
   /**
    * 📱 Accès à l'instance Express pour les tests
    */
-  public getApp(): Application {
+  public getApp(): Express {
     return this.app;
   }
 }

@@ -114,20 +114,20 @@ router.get('/', async (req: Request, res: Response) => {
       services: {
         genkitFlows: {
           name: 'Genkit AI Flows',
-          url: config.services.genkitFlows,
-          status: 'active',
+          url: config.services.genkitFlows || 'Not configured',
+          status: config.services.genkitFlows ? 'active' : 'inactive',
           description: 'Flows d\'IA conversationnelle et détection de langue'
         },
         restApi: {
           name: 'REST API',
-          url: config.services.restApi,
-          status: 'active',
+          url: config.services.restApi || 'Not configured',
+          status: config.services.restApi ? 'active' : 'inactive',
           description: 'API REST pour les opérations CRUD'
         },
         websocket: {
           name: 'WebSocket Server',
-          url: config.services.websocket,
-          status: 'active',
+          url: config.services.websocket || 'Not configured',
+          status: config.services.websocket ? 'active' : 'inactive',
           description: 'Communication temps réel via WebSockets'
         }
       },
