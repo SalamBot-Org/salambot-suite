@@ -10,12 +10,10 @@
     "noFallthroughCasesInSwitch": true
   },
   "files": [],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.js",
-    "src/**/*.jsx",
-    "jest.config.ts"
+  "include": [],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts"
   ],
   "references": [
     {

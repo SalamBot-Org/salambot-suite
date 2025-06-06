@@ -83,6 +83,9 @@ export class HealthChecker {
     // Métriques système
     const systemMetrics = this.getSystemMetrics();
     
+    // Calcul du temps de réponse
+    const responseTime = Date.now() - startTime; // eslint-disable-line @typescript-eslint/no-unused-vars
+    
     // Détermination du statut global
     const globalStatus = this.determineGlobalStatus(services);
     
@@ -214,12 +217,14 @@ export class HealthChecker {
         this.serviceHistory.set(service.name, []);
       }
       
-      const history = this.serviceHistory.get(service.name)!;
-      history.push(service);
-      
-      // Garder seulement les 100 dernières vérifications
-      if (history.length > 100) {
-        history.shift();
+      const history = this.serviceHistory.get(service.name);
+      if (history) {
+        history.push(service);
+        
+        // Garder seulement les 100 dernières vérifications
+        if (history.length > 100) {
+          history.shift();
+        }
       }
     });
   }

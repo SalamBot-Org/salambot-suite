@@ -142,7 +142,7 @@ describe('🔗 API Gateway Integration Tests', () => {
 
   describe('🚦 Rate Limiting Integration', () => {
     it('should apply rate limiting correctly', async () => {
-      const requests = [];
+      const requests: Promise<request.Response>[] = [];
       
       // Faire plusieurs requêtes rapidement
       for (let i = 0; i < 20; i++) {

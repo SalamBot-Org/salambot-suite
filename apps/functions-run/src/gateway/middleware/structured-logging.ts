@@ -49,7 +49,7 @@ export interface LogEntry {
     message: string;
     stack?: string;
   };
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
@@ -130,7 +130,7 @@ export class StructuredLogger {
   /**
    * 🐛 Log debug
    */
-  debug(message: string, metadata?: Record<string, any>): void {
+  debug(message: string, metadata?: Record<string, unknown>): void {
     this.log({
       timestamp: new Date().toISOString(),
       level: 'debug',
@@ -142,7 +142,7 @@ export class StructuredLogger {
   /**
    * ℹ️ Log info
    */
-  info(message: string, metadata?: Record<string, any>): void {
+  info(message: string, metadata?: Record<string, unknown>): void {
     this.log({
       timestamp: new Date().toISOString(),
       level: 'info',
@@ -154,7 +154,7 @@ export class StructuredLogger {
   /**
    * ⚠️ Log warning
    */
-  warn(message: string, metadata?: Record<string, any>): void {
+  warn(message: string, metadata?: Record<string, unknown>): void {
     this.log({
       timestamp: new Date().toISOString(),
       level: 'warn',
@@ -166,7 +166,7 @@ export class StructuredLogger {
   /**
    * 🚨 Log error
    */
-  error(message: string, error?: Error, metadata?: Record<string, any>): void {
+  error(message: string, error?: Error, metadata?: Record<string, unknown>): void {
     this.log({
       timestamp: new Date().toISOString(),
       level: 'error',
@@ -189,7 +189,7 @@ export class StructuredLogger {
       level: this.getLogLevelForStatus(res.statusCode),
       message: `${req.method} ${req.originalUrl} - ${res.statusCode}`,
       requestId: req.headers['x-request-id'] as string,
-      userId: (req as any).user?.id,
+      userId: (req as { user?: { id?: string } }).user?.id,
       method: req.method,
       url: req.originalUrl,
       statusCode: res.statusCode,

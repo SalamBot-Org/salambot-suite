@@ -9,7 +9,7 @@
  * ╰─────────────────────────────────────────────────────────────╯
  */
 
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response, NextFunction, RequestHandler } from 'express';
 import { createProxyMiddleware, Options } from 'http-proxy-middleware';
 import { logger } from '../middleware/logging';
 import { GatewayConfigFactory } from '../config/gateway-config';
@@ -229,11 +229,11 @@ function proxyMonitoringMiddleware(serviceName: string) {
 /**
  * 🔄 Mise à jour de l'état du circuit breaker
  */
-function updateCircuitBreakerState(serviceName: string, isError: boolean, responseTime: number) {
+function updateCircuitBreakerState(serviceName: string, isError: boolean, _responseTime: number) { // eslint-disable-line @typescript-eslint/no-unused-vars
   const config = proxyConfigs[serviceName];
   if (!config.circuitBreaker.enabled) return;
   
-  let state = circuitBreakerState.get(serviceName) || {
+  const state = circuitBreakerState.get(serviceName) || {
     isOpen: false,
     failures: 0,
     lastFailure: 0,
@@ -342,7 +342,7 @@ async function performHealthCheck(serviceName: string): Promise<void> {
 /**
  * 🎯 Création des proxies pour chaque service
  */
-function createServiceProxy(serviceName: string, config: ProxyConfig): any {
+function createServiceProxy(serviceName: string, config: ProxyConfig): RequestHandler {
   const proxyOptions: Options = {
     target: config.target,
     changeOrigin: config.changeOrigin,
@@ -360,7 +360,7 @@ function createServiceProxy(serviceName: string, config: ProxyConfig): any {
       
       metrics.incrementCounter('proxy_errors_total', {
         service: serviceName,
-        error: (err as any).code || 'unknown'
+        error: (err as Error & { code?: string }).code || 'unknown'
       });
       
       updateCircuitBreakerState(serviceName, true, 0);
@@ -378,7 +378,7 @@ function createServiceProxy(serviceName: string, config: ProxyConfig): any {
     },
     
     // Logging des requêtes
-    onProxyReq: (proxyReq, req, res) => {
+    onProxyReq: (proxyReq, req, _res) => { // eslint-disable-line @typescript-eslint/no-unused-vars
       logger.debug(`➡️ Proxy request ${serviceName}`, {
         serviceName,
         method: req.method,
@@ -389,7 +389,7 @@ function createServiceProxy(serviceName: string, config: ProxyConfig): any {
     },
     
     // Logging des réponses
-    onProxyRes: (proxyRes, req, res) => {
+    onProxyRes: (proxyRes, req, _res) => { // eslint-disable-line @typescript-eslint/no-unused-vars
       logger.debug(`⬅️ Proxy response ${serviceName}`, {
         serviceName,
         statusCode: proxyRes.statusCode,
@@ -458,9 +458,9 @@ router.get('/proxy/status', async (req: Request, res: Response) => {
     });
 
     const status = {
-      services: {} as any,
-      circuitBreakers: {} as any,
-      healthChecks: {} as any,
+      services: {} as Record<string, unknown>,
+      circuitBreakers: {} as Record<string, unknown>,
+      healthChecks: {} as Record<string, unknown>,
       summary: {
         totalServices: Object.keys(proxyConfigs).length,
         healthyServices: 0,

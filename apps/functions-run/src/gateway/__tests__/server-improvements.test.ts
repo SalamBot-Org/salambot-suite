@@ -106,7 +106,7 @@ describe('🔧 Tests des Améliorations Critiques', () => {
         .set('Host', 'api.salambot.app')
         .expect(301);
       
-      expect(response.headers.location).toBe('https://api.salambot.app/gateway/info');
+      expect(response.headers['location']).toBe('https://api.salambot.app/gateway/info');
       
       await testGateway.stop();
     });

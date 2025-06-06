@@ -46,7 +46,7 @@ import { GatewayConfig } from './config/gateway-config';
 export class SalamBotAPIGateway {
   private app: Express;
   private config: GatewayConfig;
-  private server?: any;
+  private server?: import('http').Server;
 
   constructor(config: GatewayConfig) {
     this.app = express();

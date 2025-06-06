@@ -10,6 +10,7 @@
  */
 
 import { Router, Request, Response } from 'express';
+import * as os from 'os';
 import { logger } from '../middleware/logging';
 import { GatewayConfigFactory } from '../config/gateway-config';
 
@@ -404,7 +405,7 @@ router.get('/stats', async (req: Request, res: Response) => {
         },
         cpu: {
           usage: process.cpuUsage(),
-          loadAverage: process.platform !== 'win32' ? require('os').loadavg() : [0, 0, 0]
+          loadAverage: process.platform !== 'win32' ? os.loadavg() : [0, 0, 0]
         },
         nodeVersion: process.version,
         platform: process.platform

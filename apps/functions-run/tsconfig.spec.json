@@ -20,7 +20,10 @@
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
     "src/**/*.d.ts",
-    "src/gateway/server.ts",
-    "src/gateway/types/index.ts"
+    "src/gateway/**/*.ts",
+    "src/genkit/**/*.ts",
+    "src/__tests__/**/*.ts",
+    "src/config/**/*.ts",
+    "src/utils/**/*.ts"
   ]
 }
