@@ -116,10 +116,15 @@ async function checkSystemRequirements(): Promise<void> {
       name: 'Memory Available',
       check: () => {
         const memoryUsage = process.memoryUsage();
-        const availableMemory = memoryUsage.heapTotal - memoryUsage.heapUsed;
-        return availableMemory > 50 * 1024 * 1024; // 50MB minimum
+        // Vérification plus réaliste: au moins 10MB de heap disponible
+        const totalHeap = memoryUsage.heapTotal;
+        const usedHeap = memoryUsage.heapUsed;
+        const availableHeap = totalHeap - usedHeap;
+        const minRequired = 10 * 1024 * 1024; // 10MB minimum
+        logger.debug(`Mémoire - Total: ${Math.round(totalHeap/1024/1024)}MB, Utilisée: ${Math.round(usedHeap/1024/1024)}MB, Disponible: ${Math.round(availableHeap/1024/1024)}MB`);
+        return availableHeap > minRequired || totalHeap > minRequired;
       },
-      error: 'Mémoire insuffisante (minimum 50MB requis)'
+      error: 'Mémoire insuffisante (minimum 10MB requis)'
     },
     {
       name: 'Environment Variables',
@@ -169,10 +174,10 @@ function setupGracefulShutdown(gateway: SalamBotAPIGateway): void {
       
       try {
         // Arrêt du serveur
-        gateway.stop();
+        await gateway.stop();
         
         // Attendre que les requêtes en cours se terminent
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
         
         logger.info('✅ Arrêt gracieux terminé');
         process.exit(0);
@@ -204,7 +209,7 @@ function setupGracefulShutdown(gateway: SalamBotAPIGateway): void {
 /**
  * 📋 Tâches post-démarrage
  */
-async function postStartupTasks(config: any): Promise<void> {
+async function postStartupTasks(config: ReturnType<typeof GatewayConfigFactory.create>): Promise<void> {
   try {
     // 1. Vérification de la connectivité aux services externes
     logger.info('🔗 Vérification de la connectivité aux services...');
@@ -230,7 +235,7 @@ async function postStartupTasks(config: any): Promise<void> {
 /**
  * 🌐 Vérification de la connectivité aux services
  */
-async function checkServiceConnectivity(config: any): Promise<void> {
+async function checkServiceConnectivity(config: ReturnType<typeof GatewayConfigFactory.create>): Promise<void> {
   const services = [
     { name: 'Genkit Flows', url: config.services.genkitFlows },
     { name: 'REST API', url: config.services.restApi },

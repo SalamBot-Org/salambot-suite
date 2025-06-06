@@ -31,11 +31,11 @@
 
 export interface ServiceEndpoints {
   /** 🤖 Service Genkit Flows (IA conversationnelle) */
-  genkitFlows: string;
+  genkitFlows?: string;
   /** 🔗 API REST classique */
-  restApi: string;
+  restApi?: string;
   /** 💬 Service WebSocket (chat temps réel) */
-  websocket: string;
+  websocket?: string;
   /** 📊 Service de métriques */
   metrics?: string;
   /** 🔍 Service de logging */

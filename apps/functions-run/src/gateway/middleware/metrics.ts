@@ -67,10 +67,11 @@ export interface GatewayMetrics {
  * 🎯 Collecteur de métriques singleton
  */
 export class MetricsCollector {
-  private static instance: MetricsCollector;
+  private static instance: MetricsCollector | undefined;
   private metrics: GatewayMetrics;
   private startTime: number;
   private lastCpuUsage: NodeJS.CpuUsage;
+  private systemMetricsInterval: NodeJS.Timeout | null = null;
 
   private constructor() {
     this.startTime = Date.now();
@@ -78,7 +79,7 @@ export class MetricsCollector {
     this.metrics = this.initializeMetrics();
     
     // Mise à jour périodique des métriques système
-    setInterval(() => this.updateSystemMetrics(), 30000); // Toutes les 30 secondes
+    this.systemMetricsInterval = setInterval(() => this.updateSystemMetrics(), 30000); // Toutes les 30 secondes
   }
 
   static getInstance(): MetricsCollector {
@@ -294,6 +295,26 @@ export class MetricsCollector {
   reset() {
     this.metrics = this.initializeMetrics();
     this.startTime = Date.now();
+  }
+
+  /**
+   * 🧹 Nettoyage des ressources
+   */
+  cleanup() {
+    if (this.systemMetricsInterval) {
+      clearInterval(this.systemMetricsInterval);
+      this.systemMetricsInterval = null;
+    }
+  }
+
+  /**
+   * 🔄 Reset de l'instance singleton (pour les tests)
+   */
+  static resetInstance() {
+    if (MetricsCollector.instance) {
+      MetricsCollector.instance.cleanup();
+      MetricsCollector.instance = undefined;
+    }
   }
 
   /**

@@ -1,0 +1,264 @@
+# Docker Compose pour Tests d'Intégration
+# SalamBot Functions-Run - API Gateway Enterprise
+#
+# @description Configuration Docker Compose pour l'environnement de test
+# @author SalamBot Platform Team
+# @created 2025-06-02
+
+version: '3.8'
+
+services:
+  # Redis pour les tests (base de données séparée)
+  redis-test:
+    image: redis:7.2-alpine
+    container_name: salambot-redis-test
+    ports:
+      - "6380:6379"  # Port différent pour éviter les conflits
+    command: >
+      redis-server
+      --appendonly yes
+      --appendfsync everysec
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+      --databases 16
+    volumes:
+      - redis-test-data:/data
+    networks:
+      - salambot-test-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    environment:
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,KEYS,PEXPIRE,DEL,CONFIG,SHUTDOWN
+    restart: unless-stopped
+
+  # Service Mock Genkit AI
+  genkit-mock:
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM node:20.18.0-alpine
+        WORKDIR /app
+        COPY package*.json ./
+        RUN npm install --only=production
+        COPY src/__tests__/mocks/genkit-mock.js ./
+        EXPOSE 3001
+        CMD ["node", "genkit-mock.js"]
+    container_name: salambot-genkit-mock
+    ports:
+      - "3001:3001"
+    networks:
+      - salambot-test-network
+    environment:
+      - PORT=3001
+      - MOCK_RESPONSE_DELAY_MS=50
+      - MOCK_ERROR_RATE_PERCENT=2
+      - MOCK_TIMEOUT_RATE_PERCENT=1
+      - NODE_ENV=test
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+    depends_on:
+      redis-test:
+        condition: service_healthy
+
+  # Service Mock REST API Backend
+  rest-api-mock:
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM node:20.18.0-alpine
+        WORKDIR /app
+        COPY package*.json ./
+        RUN npm install --only=production
+        COPY src/__tests__/mocks/rest-api-mock.js ./
+        EXPOSE 3002
+        CMD ["node", "rest-api-mock.js"]
+    container_name: salambot-rest-api-mock
+    ports:
+      - "3002:3002"
+    networks:
+      - salambot-test-network
+    environment:
+      - PORT=3002
+      - MOCK_RESPONSE_DELAY_MS=30
+      - MOCK_ERROR_RATE_PERCENT=3
+      - MOCK_TIMEOUT_RATE_PERCENT=1
+      - NODE_ENV=test
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3002/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+    depends_on:
+      redis-test:
+        condition: service_healthy
+
+  # Service Mock WebSocket
+  websocket-mock:
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM node:20.18.0-alpine
+        WORKDIR /app
+        COPY package*.json ./
+        RUN npm install --only=production
+        COPY src/__tests__/mocks/websocket-mock.js ./
+        EXPOSE 3003
+        CMD ["node", "websocket-mock.js"]
+    container_name: salambot-websocket-mock
+    ports:
+      - "3003:3003"
+    networks:
+      - salambot-test-network
+    environment:
+      - PORT=3003
+      - MOCK_RESPONSE_DELAY_MS=40
+      - MOCK_ERROR_RATE_PERCENT=2
+      - MOCK_TIMEOUT_RATE_PERCENT=1
+      - NODE_ENV=test
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3003/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+    depends_on:
+      redis-test:
+        condition: service_healthy
+
+  # Service Mock Prometheus
+  prometheus-mock:
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM node:20.18.0-alpine
+        WORKDIR /app
+        COPY package*.json ./
+        RUN npm install --only=production
+        COPY src/__tests__/mocks/prometheus-mock.js ./
+        EXPOSE 9090
+        CMD ["node", "prometheus-mock.js"]
+    container_name: salambot-prometheus-mock
+    ports:
+      - "9091:9090"  # Port différent pour éviter les conflits
+    networks:
+      - salambot-test-network
+    environment:
+      - PORT=9090
+      - MOCK_RESPONSE_DELAY_MS=20
+      - MOCK_ERROR_RATE_PERCENT=1
+      - MOCK_TIMEOUT_RATE_PERCENT=0
+      - NODE_ENV=test
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+    depends_on:
+      redis-test:
+        condition: service_healthy
+
+  # API Gateway pour les tests (optionnel)
+  gateway-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: salambot-gateway-test
+    ports:
+      - "3000:3000"
+    networks:
+      - salambot-test-network
+    environment:
+      # Configuration de test
+      - NODE_ENV=test
+      - PORT=3000
+      - LOG_LEVEL=debug
+      
+      # Redis de test
+      - REDIS_HOST=redis-test
+      - REDIS_PORT=6379
+      - REDIS_DB=15
+      - REDIS_KEY_PREFIX=salambot:test:gateway:
+      
+      # Services mock
+      - GENKIT_SERVICE_URL=http://genkit-mock:3001
+      - REST_API_SERVICE_URL=http://rest-api-mock:3002
+      - WEBSOCKET_SERVICE_URL=http://websocket-mock:3003
+      - PROMETHEUS_URL=http://prometheus-mock:9090
+      
+      # Configuration de sécurité relaxée pour les tests
+      - JWT_SECRET=test-jwt-secret-key-for-integration-tests
+      - API_KEY_GATEWAY=test-api-key-gateway
+      - API_KEY_GENKIT=test-api-key-genkit
+      - ENCRYPTION_KEY=test-encryption-key-32-characters
+      
+      # Rate limiting relaxé
+      - RATE_LIMIT_GLOBAL_MAX=1000
+      - RATE_LIMIT_GLOBAL_WINDOW_MS=60000
+      - RATE_LIMIT_GENKIT_MAX=500
+      - RATE_LIMIT_GENKIT_WINDOW_MS=60000
+      
+      # Timeouts
+      - GENKIT_TIMEOUT_MS=10000
+      - REST_API_TIMEOUT_MS=8000
+      - WEBSOCKET_TIMEOUT_MS=5000
+      
+      # CORS permissif pour les tests
+      - CORS_ORIGIN=*
+      - CORS_CREDENTIALS=true
+      
+      # Métriques
+      - METRICS_ENABLED=true
+      - PROMETHEUS_PORT=9090
+      
+      # Health checks
+      - HEALTH_CHECK_INTERVAL_MS=30000
+      - HEALTH_CHECK_TIMEOUT_MS=5000
+    volumes:
+      - ./src:/app/src:ro
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    depends_on:
+      redis-test:
+        condition: service_healthy
+      genkit-mock:
+        condition: service_healthy
+      rest-api-mock:
+        condition: service_healthy
+      websocket-mock:
+        condition: service_healthy
+      prometheus-mock:
+        condition: service_healthy
+
+networks:
+  salambot-test-network:
+    driver: bridge
+    name: salambot-test-network
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  redis-test-data:
+    driver: local
+    name: salambot-redis-test-data

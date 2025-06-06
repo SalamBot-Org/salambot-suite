@@ -5,7 +5,9 @@
     "module": "commonjs",
     "types": ["jest", "node"],
     "composite": true,
-    "declaration": true
+    "declaration": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "jest.config.ts",
@@ -17,6 +19,8 @@
     "src/**/*.spec.js",
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "src/gateway/server.ts",
+    "src/gateway/types/index.ts"
   ]
 }

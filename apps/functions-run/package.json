@@ -14,6 +14,10 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:integration": "jest --config jest.integration.config.js",
+    "test:integration:watch": "jest --config jest.integration.config.js --watch",
+    "test:integration:coverage": "jest --config jest.integration.config.js --coverage",
+    "test:all": "pnpm run test && pnpm run test:integration",
+    "test:ci": "jest --ci --coverage --watchAll=false && jest --config jest.integration.config.js --ci --coverage --watchAll=false",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write src/**/*.ts",
@@ -26,7 +30,15 @@
     "stress-test": "artillery run tests/load/stress.yml",
     "install:deps": "pnpm install",
     "install:dev": "pnpm install --dev",
-    "update:deps": "pnpm update"
+    "update:deps": "pnpm update",
+    "mock:genkit": "node src/__tests__/mocks/genkit-mock.js",
+    "mock:rest-api": "node src/__tests__/mocks/rest-api-mock.js",
+    "mock:websocket": "node src/__tests__/mocks/websocket-mock.js",
+    "mock:prometheus": "node src/__tests__/mocks/prometheus-mock.js",
+    "mock:all": "concurrently \"pnpm run mock:genkit\" \"pnpm run mock:rest-api\" \"pnpm run mock:websocket\" \"pnpm run mock:prometheus\"",
+    "mock:stop": "taskkill /F /IM node.exe /FI \"WINDOWTITLE eq *mock*\" 2>nul || true",
+    "test:setup": "pnpm run mock:all",
+    "test:teardown": "pnpm run mock:stop"
   },
   "keywords": [
     "api-gateway",
@@ -65,7 +77,8 @@
     "uuid": "^9.0.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "axios": "^1.6.2"
+    "axios": "^1.6.2",
+    "ws": "^8.14.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
@@ -90,34 +103,10 @@
     "prettier": "^3.1.0",
     "rimraf": "^5.0.5",
     "artillery": "^2.0.3",
-    "nodemon": "^3.0.2"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/src",
-      "<rootDir>/tests"
-    ],
-    "testMatch": [
-      "**/__tests__/**/*.ts",
-      "**/?(*.)+(spec|test).ts"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.ts",
-      "!src/**/*.d.ts",
-      "!src/**/*.test.ts",
-      "!src/**/*.spec.ts"
-    ],
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "text",
-      "lcov",
-      "html"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/tests/setup.ts"
-    ]
+    "nodemon": "^3.0.2",
+    "concurrently": "^8.2.2",
+    "jest-junit": "^16.0.0",
+    "@types/ws": "^8.5.10"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",

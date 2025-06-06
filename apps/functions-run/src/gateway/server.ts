@@ -9,7 +9,7 @@
  * ╰─────────────────────────────────────────────────────────────╯
  */
 
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -46,6 +46,7 @@ import { GatewayConfig } from './config/gateway-config';
 export class SalamBotAPIGateway {
   private app: Application;
   private config: GatewayConfig;
+  private server?: any;
 
   constructor(config: GatewayConfig) {
     this.app = express();
@@ -173,7 +174,7 @@ export class SalamBotAPIGateway {
         pathRewrite: {
           '^/api/ai': '/'
         },
-        onProxyReq: (proxyReq, req, res) => {
+        onProxyReq: (proxyReq, req, _res) => { // eslint-disable-line @typescript-eslint/no-unused-vars
           // Ajouter des headers de traçabilité
           proxyReq.setHeader('X-Gateway-Request-ID', req.headers['x-request-id'] || 'unknown');
           proxyReq.setHeader('X-Gateway-Timestamp', new Date().toISOString());
@@ -276,10 +277,8 @@ salambot_gateway_request_duration_seconds_count 1500
   public start(): void {
     const port = this.config.port || 3000;
     
-    this.app.listen(port, () => {
-      console.log(`
-🚀 SalamBot API Gateway Enterprise démarré!
-`);
+    this.server = this.app.listen(port, () => {
+      console.log(`\n🚀 SalamBot API Gateway Enterprise démarré!\n`);
       console.log(`📍 Port: ${port}`);
       console.log(`🌐 Environnement: ${this.config.environment}`);
       console.log(`🔗 Health Check: http://localhost:${port}/health`);
@@ -296,9 +295,22 @@ salambot_gateway_request_duration_seconds_count 1500
   /**
    * 🛑 Arrêt gracieux du serveur
    */
-  public stop(): void {
-    console.log('🛑 Arrêt gracieux de l\'API Gateway...');
-    process.exit(0);
+  public stop(): Promise<void> {
+    return new Promise((resolve) => {
+      console.log('🛑 Arrêt gracieux de l\'API Gateway...');
+      if (this.server) {
+        this.server.close(() => {
+          this.server = undefined;
+          resolve();
+        });
+      } else {
+        resolve();
+      }
+      // Ne pas appeler process.exit() pendant les tests
+      if (process.env['NODE_ENV'] !== 'test') {
+        setTimeout(() => process.exit(0), 100);
+      }
+    });
   }
 
   /**
