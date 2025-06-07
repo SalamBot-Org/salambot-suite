@@ -25,7 +25,7 @@ const config: Config = {
   testPathIgnorePatterns: [
     '/node_modules/',
     '/dist/',
-    '\.integration\.test\.',
+    '.integration.test.',
   ],
   
   // Configuration du coverage

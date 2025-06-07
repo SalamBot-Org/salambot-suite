@@ -12,6 +12,6 @@ module.exports = {
   testTimeout: 10000,
   extensionsToTreatAsEsm: [],
   moduleNameMapper: {
-    '^(\.{1,2}/.*)\.js$': '$1'
+    '^(.{1,2}/.*)\.js$': '$1'
   }
 };
