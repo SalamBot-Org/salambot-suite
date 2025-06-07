@@ -4,7 +4,7 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.test.ts'],
   moduleFileExtensions: ['ts', 'js'],
   transform: {
-    '^.+\.ts$': ['ts-jest', {
+    '^.+.ts$': ['ts-jest', {
       tsconfig: '<rootDir>/tsconfig.spec.json',
       useESM: false
     }]
@@ -12,6 +12,6 @@ module.exports = {
   testTimeout: 10000,
   extensionsToTreatAsEsm: [],
   moduleNameMapper: {
-    '^(.{1,2}/.*)\.js$': '$1'
+    '^(.{1,2}/.*)js$': '$1'
   }
 };

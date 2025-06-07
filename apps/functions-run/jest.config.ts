@@ -10,7 +10,7 @@ const config: Config = {
   
   // Transformation TypeScript
   transform: {
-    '^.+\.ts$': ['ts-jest', {
+    '^.+.ts$': ['ts-jest', {
       tsconfig: '<rootDir>/tsconfig.spec.json'
     }]
   },
