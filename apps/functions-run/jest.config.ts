@@ -30,18 +30,17 @@ const config: Config = {
   
   // Configuration du coverage
   coverageDirectory: '../../coverage/apps/functions-run',
-  coverageProvider: 'v8',
+  // coverageProvider: 'v8', // Supprimé pour éviter les warnings de validation
   
   // Setup files
   setupFilesAfterEnv: [
     '<rootDir>/src/__tests__/env-setup.ts'
   ],
   
-  // Timeout pour les tests
-  testTimeout: 30000,
+  // Timeout pour les tests (réduit pour éviter les blocages)
+  testTimeout: 15000,
   
-  // Verbose pour plus de détails
-  verbose: true,
+  // verbose: true, // Supprimé - utiliser --verbose en CLI si nécessaire
   
   // Mapper les modules pour les mocks
   moduleNameMapper: {
@@ -54,7 +53,7 @@ const config: Config = {
   
   // Détection des handles ouverts
   detectOpenHandles: true,
-  forceExit: true,
+  // forceExit: true, // Supprimé pour laisser Jest se terminer proprement
   
   // Gestion des workers pour éviter les conflits
   maxWorkers: 1

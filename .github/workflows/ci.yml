@@ -64,9 +64,40 @@ jobs:
           chmod +x scripts/start-mock-services.sh
           ./scripts/start-mock-services.sh
         working-directory: .
+        env:
+          MOCK_GENKIT_PORT: 3001
+          MOCK_REST_API_PORT: 3002
+          MOCK_WEBSOCKET_PORT: 3003
+          MOCK_PROMETHEUS_PORT: 3004
+      
+      - name: Wait for Mock Services Health Check
+        run: |
+          echo "Waiting for mock services to be ready..."
+          sleep 5
+          
+          # Vérifier que les services sont accessibles
+          for port in 3001 3002 3003 3004; do
+            echo "Checking service on port $port..."
+            timeout 30 bash -c "until curl -f http://localhost:$port/health 2>/dev/null; do sleep 1; done" || {
+              echo "Service on port $port failed to start or is not healthy"
+              exit 1
+            }
+            echo "Service on port $port is healthy"
+          done
+          
+          echo "All mock services are ready!"
 
       - name: Test
-        run: pnpm test
+        run: |
+          echo "Starting tests with 10 minute timeout..."
+          timeout 600 pnpm test || {
+            echo "Tests failed or timed out after 10 minutes"
+            echo "Checking mock services status..."
+            for port in 3001 3002 3003 3004; do
+              curl -f http://localhost:$port/health 2>/dev/null && echo "Port $port: OK" || echo "Port $port: FAILED"
+            done
+            exit 1
+          }
         env:
           # Ensure tests know mock services are available
           MOCK_SERVICES_ENABLED: true
@@ -74,6 +105,8 @@ jobs:
           MOCK_REST_API_PORT: 3002
           MOCK_WEBSOCKET_PORT: 3003
           MOCK_PROMETHEUS_PORT: 3004
+          # Réduire le timeout Jest pour éviter les blocages
+          JEST_TIMEOUT: 15000
 
       - name: Stop Mock Services
         if: always()

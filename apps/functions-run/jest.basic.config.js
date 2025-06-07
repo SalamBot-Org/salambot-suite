@@ -5,12 +5,13 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js'],
   transform: {
     '^.+\.ts$': ['ts-jest', {
-      tsconfig: {
-        esModuleInterop: true,
-        allowSyntheticDefaultImports: true
-      }
+      tsconfig: '<rootDir>/tsconfig.spec.json',
+      useESM: false
     }]
   },
   testTimeout: 10000,
-  verbose: true
+  extensionsToTreatAsEsm: [],
+  moduleNameMapper: {
+    '^(\.{1,2}/.*)\.js$': '$1'
+  }
 };

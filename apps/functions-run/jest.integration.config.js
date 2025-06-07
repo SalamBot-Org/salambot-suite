@@ -53,8 +53,8 @@ module.exports = {
   
   // Configuration pour éviter les fuites de mémoire
   detectOpenHandles: true,
-  forceExit: true,
-  detectLeaks: true,
+  // forceExit: true, // Supprimé pour éviter les problèmes avec NX
+  // detectLeaks: true, // Supprimé pour éviter les problèmes de performance
   
   // Setup et teardown globaux pour les services
   globalSetup: '<rootDir>/src/__tests__/global-setup.ts',
@@ -121,7 +121,7 @@ module.exports = {
   ],
   
   // Configuration pour les tests longs
-  verbose: true,
+  // verbose: true, // Supprimé pour éviter les conflits avec NX
   
   // Nettoyage après chaque test
   clearMocks: true
