@@ -80,8 +80,24 @@ jobs:
             echo "Checking service on port $port..."
             timeout 60 bash -c "until curl -f http://localhost:$port/health 2>/dev/null; do sleep 2; done" || {
               echo "Service on port $port failed to start or is not healthy"
-              echo "Checking logs for port $port..."
-              docker logs mock-service-$port 2>/dev/null || echo "No docker logs available"
+              echo "Checking process logs..."
+              cd apps/functions-run
+              if [ -f "logs/genkit.log" ] && [ "$port" = "3001" ]; then
+                echo "Genkit service logs:"
+                tail -n 20 logs/genkit.log
+              elif [ -f "logs/rest-api.log" ] && [ "$port" = "3002" ]; then
+                echo "REST API service logs:"
+                tail -n 20 logs/rest-api.log
+              elif [ -f "logs/websocket.log" ] && [ "$port" = "3003" ]; then
+                echo "WebSocket service logs:"
+                tail -n 20 logs/websocket.log
+              elif [ -f "logs/prometheus.log" ] && [ "$port" = "3004" ]; then
+                echo "Prometheus service logs:"
+                tail -n 20 logs/prometheus.log
+              else
+                echo "No log file found for port $port"
+              fi
+              cd ../..
               exit 1
             }
             echo "Service on port $port is healthy"

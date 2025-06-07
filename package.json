@@ -2,7 +2,7 @@
   "name": "@salambot/suite",
   "version": "2.2.0",
   "license": "MIT",
-  "packageManager": "pnpm@9.12.3",
+  "packageManager": "pnpm@10.0.0",
   "scripts": {
     "lint": "nx run-many --target=lint --all --parallel",
     "test": "nx run-many --target=test --all --parallel",
