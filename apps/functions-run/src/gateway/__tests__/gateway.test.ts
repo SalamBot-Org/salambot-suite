@@ -187,21 +187,41 @@ describe('🚀 SalamBot API Gateway', () => {
 describe('⚙️ Gateway Configuration', () => {
   describe('🏭 Configuration Factory', () => {
     it('should create development configuration', () => {
-      process.env['NODE_ENV'] = 'development';
-      const config = GatewayConfigFactory.create();
+      const originalEnv = process.env['NODE_ENV'];
+      (process.env as any).NODE_ENV = 'development';
       
-      expect(config.environment).toBe('development');
-      expect(config.isDevelopment).toBe(true);
-      expect(config.monitoring.logLevel).toBe('debug');
+      try {
+        const config = GatewayConfigFactory.create();
+        
+        expect(config.environment).toBe('development');
+        expect(config.isDevelopment).toBe(true);
+        expect(config.monitoring.logLevel).toBe('debug');
+      } finally {
+        if (originalEnv !== undefined) {
+          (process.env as any).NODE_ENV = originalEnv;
+        } else {
+          delete (process.env as any).NODE_ENV;
+        }
+      }
     });
 
     it('should create production configuration', () => {
-      process.env['NODE_ENV'] = 'production';
-      const config = GatewayConfigFactory.create();
+      const originalEnv = process.env['NODE_ENV'];
+      (process.env as any).NODE_ENV = 'production';
       
-      expect(config.environment).toBe('production');
-      expect(config.isDevelopment).toBe(false);
-      expect(config.security.httpsOnly).toBe(true);
+      try {
+        const config = GatewayConfigFactory.create();
+        
+        expect(config.environment).toBe('production');
+        expect(config.isDevelopment).toBe(false);
+        expect(config.security.httpsOnly).toBe(true);
+      } finally {
+        if (originalEnv !== undefined) {
+          (process.env as any).NODE_ENV = originalEnv;
+        } else {
+          delete (process.env as any).NODE_ENV;
+        }
+      }
     });
 
     it('should validate required environment variables in production', () => {
@@ -209,8 +229,8 @@ describe('⚙️ Gateway Configuration', () => {
       const originalSecret = process.env['JWT_SECRET'];
       
       try {
-        process.env['NODE_ENV'] = 'production';
-        delete process.env['JWT_SECRET'];
+        (process.env as any).NODE_ENV = 'production';
+        delete (process.env as any).JWT_SECRET;
         
         // En production, la configuration devrait soit échouer soit utiliser des valeurs par défaut
         const config = GatewayConfigFactory.create();
@@ -222,13 +242,13 @@ describe('⚙️ Gateway Configuration', () => {
         expect(error).toBeDefined();
       } finally {
         // Restaurer les variables d'environnement
-        if (originalEnv) {
-          process.env['NODE_ENV'] = originalEnv;
+        if (originalEnv !== undefined) {
+          (process.env as any).NODE_ENV = originalEnv;
         } else {
-          delete process.env['NODE_ENV'];
+          delete (process.env as any).NODE_ENV;
         }
-        if (originalSecret) {
-          process.env['JWT_SECRET'] = originalSecret;
+        if (originalSecret !== undefined) {
+          (process.env as any).JWT_SECRET = originalSecret;
         }
       }
     });
