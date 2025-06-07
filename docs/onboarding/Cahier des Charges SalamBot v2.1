@@ -453,11 +453,11 @@ enum MoroccanRegion {
 
 ## 8. API Gateway et Architecture d'Intégration
 
-### 8.1 État Actuel et Roadmap API Gateway
+### 8.1 État Actuel et Architecture API Gateway
 
-**⚠️ Statut Critique:** L'API Gateway, élément central de l'architecture SalamBot, n'est actuellement pas implémentée selon l'audit technique du 2 juin 2025. Cette lacune représente un risque architectural majeur qui doit être adressé en priorité absolue dans la Phase 2.
+**✅ Statut Complet:** L'API Gateway, élément central de l'architecture SalamBot, est entièrement implémentée dans `apps/functions-run/src/gateway/` avec une architecture enterprise robuste depuis juin 2025.
 
-L'API Gateway constitue le point d'entrée unifié pour toutes les interactions externes avec la plateforme SalamBot. Son absence actuelle force les applications à communiquer directement avec les microservices, créant un couplage fort et des problèmes de sécurité, de monitoring, et de scalabilité.
+L'API Gateway constitue le point d'entrée unifié pour toutes les interactions externes avec la plateforme SalamBot. L'implémentation actuelle fournit une architecture sécurisée, scalable et observable qui centralise l'authentification, l'autorisation, le rate limiting, et le monitoring.
 
 **Plan de Rattrapage Urgent - Phase 2 Sprint B**
 

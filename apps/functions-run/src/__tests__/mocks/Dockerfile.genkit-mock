@@ -1,0 +1,57 @@
+# Dockerfile optimisé pour genkit-mock
+# Image de base ultra-légère
+FROM node:20-alpine3.18
+
+# Métadonnées
+LABEL maintainer="SalamBot Platform Team <platform@salambot.ma>"
+LABEL description="Mock Genkit Service - Optimized"
+LABEL version="1.0.0"
+
+# Installation des outils système minimaux
+RUN apk add --no-cache \
+    dumb-init \
+    curl \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*
+
+# Création de l'utilisateur non-root
+RUN addgroup -g 1001 -S mockuser && \
+    adduser -S mockuser -u 1001 -G mockuser
+
+# Configuration du répertoire de travail
+WORKDIR /app
+
+# Configuration du cache npm local
+RUN npm config set cache /tmp/.npm-cache --global
+
+# Création d'un package.json minimal pour genkit-mock
+RUN echo '{"name":"genkit-mock","version":"1.0.0","main":"genkit-mock.js","dependencies":{"express":"^4.21.2","cors":"^2.8.5"}}' > package.json
+
+# Installation des dépendances minimales avec cache optimisé
+RUN npm install --only=production --no-audit --no-fund \
+    && npm cache clean --force \
+    && rm -rf /tmp/.npm-cache
+
+# Copie du fichier mock
+COPY --chown=mockuser:mockuser src/__tests__/mocks/genkit-mock.js ./
+
+# Configuration des variables d'environnement
+ENV NODE_ENV=production
+ENV PORT=3001
+ENV MOCK_RESPONSE_DELAY_MS=50
+ENV MOCK_ERROR_RATE_PERCENT=2
+ENV MOCK_TIMEOUT_RATE_PERCENT=1
+
+# Exposition du port
+EXPOSE 3001
+
+# Health check optimisé
+HEALTHCHECK --interval=15s --timeout=3s --start-period=5s --retries=2 \
+    CMD curl -f http://localhost:3001/health || exit 1
+
+# Changement vers l'utilisateur non-root
+USER mockuser
+
+# Point d'entrée avec init system
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "genkit-mock.js"]

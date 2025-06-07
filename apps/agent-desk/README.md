@@ -1,4 +1,4 @@
-# 🎯 Agent Desk - Interface CRM Opérateur
+# 🖥️ SalamBot Agent Desk v2.2.0
 
 **Tableau de bord intelligent pour les agents du service client SalamBot**
 

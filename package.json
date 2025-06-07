@@ -2,6 +2,7 @@
   "name": "@salambot/suite",
   "version": "2.2.0",
   "license": "MIT",
+  "packageManager": "pnpm@10.0.0",
   "scripts": {
     "lint": "nx run-many --target=lint --all --parallel",
     "test": "nx run-many --target=test --all --parallel",
@@ -31,7 +32,12 @@
     "sync:todo-issues:preview": "npm run sync:todo-issues:dry-run",
     "sync-todo-issues": "node dist/sync-todo-issues.js",
     "sync-todo-issues:dry-run": "node dist/sync-todo-issues.js --dry-run",
-    "build:sync-script": "npx tsc scripts/sync-todo-issues.ts --outDir dist --target es2020 --module commonjs --esModuleInterop true --skipLibCheck true"
+    "build:sync-script": "npx tsc scripts/sync-todo-issues.ts --outDir dist --target es2020 --module commonjs --esModuleInterop true --skipLibCheck true",
+    "version:sync": "node -e \"const pkg = require('./package.json'); const fs = require('fs'); ['apps/functions-run', 'apps/agent-desk', 'apps/widget-web'].forEach(app => { try { const appPkg = require('./' + app + '/package.json'); appPkg.version = pkg.version; fs.writeFileSync(app + '/package.json', JSON.stringify(appPkg, null, 2) + '\\n'); console.log('✅ Synced version for ' + app); } catch(e) { console.log('⚠️ No package.json in ' + app); } });\"",
+    "deps:audit": "pnpm audit --audit-level moderate",
+    "deps:update": "pnpm update --latest",
+    "apps:build-all": "nx run-many --target=build --projects=functions-run,agent-desk,widget-web --parallel",
+    "apps:test-all": "nx run-many --target=test --projects=functions-run,agent-desk,widget-web --parallel"
   },
   "private": true,
   "devDependencies": {
@@ -61,17 +67,17 @@
     "@types/ioredis": "^5.0.0",
     "@types/ioredis-mock": "^8.2.6",
     "@types/jest": "^29.5.12",
-    "@types/node": "22.15.29",
+    "@types/node": "^22.15.29",
     "@types/react": "19.1.6",
     "@types/react-dom": "19.1.5",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
     "@vitejs/plugin-react": "^4.5.1",
     "@vitest/ui": "^1.3.1",
-    "autoprefixer": "10.4.21",
+    "autoprefixer": "^10.4.21",
     "babel-jest": "^29.7.0",
     "esbuild": "^0.25.5",
-    "eslint": "^9.28.0",
+    "eslint": "^8.57.0",
     "eslint-config-next": "15.3.3",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-import": "2.31.0",
@@ -86,14 +92,14 @@
     "jest-environment-node": "^29.7.0",
     "jsdom": "~26.1.0",
     "nx": "21.1.2",
-    "postcss": "8.5.4",
-    "prettier": "^2.6.2",
-    "tailwindcss": "4.1.8",
+    "postcss": "^8.5.4",
+    "prettier": "^3.3.3",
+    "tailwindcss": "^4.1.8",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.2",
     "tslib": "^2.3.0",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5",
+    "vite": "^5.4.8",
     "vitest": "^1.3.1"
   },
   "dependencies": {
@@ -106,5 +112,13 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "tsx": "^4.7.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "nanoid@<3.3.8": ">=3.3.8",
+      "esbuild@<=0.24.2": ">=0.25.0",
+      "koa@<2.16.1": ">=2.16.1",
+      "cross-spawn@<6.0.6": ">=6.0.6"
+    }
   }
 }

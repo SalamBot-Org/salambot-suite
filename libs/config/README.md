@@ -1,4 +1,4 @@
-# Bibliothèque Config
+# @salambot/config v2.2.0
 
 Bibliothèque de configuration centralisée pour SalamBot, incluant la gestion des connexions Redis, des variables d'environnement et des configurations runtime.
 

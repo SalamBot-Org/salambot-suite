@@ -1,0 +1,208 @@
+# =============================================================================
+# SalamBot API Gateway Enterprise - Prometheus Configuration
+# =============================================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'salambot-gateway'
+    environment: 'production'
+
+# Configuration des règles d'alerte
+rule_files:
+  - "alert_rules.yml"
+
+# Configuration Alertmanager
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+# Configuration des jobs de scraping
+scrape_configs:
+  # ==========================================================================
+  # Prometheus lui-même
+  # ==========================================================================
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 30s
+    metrics_path: /metrics
+
+  # ==========================================================================
+  # SalamBot API Gateway
+  # ==========================================================================
+  - job_name: 'salambot-gateway'
+    static_configs:
+      - targets: ['salambot-gateway:3000']
+    scrape_interval: 10s
+    metrics_path: /metrics
+    scrape_timeout: 5s
+    honor_labels: true
+    params:
+      format: ['prometheus']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: salambot-gateway:3000
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'salambot_gateway_(.+)'
+        target_label: __name__
+        replacement: '${1}'
+
+  # ==========================================================================
+  # Health Checks des Services
+  # ==========================================================================
+  - job_name: 'salambot-gateway-health'
+    static_configs:
+      - targets: ['salambot-gateway:3000']
+    scrape_interval: 30s
+    metrics_path: /health/detailed
+    scrape_timeout: 10s
+    params:
+      format: ['prometheus']
+
+  # ==========================================================================
+  # Services Externes (Genkit, REST API, WebSocket)
+  # ==========================================================================
+  - job_name: 'genkit-service'
+    static_configs:
+      - targets: ['genkit-service:3001']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    scrape_timeout: 5s
+    honor_labels: true
+
+  - job_name: 'rest-api-service'
+    static_configs:
+      - targets: ['rest-api-service:3002']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    scrape_timeout: 5s
+    honor_labels: true
+
+  - job_name: 'websocket-service'
+    static_configs:
+      - targets: ['websocket-service:3003']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    scrape_timeout: 5s
+    honor_labels: true
+
+  # ==========================================================================
+  # Infrastructure (Redis, Nginx)
+  # ==========================================================================
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    scrape_timeout: 5s
+
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:80']
+    scrape_interval: 30s
+    metrics_path: /nginx_status
+    scrape_timeout: 5s
+
+  # ==========================================================================
+  # Node Exporter (métriques système)
+  # ==========================================================================
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # ==========================================================================
+  # cAdvisor (métriques containers)
+  # ==========================================================================
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    honor_labels: true
+
+  # ==========================================================================
+  # Blackbox Exporter (monitoring externe)
+  # ==========================================================================
+  - job_name: 'blackbox-http'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - http://salambot-gateway:3000/health
+        - http://genkit-service:3001
+        - http://rest-api-service:3002
+        - http://websocket-service:3003
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  # ==========================================================================
+  # Configuration avancée pour les métriques custom
+  # ==========================================================================
+  - job_name: 'salambot-gateway-custom'
+    static_configs:
+      - targets: ['salambot-gateway:3000']
+    scrape_interval: 5s
+    metrics_path: /metrics/custom
+    scrape_timeout: 3s
+    params:
+      detailed: ['true']
+    honor_labels: true
+    metric_relabel_configs:
+      # Filtrer les métriques sensibles
+      - source_labels: [__name__]
+        regex: '.*_password.*|.*_secret.*|.*_token.*'
+        action: drop
+      # Renommer les métriques pour plus de clarté
+      - source_labels: [__name__]
+        regex: 'http_request_duration_seconds'
+        target_label: __name__
+        replacement: 'salambot_http_request_duration_seconds'
+      # Ajouter des labels personnalisés
+      - target_label: service
+        replacement: 'salambot-gateway'
+      - target_label: version
+        replacement: '2.1.0'
+
+# =============================================================================
+# Configuration du stockage
+# =============================================================================
+storage:
+  tsdb:
+    path: /prometheus
+    retention.time: 30d
+    retention.size: 10GB
+    wal-compression: true
+
+# =============================================================================
+# Configuration des requêtes
+# =============================================================================
+query:
+  timeout: 2m
+  max_concurrency: 20
+  max_samples: 50000000
+
+# =============================================================================
+# Configuration du serveur web
+# =============================================================================
+web:
+  console.templates: /etc/prometheus/consoles
+  console.libraries: /etc/prometheus/console_libraries
+  enable-lifecycle: true
+  enable-admin-api: true

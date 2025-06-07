@@ -1,25 +1,72 @@
-/**
- * @file        Configuration Jest pour functions-run
- * @author      SalamBot Team (contact: info@salambot.ma)
- * @created     2025-05-25
- * @updated     2025-05-26
- * @project     SalamBot - AI CRM for Moroccan SMEs
- */
+import type { Config } from 'jest';
 
-/* eslint-disable */
-export default {
-  displayName: 'functions-run-functions-run',
-  preset: '../../jest.preset.js',
+const config: Config = {
+  // Configuration de base
+  preset: 'ts-jest',
   testEnvironment: 'node',
+  
+  // Extensions de fichiers supportées
+  moduleFileExtensions: ['ts', 'js', 'json'],
+  
+  // Transformation TypeScript
   transform: {
-    '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+    '^.+.ts$': ['ts-jest', {
+      tsconfig: '<rootDir>/tsconfig.spec.json'
+    }]
   },
-  moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/functions-run_tmp',
+  
+  // Pattern de fichiers de test
+  testMatch: [
+    '<rootDir>/src/**/__tests__/**/*.test.ts',
+    '<rootDir>/src/**/*.test.ts'
+  ],
+  
+  // Ignorer certains patterns
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/',
+    '.integration.test.'
+  ],
+  
+  // Configuration du coverage
+  coverageDirectory: '../../coverage/apps/functions-run',
+  
+  // Setup files
+  setupFilesAfterEnv: [
+    '<rootDir>/src/__tests__/env-setup.ts'
+  ],
+  
+  // Timeout pour les tests (30 secondes pour CI)
+  testTimeout: process.env['CI'] ? 30000 : 20000,
+  
+  // Mapper les modules pour les mocks
   moduleNameMapper: {
-    '^genkit$': '<rootDir>/src/__mocks__/genkit.js',
-    '^cld3$': '<rootDir>/src/__mocks__/cld3.js',
-    '^genkit-vertexai$': '<rootDir>/src/__mocks__/genkit-vertexai.js',
-    '^genkit-openai$': '<rootDir>/src/__mocks__/genkit-openai.js',
+    '^@/(.*)$': '<rootDir>/src/$1'
   },
+  
+  // Nettoyage automatique des mocks
+  clearMocks: true,
+  restoreMocks: true,
+  
+  // Détection des handles ouverts et configuration CI
+  detectOpenHandles: true,
+  forceExit: true,
+  
+  // Configuration pour le CI
+  maxWorkers: process.env['CI'] ? 1 : '50%',
+  
+  // Configuration spécifique pour CI
+  ...(process.env['CI'] && {
+    // Retry des tests flaky en CI
+    testRetries: 2,
+    // Timeout plus long pour les hooks
+    testEnvironmentOptions: {
+      timeout: 60000
+    }
+  }),
+  
+  // Configuration des reporters
+  reporters: ['default']
 };
+
+export default config;

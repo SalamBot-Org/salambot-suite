@@ -7,28 +7,55 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ## [Non publié]
 
-### 🚀 Phase 1 - Optimisation Détection Darija (Décembre 2024)
+### Ajouté
 
-#### ✅ Performances Atteintes
+#### Version 2.2.0 - Implémentations Majeures ✅
+- **API Gateway Enterprise** : Implémentation complète dans `apps/functions-run/src/gateway/`
+  - Serveur Express avec middleware sécurisé (Helmet, CORS, compression)
+  - Authentification JWT et API Keys avec validation
+  - Rate limiting intelligent par IP et utilisateur
+  - Proxy intelligent avec load balancing et circuit breaker
+  - Monitoring Prometheus avec métriques temps réel
+  - Logging structuré et gestion d'erreurs centralisée
+  - Configuration centralisée par environnement
+  - Health checks pour tous les services
+  - Tests unitaires et d'intégration complets
+- **Widget Web Fonctionnel** : Interface React complète
+  - Composant ChatBox avec gestion d'état
+  - API mock pour simulation conversations
+  - Support multilingue (FR/AR/Darija)
+  - Tests unitaires complets
+  - Design responsive et accessible
+- **Bibliothèques Partagées** : Structure monorepo créée avec implémentation de base
+  - `@salambot/ui` : Composants UI basiques (expansion requise)
+  - `@salambot/auth` : Hooks Firebase minimaux (RBAC à implémenter)
+  - `@salambot/config` : Configuration centralisée fonctionnelle
+  - `@salambot/ai` : Détection Darija avec 100% de précision (Phase 1 complétée)
+- **Synchronisation Versions** : Harmonisation à v2.2.0 sur tous les modules
+- **Scripts de Gestion** : Automatisation build, test et audit dépendances
+
+#### 🚀 Phase 1 - Optimisation Détection Darija (Décembre 2024) ✅
+
+##### ✅ Performances Atteintes
 - **🎯 Précision Globale: 100%** (objectif: >88%) - Issue #42
 - **⚡ Temps de Réponse: 2.4ms** (objectif: <100ms)
 - **🚀 Cache Performance: 98.5%** d'amélioration
 - **📊 Couverture Tests: 100%** (40 tests passés)
 
-#### 🔧 Améliorations Techniques
+##### 🔧 Améliorations Techniques
 - **Expansion Dictionnaire Darija (+150%)**: Ajout de 50+ mots-clés Arabic script critiques
 - **Patterns Code-Switching (+200%)**: Détection français-darija et anglais-darija améliorée
 - **Expressions Idiomatiques (+300%)**: Extension massive des expressions temporelles et familiales
 - **Cache LRU Intelligent**: Implémentation avec optimisation mémoire
 - **Seuils Optimisés**: Configuration `darijaThreshold` ajustée pour Phase 1
 
-#### 📝 Fichiers Modifiés
+##### 📝 Fichiers Modifiés
 - `libs/ai/lang-detect/src/lib/darija-detector.ts`: Dictionnaire étendu
 - `libs/ai/lang-detect/src/lib/ai-lang-detect.ts`: Cache LRU
 - `libs/ai/lang-detect/test-phase1.ts`: Suite de tests performance
 - `libs/ai/lang-detect/README.md`: Documentation mise à jour
 
-#### 🧪 Validation
+##### 🧪 Validation
 - **25 échantillons de test** validés (Latin, Arabe, Mixte)
 - **Progression: 40% → 72% → 84% → 100%** de précision
 - **Tests TypeScript**: Correction erreurs `length` et `join` sur types `unknown`

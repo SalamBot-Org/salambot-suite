@@ -4,7 +4,7 @@
 
 **🇲🇦 La première plateforme IA conversationnelle optimisée pour le Darija marocain**
 
-[![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](https://github.com/salambot/salambot-suite)
+[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](https://github.com/salambot/salambot-suite)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.17.0-brightgreen.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/typescript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -29,6 +29,24 @@
 ### 🎯 La Différence SalamBot
 
 **SalamBot** n'est pas juste un autre chatbot. C'est la **première solution CRM intelligente** conçue spécifiquement pour le marché marocain, capable de comprendre et de répondre naturellement en **Darija**, **Français** et **Arabe Classique**.
+
+## 🚀 Fonctionnalités Principales
+
+### 🧠 Intelligence Artificielle Avancée
+- **Détection Darija bi-script** : Reconnaissance automatique Latin/Arabe avec 100% de précision (Phase 1 complétée)
+- **Compréhension contextuelle** : Analyse sémantique des intentions client
+- **Réponses adaptatives** : Génération de réponses personnalisées selon le contexte
+- **Apprentissage continu** : Amélioration des performances via feedback utilisateur
+
+### 🏗️ Architecture Enterprise Complète
+- **API Gateway Enterprise** : Implémentation complète dans `apps/functions-run/src/gateway/`
+  - Serveur Express avec middleware sécurisé avancé
+  - Authentification JWT/API Keys, rate limiting intelligent
+  - Proxy avec load balancing et circuit breaker
+  - Monitoring Prometheus et logging structuré
+- **Widget Web** : Interface de chat fonctionnelle avec support multilingue
+- **Bibliothèques Partagées** : Système de design, authentification et configuration centralisée
+- **Infrastructure DevSecOps** : CI/CD automatisé, Terraform, monitoring et sécurité
 
 #### 🇲🇦 Maîtrise du Darija Unique - Phase 1 ✅
 

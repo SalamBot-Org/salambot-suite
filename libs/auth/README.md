@@ -1,4 +1,4 @@
-# 🔐 SalamBot Auth - Authentification Firebase
+# 🔐 SalamBot Auth - Authentification Firebase v2.2.0
 
 **Bibliothèque d'authentification sécurisée et hooks React pour l'écosystème SalamBot**
 
