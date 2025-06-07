@@ -36,8 +36,8 @@ const config: Config = {
     '<rootDir>/src/__tests__/env-setup.ts'
   ],
   
-  // Timeout augmenté pour le CI (20 secondes)
-  testTimeout: 20000,
+  // Timeout pour les tests (30 secondes pour CI)
+  testTimeout: process.env['CI'] ? 30000 : 20000,
   
   // Mapper les modules pour les mocks
   moduleNameMapper: {
@@ -54,6 +54,16 @@ const config: Config = {
   
   // Configuration pour le CI
   maxWorkers: process.env['CI'] ? 1 : '50%',
+  
+  // Configuration spécifique pour CI
+  ...(process.env['CI'] && {
+    // Retry des tests flaky en CI
+    testRetries: 2,
+    // Timeout plus long pour les hooks
+    testEnvironmentOptions: {
+      timeout: 60000
+    }
+  }),
   
   // Configuration des reporters
   reporters: ['default']

@@ -17,7 +17,7 @@ mkdir -p logs
 check_service() {
   local port=$1
   local service_name=$2
-  local max_attempts=60  # Increased from 30 to 60
+  local max_attempts=80  # Increased from 60 to 80
   local attempt=1
   local backoff_delay=1
   
@@ -36,8 +36,19 @@ check_service() {
       fi
     fi
     
-    # Check health endpoint
-    if curl -f -s --connect-timeout 2 --max-time 5 "http://localhost:$port/health" > /dev/null 2>&1; then
+    # Check if port is open first
+    if ! timeout 3 nc -z localhost $port 2>/dev/null; then
+      echo "⏳ Port $port not yet open (attempt $attempt/$max_attempts)"
+      sleep $backoff_delay
+      if [ $backoff_delay -lt 3 ]; then
+        backoff_delay=$((backoff_delay + 1))
+      fi
+      attempt=$((attempt + 1))
+      continue
+    fi
+    
+    # Check health endpoint with timeout
+    if timeout 5 curl -f -s --connect-timeout 2 --max-time 3 "http://localhost:$port/health" > /dev/null 2>&1; then
       echo "✅ $service_name is ready on port $port (attempt $attempt)"
       return 0
     fi
@@ -63,7 +74,7 @@ check_service() {
 check_port() {
   local port=$1
   local service_name=$2
-  local max_attempts=60  # Increased from 30 to 60
+  local max_attempts=80  # Increased from 60 to 80
   local attempt=1
   local backoff_delay=1
   
@@ -82,7 +93,7 @@ check_port() {
       fi
     fi
     
-    if nc -z localhost "$port" 2>/dev/null; then
+    if timeout 3 nc -z localhost "$port" 2>/dev/null; then
       echo "✅ $service_name is ready on port $port (attempt $attempt)"
       return 0
     fi
@@ -128,7 +139,7 @@ echo "$WEBSOCKET_PID" > logs/websocket.pid
 echo "$PROMETHEUS_PID" > logs/prometheus.pid
 
 echo "⏳ Waiting for services to initialize..."
-sleep 10  # Increased from 5 to 10 seconds for better stability
+sleep 15  # Increased from 10 to 15 seconds for better stability
 
 # Check each service
 SERVICES_FAILED=0

@@ -73,37 +73,62 @@ jobs:
       - name: Wait for Mock Services Health Check
         run: |
           echo "Waiting for mock services to be ready..."
-          sleep 10
+          sleep 15  # Augmenté de 10 à 15 secondes
           
-          # Vérifier que les services sont accessibles avec plus de timeout
-          for port in 3001 3002 3003 3004; do
+          # Vérifier que les services sont accessibles avec plus de timeout et retry
+          for port in 3001 3002 3004; do  # 3003 n'a pas de /health endpoint
             echo "Checking service on port $port..."
-            timeout 60 bash -c "until curl -f http://localhost:$port/health 2>/dev/null; do sleep 2; done" || {
-              echo "Service on port $port failed to start or is not healthy"
-              echo "Checking process logs..."
-              cd apps/functions-run
-              if [ -f "logs/genkit.log" ] && [ "$port" = "3001" ]; then
-                echo "Genkit service logs:"
-                tail -n 20 logs/genkit.log
-              elif [ -f "logs/rest-api.log" ] && [ "$port" = "3002" ]; then
-                echo "REST API service logs:"
-                tail -n 20 logs/rest-api.log
-              elif [ -f "logs/websocket.log" ] && [ "$port" = "3003" ]; then
-                echo "WebSocket service logs:"
-                tail -n 20 logs/websocket.log
-              elif [ -f "logs/prometheus.log" ] && [ "$port" = "3004" ]; then
-                echo "Prometheus service logs:"
-                tail -n 20 logs/prometheus.log
+            retry_count=0
+            max_retries=5
+            
+            while [ $retry_count -lt $max_retries ]; do
+              if timeout 10 bash -c "curl -f -s --connect-timeout 3 --max-time 5 http://localhost:$port/health" > /dev/null 2>&1; then
+                echo "✅ Service on port $port is healthy"
+                break
               else
-                echo "No log file found for port $port"
+                retry_count=$((retry_count + 1))
+                echo "⏳ Retry $retry_count/$max_retries for port $port..."
+                sleep 3
+                
+                if [ $retry_count -eq $max_retries ]; then
+                  echo "❌ Service on port $port failed to start after $max_retries retries"
+                  echo "📋 Checking process logs..."
+                  cd apps/functions-run
+                  if [ -f "logs/genkit.log" ] && [ "$port" = "3001" ]; then
+                    echo "Genkit service logs:"
+                    tail -n 30 logs/genkit.log
+                  elif [ -f "logs/rest-api.log" ] && [ "$port" = "3002" ]; then
+                    echo "REST API service logs:"
+                    tail -n 30 logs/rest-api.log
+                  elif [ -f "logs/prometheus.log" ] && [ "$port" = "3004" ]; then
+                    echo "Prometheus service logs:"
+                    tail -n 30 logs/prometheus.log
+                  else
+                    echo "No log file found for port $port"
+                  fi
+                  cd ../..
+                  exit 1
+                fi
               fi
-              cd ../..
-              exit 1
-            }
-            echo "Service on port $port is healthy"
+            done
           done
           
-          echo "All mock services are ready!"
+          # Vérification spéciale pour WebSocket (port 3003) - juste vérifier que le port est ouvert
+          echo "Checking WebSocket service on port 3003..."
+          if timeout 10 bash -c "until nc -z localhost 3003; do sleep 1; done"; then
+            echo "✅ WebSocket service on port 3003 is ready"
+          else
+            echo "❌ WebSocket service on port 3003 failed to start"
+            cd apps/functions-run
+            if [ -f "logs/websocket.log" ]; then
+              echo "WebSocket service logs:"
+              tail -n 30 logs/websocket.log
+            fi
+            cd ../..
+            exit 1
+          fi
+          
+          echo "✅ All mock services are ready!"
 
       - name: Test
         run: |

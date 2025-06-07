@@ -47,11 +47,11 @@ process.env['REDIS_KEY_PREFIX'] = 'salambot:test:gateway:';
 process.env['USE_MOCK_SERVICES'] = 'true';
 process.env['DISABLE_EXTERNAL_SERVICES'] = 'true';
 
-// Configuration des ports des mocks
+// Configuration des ports des mocks (alignée avec ci.yml)
 process.env['MOCK_GENKIT_PORT'] = '3001';
 process.env['MOCK_REST_API_PORT'] = '3002';
 process.env['MOCK_WEBSOCKET_PORT'] = '3003';
-process.env['MOCK_PROMETHEUS_PORT'] = '9090';
+process.env['MOCK_PROMETHEUS_PORT'] = '3004'; // Corrigé pour correspondre au CI
 
 // Configuration des délais et erreurs des mocks
 process.env['MOCK_RESPONSE_DELAY_MS'] = '50';

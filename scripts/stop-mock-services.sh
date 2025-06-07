@@ -17,13 +17,21 @@ stop_service_by_pid() {
     local pid=$(cat "$pid_file")
     if kill -0 "$pid" 2>/dev/null; then
       echo "🔄 Stopping $service_name (PID: $pid)..."
-      kill "$pid" 2>/dev/null || true
-      sleep 2
+      # Essayer d'abord un arrêt gracieux
+      kill -TERM "$pid" 2>/dev/null || true
+      
+      # Attendre que le processus se termine (augmenté à 15 secondes)
+      local count=0
+      while kill -0 "$pid" 2>/dev/null && [ $count -lt 15 ]; do
+        sleep 1
+        count=$((count + 1))
+      done
       
       # Force kill if still running
       if kill -0 "$pid" 2>/dev/null; then
         echo "⚡ Force stopping $service_name..."
         kill -9 "$pid" 2>/dev/null || true
+        sleep 3  # Augmenté de 2 à 3 secondes
       fi
       
       echo "✅ $service_name stopped"
@@ -43,20 +51,23 @@ stop_service_by_port() {
   
   echo "🔍 Checking for processes on port $port..."
   
-  # Find processes using the port
-  local pids=$(lsof -ti:"$port" 2>/dev/null || true)
+  # Find processes using the port with multiple methods
+  local pids=$(lsof -ti:"$port" 2>/dev/null || netstat -tlnp 2>/dev/null | grep ":$port " | awk '{print $7}' | cut -d'/' -f1 | grep -v '-' || true)
   
   if [ -n "$pids" ]; then
     echo "🔄 Stopping $service_name processes on port $port..."
-    echo "$pids" | xargs kill 2>/dev/null || true
-    sleep 2
-    
-    # Force kill if still running
-    local remaining_pids=$(lsof -ti:"$port" 2>/dev/null || true)
-    if [ -n "$remaining_pids" ]; then
-      echo "⚡ Force stopping remaining processes on port $port..."
-      echo "$remaining_pids" | xargs kill -9 2>/dev/null || true
-    fi
+    for pid in $pids; do
+      if [ "$pid" != "" ] && [ "$pid" != "-" ]; then
+        echo "Killing process $pid..."
+        # Essayer d'abord TERM puis KILL
+        kill -TERM "$pid" 2>/dev/null || true
+        sleep 2
+        if kill -0 "$pid" 2>/dev/null; then
+          kill -9 "$pid" 2>/dev/null || true
+        fi
+      fi
+    done
+    sleep 3  # Augmenté de 2 à 3 secondes
     
     echo "✅ Processes on port $port stopped"
   else
