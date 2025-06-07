@@ -81,7 +81,7 @@ importers:
         version: 21.1.2(@babel/traverse@7.27.4)(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(@zkochan/js-yaml@0.0.7)(esbuild@0.25.5)(eslint@8.57.1)(next@15.3.3(@babel/core@7.27.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.52.0)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.89.0))(nx@21.1.2(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)(webpack@5.99.9(@swc/core@1.5.29(@swc/helpers@0.5.17))(esbuild@0.25.5))
       '@nx/vite':
         specifier: 21.1.2
-        version: 21.1.2(@babel/traverse@7.27.4)(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17))(nx@21.1.2(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))(typescript@5.8.3)(vite@6.3.5(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))(vitest@1.6.1)
+        version: 21.1.2(@babel/traverse@7.27.4)(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17))(nx@21.1.2(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))(typescript@5.8.3)(vite@5.4.19(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2))(vitest@1.6.1)
       '@nx/web':
         specifier: 21.1.2
         version: 21.1.2(@babel/traverse@7.27.4)(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17))(nx@21.1.2(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))
@@ -138,7 +138,7 @@ importers:
         version: 8.33.1(eslint@8.57.1)(typescript@5.8.3)
       '@vitejs/plugin-react':
         specifier: ^4.5.1
-        version: 4.5.1(vite@6.3.5(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))
+        version: 4.5.1(vite@5.4.19(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2))
       '@vitest/ui':
         specifier: ^1.3.1
         version: 1.6.1(vitest@1.6.1)
@@ -218,8 +218,8 @@ importers:
         specifier: ~5.8.3
         version: 5.8.3
       vite:
-        specifier: ^6.3.5
-        version: 6.3.5(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0)
+        specifier: ^5.4.8
+        version: 5.4.19(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
       vitest:
         specifier: ^1.3.1
         version: 1.6.1(@types/node@22.15.29)(@vitest/ui@1.6.1)(jsdom@26.1.0)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
@@ -274,7 +274,7 @@ importers:
         version: 4.5.14(@types/node@22.15.30)(less@4.1.3)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
       vitest:
         specifier: ^0.34.0
-        version: 0.34.6(@vitest/ui@0.34.7)(jsdom@26.1.0)(less@4.1.3)(playwright@1.52.0)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
+        version: 0.34.6(@vitest/ui@0.34.7)(jsdom@26.1.0)(less@4.1.3)(playwright@1.52.0)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
 
   apps/functions-run:
     dependencies:
@@ -10585,46 +10585,6 @@ packages:
       terser:
         optional: true
 
-  vite@6.3.5:
-    resolution: {integrity: sha512-cZn6NDFE7wdTpINgs++ZJ4N49W2vRp8LCKrn3Ob1kYNtOo21vfDoaV5GzBfLU4MovSAB8uNRm4jgzVQZ+mBzPQ==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
-      jiti: '>=1.21.0'
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.16.0
-      tsx: ^4.8.1
-      yaml: ^2.4.2
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      jiti:
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-      tsx:
-        optional: true
-      yaml:
-        optional: true
-
   vitest@0.34.6:
     resolution: {integrity: sha512-+5CALsOvbNKnS+ZHMXtuUC7nL8/7F1F2DnHGjSsszX8zCjWSSviphCb/NuS9Nzf4Q03KyyDRBAXhF/8lffME4Q==}
     engines: {node: '>=v14.18.0'}
@@ -14221,7 +14181,7 @@ snapshots:
       - webpack
       - webpack-cli
 
-  '@nx/vite@21.1.2(@babel/traverse@7.27.4)(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17))(nx@21.1.2(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))(typescript@5.8.3)(vite@6.3.5(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))(vitest@1.6.1)':
+  '@nx/vite@21.1.2(@babel/traverse@7.27.4)(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17))(nx@21.1.2(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))(typescript@5.8.3)(vite@5.4.19(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2))(vitest@1.6.1)':
     dependencies:
       '@nx/devkit': 21.1.2(nx@21.1.2(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))
       '@nx/js': 21.1.2(@babel/traverse@7.27.4)(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17))(nx@21.1.2(@swc-node/register@1.10.10(@swc/core@1.5.29(@swc/helpers@0.5.17))(@swc/types@0.1.21)(typescript@5.8.3))(@swc/core@1.5.29(@swc/helpers@0.5.17)))
@@ -14232,7 +14192,7 @@ snapshots:
       picomatch: 4.0.2
       semver: 7.7.2
       tsconfig-paths: 4.2.0
-      vite: 6.3.5(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0)
+      vite: 5.4.19(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
       vitest: 1.6.1(@types/node@22.15.29)(@vitest/ui@1.6.1)(jsdom@26.1.0)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
     transitivePeerDependencies:
       - '@babel/traverse'
@@ -16343,7 +16303,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-react@4.5.1(vite@6.3.5(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0))':
+  '@vitejs/plugin-react@4.5.1(vite@5.4.19(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2))':
     dependencies:
       '@babel/core': 7.27.4
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.27.4)
@@ -16351,7 +16311,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.9
       '@types/babel__core': 7.20.5
       react-refresh: 0.17.0
-      vite: 6.3.5(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0)
+      vite: 5.4.19(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -16368,7 +16328,7 @@ snapshots:
       std-env: 3.9.0
       test-exclude: 6.0.0
       v8-to-istanbul: 9.3.0
-      vitest: 0.34.6(@vitest/ui@0.34.7)(jsdom@26.1.0)(less@4.1.3)(playwright@1.52.0)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
+      vitest: 0.34.6(@vitest/ui@0.34.7)(jsdom@26.1.0)(less@4.1.3)(playwright@1.52.0)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -16425,7 +16385,7 @@ snapshots:
       pathe: 1.1.2
       picocolors: 1.1.1
       sirv: 2.0.4
-      vitest: 0.34.6(@vitest/ui@0.34.7)(jsdom@26.1.0)(less@4.1.3)(playwright@1.52.0)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
+      vitest: 0.34.6(@vitest/ui@0.34.7)(jsdom@26.1.0)(less@4.1.3)(playwright@1.52.0)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
 
   '@vitest/ui@1.6.1(vitest@1.6.1)':
     dependencies:
@@ -23964,19 +23924,20 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite-node@0.34.6(@types/node@22.15.30)(less@4.1.3)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2):
+  vite-node@0.34.6(@types/node@22.15.30)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2):
     dependencies:
       cac: 6.7.14
       debug: 4.4.1(supports-color@5.5.0)
       mlly: 1.7.4
       pathe: 1.1.2
       picocolors: 1.1.1
-      vite: 4.5.14(@types/node@22.15.30)(less@4.1.3)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
+      vite: 5.4.19(@types/node@22.15.30)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
     transitivePeerDependencies:
       - '@types/node'
       - less
       - lightningcss
       - sass
+      - sass-embedded
       - stylus
       - sugarss
       - supports-color
@@ -24027,26 +23988,21 @@ snapshots:
       stylus: 0.64.0
       terser: 5.39.2
 
-  vite@6.3.5(@types/node@22.15.29)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)(tsx@4.19.4)(yaml@2.8.0):
+  vite@5.4.19(@types/node@22.15.30)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2):
     dependencies:
       esbuild: 0.25.5
-      fdir: 6.4.4(picomatch@4.0.2)
-      picomatch: 4.0.2
       postcss: 8.5.4
       rollup: 4.41.1
-      tinyglobby: 0.2.14
     optionalDependencies:
-      '@types/node': 22.15.29
+      '@types/node': 22.15.30
       fsevents: 2.3.3
       less: 4.1.3
       sass: 1.89.0
       sass-embedded: 1.89.1
       stylus: 0.64.0
       terser: 5.39.2
-      tsx: 4.19.4
-      yaml: 2.8.0
 
-  vitest@0.34.6(@vitest/ui@0.34.7)(jsdom@26.1.0)(less@4.1.3)(playwright@1.52.0)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2):
+  vitest@0.34.6(@vitest/ui@0.34.7)(jsdom@26.1.0)(less@4.1.3)(playwright@1.52.0)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2):
     dependencies:
       '@types/chai': 4.3.20
       '@types/chai-subset': 1.3.6(@types/chai@4.3.20)
@@ -24070,7 +24026,7 @@ snapshots:
       tinybench: 2.9.0
       tinypool: 0.7.0
       vite: 4.5.14(@types/node@22.15.30)(less@4.1.3)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
-      vite-node: 0.34.6(@types/node@22.15.30)(less@4.1.3)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
+      vite-node: 0.34.6(@types/node@22.15.30)(less@4.1.3)(sass-embedded@1.89.1)(sass@1.89.0)(stylus@0.64.0)(terser@5.39.2)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@vitest/ui': 0.34.7(vitest@0.34.6)
@@ -24080,6 +24036,7 @@ snapshots:
       - less
       - lightningcss
       - sass
+      - sass-embedded
       - stylus
       - sugarss
       - supports-color
