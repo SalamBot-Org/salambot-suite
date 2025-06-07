@@ -10,7 +10,7 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import { GatewayConfig } from '../config/gateway-config';
 
 /**
@@ -49,6 +49,7 @@ export interface AuthenticatedUser {
  * 📝 Extension de Request pour inclure l'utilisateur
  */
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       user?: AuthenticatedUser;
@@ -119,14 +120,14 @@ export const authMiddleware = (config?: GatewayConfig) => {
 
     } catch (error) {
       console.error('❌ Erreur middleware auth:', error);
-      logAuthFailure(req, 'AUTH_ERROR', error);
+      logAuthFailure(req, 'AUTH_ERROR', error as Record<string, unknown>);
       
       return res.status(500).json({
         error: 'Erreur interne d\'authentification',
         code: 'AUTH_INTERNAL_ERROR',
         requestId: req.requestId,
         timestamp: new Date().toISOString()
-      });
+      } as Record<string, unknown>);
     }
   };
 };
@@ -145,7 +146,7 @@ async function authenticateJWT(req: Request, config?: GatewayConfig): Promise<Au
   
   try {
     const jwtSecret = config?.security.jwtSecret || process.env['JWT_SECRET'] || 'default-secret';
-    const decoded = jwt.verify(token, jwtSecret) as any;
+    const decoded = jwt.verify(token, jwtSecret) as { sub: string; role: string; [key: string]: unknown };
     
     // Validation du payload JWT
     if (!decoded.sub || !decoded.role) {
@@ -154,10 +155,10 @@ async function authenticateJWT(req: Request, config?: GatewayConfig): Promise<Au
 
     return {
       id: decoded.sub,
-      email: decoded.email,
-      role: decoded.role,
-      permissions: decoded.permissions || [],
-      tenant: decoded.tenant
+      email: decoded['email'] as string | undefined,
+      role: decoded.role as 'admin' | 'user' | 'service' | 'guest',
+      permissions: (decoded['permissions'] as string[]) || [],
+      tenant: decoded['tenant'] as string | undefined
     };
   } catch (error) {
     console.warn('⚠️ JWT invalide:', error instanceof Error ? error.message : String(error));
@@ -282,7 +283,7 @@ function logAuthSuccess(req: Request, method: string) {
 /**
  * 🚨 Logging des échecs d'authentification
  */
-function logAuthFailure(req: Request, reason: string, details?: any) {
+function logAuthFailure(req: Request, reason: string, details?: Record<string, unknown>) {
   console.warn(`❌ Auth Failure [${req.requestId}]:`, {
     reason,
     details,

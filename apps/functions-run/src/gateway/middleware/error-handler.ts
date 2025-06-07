@@ -56,7 +56,7 @@ export interface StandardError {
   message: string;
   code: string;
   statusCode: number;
-  details?: any;
+  details?: Record<string, unknown>;
   requestId?: string;
   timestamp: string;
   documentation?: string;
@@ -70,7 +70,7 @@ export class GatewayError extends Error {
   public readonly type: ErrorType;
   public readonly statusCode: number;
   public readonly code: string;
-  public readonly details?: any;
+  public readonly details?: Record<string, unknown>;
   public readonly isOperational: boolean;
 
   constructor(
@@ -78,8 +78,8 @@ export class GatewayError extends Error {
     message: string,
     statusCode: number,
     code: string,
-    details?: any,
-    isOperational: boolean = true
+    details?: Record<string, unknown>,
+    isOperational = true
   ) {
     super(message);
     this.name = 'GatewayError';
@@ -151,7 +151,7 @@ function classifyError(error: Error, requestId: string, timestamp: string): Stan
       message: 'Données de requête invalides',
       code: 'VALIDATION_FAILED',
       statusCode: 400,
-      details: extractValidationDetails(error),
+      details: extractValidationDetails(error) ?? undefined,
       requestId,
       timestamp,
       documentation: getDocumentationUrl(ErrorType.VALIDATION),
@@ -313,14 +313,14 @@ function getSuggestion(errorType: ErrorType): string {
 /**
  * 🔍 Extraction des détails de validation
  */
-function extractValidationDetails(error: Error): any {
+function extractValidationDetails(error: Error): Record<string, unknown> | null {
   // Tentative d'extraction des détails selon le type d'erreur de validation
   if ('details' in error) {
-    return (error as any).details;
+    return (error as Record<string, unknown> & { details: Record<string, unknown> }).details;
   }
   
   if ('errors' in error) {
-    return (error as any).errors;
+    return (error as Record<string, unknown> & { errors: Record<string, unknown> }).errors;
   }
 
   return null;
@@ -344,22 +344,22 @@ function sendCriticalAlert(error: Error, req: Request, standardError: StandardEr
 /**
  * 🛠️ Helpers pour créer des erreurs standardisées
  */
-export const createValidationError = (message: string, details?: any) => 
+export const createValidationError = (message: string, details?: Record<string, unknown>) => 
   new GatewayError(ErrorType.VALIDATION, message, 400, 'VALIDATION_ERROR', details);
 
-export const createAuthenticationError = (message: string = 'Authentification requise') => 
+export const createAuthenticationError = (message = 'Authentification requise') => 
   new GatewayError(ErrorType.AUTHENTICATION, message, 401, 'AUTHENTICATION_REQUIRED');
 
-export const createAuthorizationError = (message: string = 'Permissions insuffisantes') => 
+export const createAuthorizationError = (message = 'Permissions insuffisantes') => 
   new GatewayError(ErrorType.AUTHORIZATION, message, 403, 'INSUFFICIENT_PERMISSIONS');
 
-export const createNotFoundError = (resource: string = 'Ressource') => 
+export const createNotFoundError = (resource = 'Ressource') => 
   new GatewayError(ErrorType.NOT_FOUND, `${resource} non trouvé(e)`, 404, 'NOT_FOUND');
 
-export const createRateLimitError = (message: string = 'Limite de requêtes dépassée') => 
+export const createRateLimitError = (message = 'Limite de requêtes dépassée') => 
   new GatewayError(ErrorType.RATE_LIMIT, message, 429, 'RATE_LIMIT_EXCEEDED');
 
-export const createServiceUnavailableError = (service: string = 'Service') => 
+export const createServiceUnavailableError = (service = 'Service') => 
   new GatewayError(ErrorType.SERVICE_UNAVAILABLE, `${service} temporairement indisponible`, 503, 'SERVICE_UNAVAILABLE');
 
 export default errorHandler;

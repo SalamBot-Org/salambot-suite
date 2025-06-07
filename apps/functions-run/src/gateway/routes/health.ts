@@ -423,17 +423,35 @@ async function checkService(name: string, url: string): Promise<ServiceHealth> {
   const startTime = performance.now();
   
   try {
-    // Simulation d'un check HTTP (en production, utiliser fetch ou axios)
-    // Pour le moment, on simule un service up
+    // Faire une vraie requête HTTP vers le service
+    const response = await fetch(url, {
+      method: 'GET',
+      signal: AbortSignal.timeout(5000), // 5 seconds timeout using AbortSignal
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    
     const responseTime = Math.round(performance.now() - startTime);
     
-    return {
-      name,
-      status: 'up',
-      responseTime,
-      lastCheck: new Date().toISOString(),
-      url
-    };
+    if (response.ok) {
+      return {
+        name,
+        status: 'up',
+        responseTime,
+        lastCheck: new Date().toISOString(),
+        url
+      };
+    } else {
+      return {
+        name,
+        status: 'down',
+        responseTime,
+        lastCheck: new Date().toISOString(),
+        error: `HTTP ${response.status}: ${response.statusText}`,
+        url
+      };
+    }
   } catch (error) {
     const responseTime = Math.round(performance.now() - startTime);
     

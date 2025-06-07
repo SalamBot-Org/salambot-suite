@@ -5,19 +5,20 @@
 # -----------------------------------------------------------------------------
 # Stage 1: Build Dependencies
 # -----------------------------------------------------------------------------
-FROM node:18-alpine AS dependencies
+FROM node:20-alpine3.18 AS dependencies
 
 # Métadonnées
 LABEL maintainer="SalamBot Platform Team <platform@salambot.ma>"
-LABEL version="2.1.0"
-LABEL description="SalamBot API Gateway Enterprise"
+LABEL version="2.2.0"
+LABEL description="SalamBot API Gateway Enterprise - Optimized"
 
 # Installation des outils système nécessaires
 RUN apk add --no-cache \
     dumb-init \
     curl \
     ca-certificates \
-    && rm -rf /var/cache/apk/*
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*
 
 # Création de l'utilisateur non-root
 RUN addgroup -g 1001 -S nodejs && \
@@ -26,42 +27,52 @@ RUN addgroup -g 1001 -S nodejs && \
 # Configuration du répertoire de travail
 WORKDIR /app
 
+# Configuration du cache npm/pnpm local
+RUN corepack enable && \
+    pnpm config set store-dir /tmp/.pnpm-store && \
+    pnpm config set cache-dir /tmp/.pnpm-cache
+
 # Copie des fichiers de dépendances
-COPY package.json pnpm-lock.yaml ./
-COPY tsconfig*.json ./
+COPY apps/functions-run/package.json pnpm-lock.yaml ./
+COPY apps/functions-run/tsconfig*.json ./
 
 # Installation des dépendances (avec cache optimisé)
-RUN corepack enable && \
-    pnpm install --prod --frozen-lockfile && \
-    pnpm store prune
+RUN pnpm install --prod --frozen-lockfile --no-audit --no-fund && \
+    pnpm store prune && \
+    rm -rf /tmp/.pnpm-store /tmp/.pnpm-cache
 
 # -----------------------------------------------------------------------------
 # Stage 2: Build Application
 # -----------------------------------------------------------------------------
-FROM node:18-alpine AS builder
+FROM node:20-alpine3.18 AS builder
 
 WORKDIR /app
 
+# Installation et configuration de pnpm
+RUN npm install -g pnpm@latest && \
+    pnpm config set store-dir /tmp/.pnpm-store && \
+    pnpm config set cache-dir /tmp/.pnpm-cache
+
 # Copie des dépendances depuis le stage précédent
 COPY --from=dependencies /app/node_modules ./node_modules
-COPY package.json pnpm-lock.yaml ./
-COPY tsconfig*.json ./
+COPY apps/functions-run/package.json pnpm-lock.yaml ./
+COPY apps/functions-run/tsconfig*.json ./
 
 # Copie du code source
-COPY src/ ./src/
+COPY apps/functions-run/src/ ./src/
 
 # Installation des dépendances de développement pour le build
-RUN corepack enable && \
-    pnpm install --frozen-lockfile
+RUN pnpm install
 
 # Build de l'application TypeScript
 RUN pnpm run build && \
-    pnpm prune --prod
+    pnpm prune --prod && \
+    rm -rf /tmp/.pnpm-store /tmp/.pnpm-cache
 
 # -----------------------------------------------------------------------------
 # Stage 3: Production Runtime
 # -----------------------------------------------------------------------------
-FROM node:18-alpine AS runtime
+FROM node:20-alpine3.18 AS runtime
 
 # Installation des outils système pour la production
 RUN apk add --no-cache \
@@ -69,7 +80,9 @@ RUN apk add --no-cache \
     curl \
     ca-certificates \
     tini \
-    && rm -rf /var/cache/apk/*
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/*
 
 # Création de l'utilisateur non-root
 RUN addgroup -g 1001 -S nodejs && \
@@ -111,7 +124,7 @@ CMD ["node", "dist/gateway/index.js"]
 # -----------------------------------------------------------------------------
 # Stage 4: Development (optionnel)
 # -----------------------------------------------------------------------------
-FROM node:18-alpine AS development
+FROM node:20-alpine3.18 AS development
 
 WORKDIR /app
 
@@ -120,17 +133,21 @@ RUN apk add --no-cache \
     git \
     curl \
     ca-certificates \
-    && rm -rf /var/cache/apk/*
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*
+
+# Installation et configuration de pnpm
+RUN npm install -g pnpm@latest && \
+    pnpm config set store-dir /tmp/.pnpm-store && \
+    pnpm config set cache-dir /tmp/.pnpm-cache
 
 # Copie de tous les fichiers
-COPY package.json pnpm-lock.yaml ./
-COPY tsconfig*.json ./
-COPY src/ ./src/
-COPY tests/ ./tests/
+COPY apps/functions-run/package.json pnpm-lock.yaml ./
+COPY apps/functions-run/tsconfig*.json ./
+COPY apps/functions-run/src/ ./src/
 
 # Installation de toutes les dépendances (dev + prod)
-RUN corepack enable && \
-    pnpm install --frozen-lockfile
+RUN pnpm install
 
 # Variables d'environnement pour le développement
 ENV NODE_ENV=development

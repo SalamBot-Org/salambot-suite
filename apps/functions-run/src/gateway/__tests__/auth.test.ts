@@ -10,10 +10,10 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import { authMiddleware } from '../middleware/auth';
 import { GatewayConfigFactory } from '../config/gateway-config';
-import { MetricsCollector } from '../middleware/metrics';
+import { performCompleteCleanup } from '../../__tests__/resource-cleanup';
 
 /**
  * 🔐 TESTS MIDDLEWARE AUTHENTIFICATION 🔐
@@ -41,9 +41,13 @@ describe('🔐 Authentication Middleware', () => {
   let mockResponse: Partial<Response>;
   let nextFunction: NextFunction;
 
-  afterAll(() => {
-    // Nettoyage des métriques pour éviter les handles ouverts
-    MetricsCollector.resetInstance();
+  afterAll(async () => {
+    try {
+      // Nettoyage complet des ressources
+      await performCompleteCleanup();
+    } catch (error) {
+      console.warn('⚠️ Erreur lors du nettoyage:', error);
+    }
   });
 
   beforeEach(() => {

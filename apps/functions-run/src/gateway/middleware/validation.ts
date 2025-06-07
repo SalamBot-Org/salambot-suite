@@ -44,8 +44,8 @@ export interface ValidationRule {
   min?: number;
   max?: number;
   pattern?: RegExp;
-  allowedValues?: any[];
-  customValidator?: (value: any) => boolean | string;
+  allowedValues?: unknown[];
+  customValidator?: (value: unknown) => boolean | string;
 }
 
 /**
@@ -60,8 +60,11 @@ const validationSchemas: Record<string, ValidationRule[]> = {
       required: true,
       minLength: 1,
       maxLength: 10000,
-      customValidator: (value: string) => {
+      customValidator: (value: unknown) => {
         // Vérifier que le texte ne contient pas de scripts malveillants
+        if (typeof value !== 'string') {
+          return 'La valeur doit être une chaîne de caractères';
+        }
         const dangerousPatterns = /<script|javascript:|data:|vbscript:/i;
         if (dangerousPatterns.test(value)) {
           return 'Contenu potentiellement malveillant détecté';
@@ -134,13 +137,13 @@ export const validateRequest = (req: Request, res: Response, next: NextFunction)
     // Validation de base pour tous les endpoints
     const basicValidation = performBasicValidation(req);
     if (!basicValidation.isValid) {
-      throw createValidationError(basicValidation.error!, basicValidation.details);
+      throw createValidationError(basicValidation.error || 'Validation error', basicValidation.details);
     }
     
     // Validation spécifique par endpoint
     const endpointValidation = performEndpointValidation(req);
     if (!endpointValidation.isValid) {
-      throw createValidationError(endpointValidation.error!, endpointValidation.details);
+      throw createValidationError(endpointValidation.error || 'Endpoint validation error', endpointValidation.details);
     }
     
     // Sanitisation des données
@@ -155,7 +158,7 @@ export const validateRequest = (req: Request, res: Response, next: NextFunction)
 /**
  * 🔍 Validation de base pour toutes les requêtes
  */
-function performBasicValidation(req: Request): { isValid: boolean; error?: string; details?: any } {
+function performBasicValidation(req: Request): { isValid: boolean; error?: string; details?: Record<string, unknown> } {
   const errors: string[] = [];
   
   // Validation de la taille du payload
@@ -203,14 +206,14 @@ function performBasicValidation(req: Request): { isValid: boolean; error?: strin
 /**
  * 🎯 Validation spécifique par endpoint
  */
-function performEndpointValidation(req: Request): { isValid: boolean; error?: string; details?: any } {
+function performEndpointValidation(req: Request): { isValid: boolean; error?: string; details?: Record<string, unknown> } {
   // Recherche du schéma de validation correspondant
   const schema = findValidationSchema(req.path);
   if (!schema) {
     return { isValid: true }; // Pas de validation spécifique
   }
   
-  const errors: any[] = [];
+  const errors: Array<{ field: string; error: string }> = [];
   const data = { ...req.body, ...req.query, ...req.params };
   
   // Validation de chaque règle
@@ -219,13 +222,7 @@ function performEndpointValidation(req: Request): { isValid: boolean; error?: st
     if (!validationResult.isValid) {
       errors.push({
         field: rule.field,
-        error: validationResult.error,
-        value: data[rule.field],
-        rule: {
-          type: rule.type,
-          required: rule.required,
-          constraints: getConstraintsDescription(rule)
-        }
+        error: validationResult.error || 'Erreur de validation'
       });
     }
   }
@@ -265,7 +262,7 @@ function findValidationSchema(path: string): ValidationRule[] | null {
 /**
  * ✅ Validation d'un champ selon une règle
  */
-function validateField(value: any, rule: ValidationRule): { isValid: boolean; error?: string } {
+function validateField(value: unknown, rule: ValidationRule): { isValid: boolean; error?: string } {
   // Champ requis
   if (rule.required && (value === undefined || value === null || value === '')) {
     return { isValid: false, error: `Champ obligatoire manquant` };
@@ -302,7 +299,7 @@ function validateField(value: any, rule: ValidationRule): { isValid: boolean; er
 /**
  * 🔢 Validation du type de données
  */
-function validateType(value: any, type: string): { isValid: boolean; error?: string } {
+function validateType(value: unknown, type: string): { isValid: boolean; error?: string } {
   switch (type) {
     case 'string':
       if (typeof value !== 'string') {
@@ -347,7 +344,7 @@ function validateType(value: any, type: string): { isValid: boolean; error?: str
 /**
  * 📏 Validation des contraintes (longueur, valeurs autorisées, etc.)
  */
-function validateConstraints(value: any, rule: ValidationRule): { isValid: boolean; error?: string } {
+function validateConstraints(value: unknown, rule: ValidationRule): { isValid: boolean; error?: string } {
   // Longueur minimale/maximale pour les chaînes
   if (typeof value === 'string') {
     if (rule.minLength && value.length < rule.minLength) {
@@ -394,14 +391,14 @@ function sanitizeRequestData(req: Request) {
   
   // Sanitisation des query parameters
   if (req.query && typeof req.query === 'object') {
-    req.query = sanitizeObject(req.query);
+    req.query = sanitizeObject(req.query) as typeof req.query;
   }
 }
 
 /**
  * 🧼 Sanitisation récursive d'un objet
  */
-function sanitizeObject(obj: any): any {
+function sanitizeObject(obj: unknown): unknown {
   if (typeof obj === 'string') {
     return sanitizeString(obj);
   }
@@ -411,7 +408,7 @@ function sanitizeObject(obj: any): any {
   }
   
   if (typeof obj === 'object' && obj !== null) {
-    const sanitized: any = {};
+    const sanitized: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(obj)) {
       sanitized[sanitizeString(key)] = sanitizeObject(value);
     }
@@ -459,19 +456,6 @@ function isValidUrl(url: string): boolean {
   }
 }
 
-/**
- * 📋 Description des contraintes pour les messages d'erreur
- */
-function getConstraintsDescription(rule: ValidationRule): string {
-  const constraints: string[] = [];
-  
-  if (rule.minLength) constraints.push(`min: ${rule.minLength}`);
-  if (rule.maxLength) constraints.push(`max: ${rule.maxLength}`);
-  if (rule.min !== undefined) constraints.push(`min: ${rule.min}`);
-  if (rule.max !== undefined) constraints.push(`max: ${rule.max}`);
-  if (rule.allowedValues) constraints.push(`valeurs: [${rule.allowedValues.join(', ')}]`);
-  
-  return constraints.join(', ');
-}
+
 
 export default validateRequest;

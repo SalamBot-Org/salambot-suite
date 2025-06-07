@@ -138,30 +138,46 @@ export class SalamBotAPIGateway {
     }
     
     // Route d'information sur la gateway
+    const gatewayInfo = {
+      name: 'SalamBot API Gateway Enterprise',
+      version: '2.1.0',
+      status: 'operational',
+      uptime: process.uptime(),
+      timestamp: new Date().toISOString(),
+      environment: this.config.environment,
+      services: {
+        'functions-run': 'active',
+        'widget-web': 'active',
+        'agent-desk': 'active'
+      },
+      domains: {
+        vitrine: 'salambot.ma',
+        application: 'salambot.app',
+        api: 'api.salambot.app',
+        docs: 'docs.salambot.app',
+        monitoring: 'grafana.salambot.app'
+      },
+      monitoring: {
+        prometheusEnabled: this.config.monitoring.prometheusEnabled,
+        logLevel: this.config.monitoring.logLevel,
+        tracingEnabled: this.config.monitoring.tracingEnabled
+      }
+    };
+
     this.app.get('/gateway/info', (req: Request, res: Response) => {
       res.json({
-        name: 'SalamBot API Gateway Enterprise',
-        version: '2.1.0',
-        status: 'operational',
+        ...gatewayInfo,
         uptime: process.uptime(),
-        timestamp: new Date().toISOString(),
-        services: {
-          'functions-run': 'active',
-          'widget-web': 'active',
-          'agent-desk': 'active'
-        },
-        domains: {
-          vitrine: 'salambot.ma',
-          application: 'salambot.app',
-          api: 'api.salambot.app',
-          docs: 'docs.salambot.app',
-          monitoring: 'grafana.salambot.app'
-        },
-        monitoring: {
-          prometheusEnabled: this.config.monitoring.prometheusEnabled,
-          logLevel: this.config.monitoring.logLevel,
-          tracingEnabled: this.config.monitoring.tracingEnabled
-        }
+        timestamp: new Date().toISOString()
+      });
+    });
+
+    // Endpoint /info pour compatibilité avec les tests
+    this.app.get('/info', (req: Request, res: Response) => {
+      res.json({
+        ...gatewayInfo,
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString()
       });
     });
   }

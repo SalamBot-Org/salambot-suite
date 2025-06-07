@@ -7,32 +7,33 @@
  * @created 2025-06-02
  */
 
-import request from 'supertest';
 import { Redis } from 'ioredis';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import WebSocket from 'ws';
 
 // Types pour les utilitaires globaux
-declare global {
-  var testUtils: {
-    makeRequest: (url: string, options?: any) => Promise<any>;
-    waitForCondition: (condition: () => boolean | Promise<boolean>, timeout?: number) => Promise<void>;
-    generateTestData: (type: string, count?: number) => any;
-    redis: Redis;
-    serviceUrls: {
-      genkit: string;
-      restApi: string;
-      websocket: string;
-      prometheus: string;
-    };
+type RequestResult = AxiosResponse<unknown> | { error: boolean; message: string };
+
+interface TestUtils {
+  makeRequest: (url: string, options?: Record<string, unknown>) => Promise<AxiosResponse<unknown>>;
+  waitForCondition: (condition: () => boolean | Promise<boolean>, timeout?: number) => Promise<void>;
+  generateTestData: (type: string, count?: number) => Record<string, unknown>;
+  redis: Redis;
+  serviceUrls: {
+    genkit: string;
+    restApi: string;
+    websocket: string;
+    prometheus: string;
   };
 }
 
+declare global {
+  // eslint-disable-next-line no-var
+  var testUtils: TestUtils;
+}
+
 describe('API Gateway - Tests d\'Intégration', () => {
-  let gatewayApp: any;
-  let gatewayServer: any;
-  const GATEWAY_PORT = 3000;
-  const GATEWAY_URL = `http://localhost:${GATEWAY_PORT}`;
+  let gatewayServer: { close?: () => void } | undefined;
 
   beforeAll(async () => {
     // Vérifier que les services mock sont disponibles
@@ -50,20 +51,25 @@ describe('API Gateway - Tests d\'Intégration', () => {
         const response = await axios.get(`${service.url}/health`, { timeout: 5000 });
         expect(response.status).toBe(200);
         console.log(`✅ ${service.name} service disponible`);
-      } catch (error) {
-        console.error(`❌ ${service.name} service non disponible:`, error.message);
+      } catch (error: unknown) {
+        console.error(`❌ ${service.name} service non disponible:`, error instanceof Error ? error.message : String(error));
         throw new Error(`Service ${service.name} non disponible pour les tests`);
       }
     }
 
     // Démarrer l'API Gateway (simulation)
     // Note: Dans un vrai test, on démarrerait l'application Gateway ici
+    gatewayServer = { 
+      close: () => {
+        console.log('🔌 Fermeture du serveur gateway simulé');
+      }
+    }; // Mock server object
     console.log('🚀 API Gateway simulé démarré');
   });
 
   afterAll(async () => {
     // Nettoyer les ressources
-    if (gatewayServer) {
+    if (gatewayServer?.close) {
       gatewayServer.close();
     }
     console.log('🧹 Nettoyage des ressources terminé');
@@ -71,7 +77,7 @@ describe('API Gateway - Tests d\'Intégration', () => {
 
   beforeEach(async () => {
     // Nettoyer Redis entre les tests si configuré
-    if (process.env.CLEAN_REDIS_BETWEEN_TESTS === 'true') {
+    if (process.env['CLEAN_REDIS_BETWEEN_TESTS'] === 'true') {
       const keys = await global.testUtils.redis.keys('salambot:test:*');
       if (keys.length > 0) {
         await global.testUtils.redis.del(...keys);
@@ -137,10 +143,11 @@ describe('API Gateway - Tests d\'Intégration', () => {
       );
 
       expect(response.status).toBe(200);
-      expect(response.data.result).toBeDefined();
-      expect(response.data.result.language).toBe('ary'); // Darija
-      expect(response.data.result.confidence).toBeGreaterThan(0.8);
-      expect(response.data.result.dialect).toBe('darija');
+      const responseData = response.data as { result: { language: string; confidence: number; dialect: string } };
+      expect(responseData.result).toBeDefined();
+      expect(responseData.result.language).toBe('ary'); // Darija
+      expect(responseData.result.confidence).toBeGreaterThan(0.8);
+      expect(responseData.result.dialect).toBe('darija');
     });
 
     test('devrait générer une réponse en français', async () => {
@@ -162,10 +169,10 @@ describe('API Gateway - Tests d\'Intégration', () => {
       );
 
       expect(response.status).toBe(200);
-      expect(response.data.result).toBeDefined();
-      expect(response.data.result.reply).toBeDefined();
-      expect(response.data.result.language).toBe('fr');
-      expect(response.data.result.confidence).toBeGreaterThan(0.7);
+      expect((response.data as { result: unknown }).result).toBeDefined();
+      expect((response.data as { result: { reply: string } }).result.reply).toBeDefined();
+      expect((response.data as { result: { language: string } }).result.language).toBe('fr');
+      expect((response.data as { result: { confidence: number } }).result.confidence).toBeGreaterThan(0.7);
     });
 
     test('devrait gérer les erreurs de timeout Genkit', async () => {
@@ -182,17 +189,17 @@ describe('API Gateway - Tests d\'Intégration', () => {
             },
             timeout: 1000 // Timeout court pour forcer l'erreur
           }
-        ).catch(error => ({ error: true, message: error.message }))
+        ).catch((error: unknown) => ({ error: true, message: error instanceof Error ? error.message : String(error) }))
       );
 
-      const results = await Promise.all(promises);
+      const results: RequestResult[] = await Promise.all(promises);
       
       // Au moins une requête devrait réussir
-      const successCount = results.filter(r => !r.error).length;
+      const successCount = results.filter(r => !('error' in r)).length;
       expect(successCount).toBeGreaterThan(0);
       
       // Certaines peuvent échouer (timeout/erreur simulée)
-      const errorCount = results.filter(r => r.error).length;
+      const errorCount = results.filter(r => 'error' in r).length;
       console.log(`✅ ${successCount} succès, ${errorCount} erreurs (attendu pour le test de robustesse)`);
     });
   });
@@ -242,7 +249,7 @@ describe('API Gateway - Tests d\'Intégration', () => {
               ws.close();
               resolve();
             }
-          } catch (error) {
+          } catch (error: unknown) {
             clearTimeout(timeout);
             ws.close();
             reject(error);
@@ -287,7 +294,7 @@ describe('API Gateway - Tests d\'Intégration', () => {
               ws.close();
               resolve();
             }
-          } catch (error) {
+          } catch (error: unknown) {
             clearTimeout(timeout);
             ws.close();
             reject(error);
@@ -330,9 +337,9 @@ describe('API Gateway - Tests d\'Intégration', () => {
       );
 
       expect(response.status).toBe(200);
-      expect(response.data.status).toBe('success');
-      expect(response.data.data.resultType).toBe('vector');
-      expect(response.data.data.result).toBeInstanceOf(Array);
+      expect((response.data as { status: string }).status).toBe('success');
+      expect((response.data as { data: { resultType: string } }).data.resultType).toBe('vector');
+      expect((response.data as { data: { result: unknown[] } }).data.result).toBeInstanceOf(Array);
       
       console.log('✅ Requête API Prometheus réussie');
     });
@@ -351,11 +358,11 @@ describe('API Gateway - Tests d\'Intégration', () => {
       );
 
       expect(response.status).toBe(201);
-      expect(response.data.user).toBeDefined();
-      expect(response.data.user.id).toBeDefined();
-      expect(response.data.user.email).toBe(userData.email);
+      expect((response.data as { user: unknown }).user).toBeDefined();
+      expect((response.data as { user: { id: string } }).user.id).toBeDefined();
+      expect((response.data as { user: { email: string } }).user.email).toBe(userData.email);
       
-      console.log('✅ Utilisateur créé:', response.data.user.id);
+      console.log('✅ Utilisateur créé:', (response.data as { user: { id: string } }).user.id);
     });
 
     test('devrait créer une conversation', async () => {
@@ -370,11 +377,11 @@ describe('API Gateway - Tests d\'Intégration', () => {
       );
 
       expect(response.status).toBe(201);
-      expect(response.data.conversation).toBeDefined();
-      expect(response.data.conversation.id).toBeDefined();
-      expect(response.data.conversation.userId).toBe(conversationData.userId);
+      expect((response.data as { conversation: unknown }).conversation).toBeDefined();
+      expect((response.data as { conversation: { id: string } }).conversation.id).toBeDefined();
+      expect((response.data as { conversation: { userId: string } }).conversation.userId).toBe(conversationData.userId);
       
-      console.log('✅ Conversation créée:', response.data.conversation.id);
+      console.log('✅ Conversation créée:', (response.data as { conversation: { id: string } }).conversation.id);
     });
 
     test('devrait gérer les erreurs de validation', async () => {
@@ -391,10 +398,15 @@ describe('API Gateway - Tests d\'Intégration', () => {
         
         // Ne devrait pas arriver ici
         expect(true).toBe(false);
-      } catch (error) {
-        expect(error.response.status).toBe(400);
-        expect(error.response.data.error).toContain('validation');
-        console.log('✅ Erreur de validation gérée correctement');
+      } catch (error: unknown) {
+        if (error && typeof error === 'object' && 'response' in error) {
+          const axiosError = error as { response: { status: number; data: { error: string } } };
+          expect(axiosError.response.status).toBe(400);
+          expect(axiosError.response.data.error).toContain('validation');
+          console.log('✅ Erreur de validation gérée correctement');
+        } else {
+          throw error;
+        }
       }
     });
   });
@@ -411,7 +423,7 @@ describe('API Gateway - Tests d\'Intégration', () => {
         }
       );
       
-      const userId = userResponse.data.user.id;
+      const userId = (userResponse.data as { user: { id: string } }).user.id;
       
       // 2. Créer une conversation
       const conversationData = {
@@ -428,7 +440,7 @@ describe('API Gateway - Tests d\'Intégration', () => {
         }
       );
       
-      const conversationId = conversationResponse.data.conversation.id;
+      const conversationId = (conversationResponse.data as { conversation: { id: string } }).conversation.id;
       
       // 3. Détecter la langue d'un message
       const userMessage = 'Bonjour, j\'ai besoin d\'aide';
@@ -442,7 +454,7 @@ describe('API Gateway - Tests d\'Intégration', () => {
         }
       );
       
-      expect(langDetectResponse.data.result.language).toBe('fr');
+      expect((langDetectResponse.data as { result: { language: string } }).result.language).toBe('fr');
       
       // 4. Générer une réponse
       const replyResponse = await global.testUtils.makeRequest(
@@ -452,7 +464,7 @@ describe('API Gateway - Tests d\'Intégration', () => {
           data: {
             data: {
               message: userMessage,
-              language: langDetectResponse.data.result.language,
+              language: (langDetectResponse.data as { result: { language: string } }).result.language,
               userId: userId,
               conversationId: conversationId
             }
@@ -460,22 +472,22 @@ describe('API Gateway - Tests d\'Intégration', () => {
         }
       );
       
-      expect(replyResponse.data.result.reply).toBeDefined();
-      expect(replyResponse.data.result.language).toBe('fr');
+      expect((replyResponse.data as { result: { reply: string } }).result.reply).toBeDefined();
+      expect((replyResponse.data as { result: { language: string } }).result.language).toBe('fr');
       
       // 5. Sauvegarder les messages
       const userMessageData = {
         conversationId: conversationId,
         content: userMessage,
         sender: 'user',
-        language: langDetectResponse.data.result.language
+        language: (langDetectResponse.data as { result: { language: string } }).result.language
       };
       
       const botMessageData = {
         conversationId: conversationId,
-        content: replyResponse.data.result.reply,
+        content: (replyResponse.data as { result: { reply: string } }).result.reply,
         sender: 'bot',
-        language: replyResponse.data.result.language
+        language: (replyResponse.data as { result: { language: string } }).result.language
       };
       
       const [userMsgResponse, botMsgResponse] = await Promise.all([
@@ -501,7 +513,7 @@ describe('API Gateway - Tests d\'Intégration', () => {
       console.log('✅ Flux complet de conversation traité avec succès');
       console.log(`   - Utilisateur: ${userId}`);
       console.log(`   - Conversation: ${conversationId}`);
-      console.log(`   - Langue détectée: ${langDetectResponse.data.result.language}`);
+      console.log(`   - Langue détectée: ${(langDetectResponse.data as { result: { language: string } }).result.language}`);
       console.log(`   - Messages sauvegardés: 2`);
     }, 30000); // Timeout plus long pour ce test complexe
   });
@@ -528,17 +540,18 @@ describe('API Gateway - Tests d\'Intégration', () => {
               data: { text: message }
             }
           }
-        ).catch(error => ({ error: true, message: error.message, index }))
+        ).catch((error: unknown) => ({ error: true, message: error instanceof Error ? error.message : String(error), index }))
       );
       
       const results = await Promise.all(promises);
       const endTime = Date.now();
       const duration = endTime - startTime;
       
-      const successCount = results.filter(r => !r.error).length;
-      const errorCount = results.filter(r => r.error).length;
+      const successCount = results.filter(r => !('error' in r)).length;
+      const errorCount = results.filter(r => 'error' in r).length;
       
       console.log(`⚡ Performance: ${successCount}/${concurrentRequests} succès en ${duration}ms`);
+      console.log(`   - Erreurs: ${errorCount}/${concurrentRequests}`);
       console.log(`   - Moyenne: ${Math.round(duration / concurrentRequests)}ms par requête`);
       
       // Au moins 80% des requêtes doivent réussir

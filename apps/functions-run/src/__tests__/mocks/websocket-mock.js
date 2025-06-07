@@ -8,11 +8,11 @@
  * @created 2025-06-02
  */
 
-const express = require('express');
-const http = require('http');
-const WebSocket = require('ws');
-const cors = require('cors');
-const { v4: uuidv4 } = require('uuid');
+import express from 'express';
+import http from 'http';
+import { WebSocketServer } from 'ws';
+import cors from 'cors';
+import { v4 as uuidv4 } from 'uuid';
 
 // Configuration
 const PORT = process.env.PORT || process.env.MOCK_WEBSOCKET_PORT || 3003;
@@ -198,7 +198,7 @@ app.all('*', async (req, res) => {
 });
 
 // Créer le serveur WebSocket
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocketServer({ server });
 
 // Gestion des connexions WebSocket
 wss.on('connection', (ws, req) => {
@@ -265,7 +265,7 @@ wss.on('connection', (ws, req) => {
           });
           break;
           
-        case 'join':
+        case 'join': {
           const roomToJoin = message.data?.room;
           if (roomToJoin) {
             connection.rooms.add(roomToJoin);
@@ -286,8 +286,9 @@ wss.on('connection', (ws, req) => {
             });
           }
           break;
+        }
           
-        case 'leave':
+        case 'leave': {
           const roomToLeave = message.data?.room;
           if (roomToLeave && connection.rooms.has(roomToLeave)) {
             connection.rooms.delete(roomToLeave);
@@ -309,8 +310,9 @@ wss.on('connection', (ws, req) => {
             });
           }
           break;
+        }
           
-        case 'message':
+        case 'message': {
           const messageContent = message.data?.content;
           const targetRoom = message.data?.room || 'global';
           
@@ -352,6 +354,7 @@ wss.on('connection', (ws, req) => {
             });
           }
           break;
+        }
           
         default:
           response = generateMockMessage('error', {
@@ -377,7 +380,7 @@ wss.on('connection', (ws, req) => {
   });
   
   // Gestion de la fermeture de connexion
-  ws.on('close', (code, reason) => {
+  ws.on('close', (code) => {
     console.log(`🔌 [WEBSOCKET-MOCK] Connexion fermée: ${connectionId} (code: ${code})`);
     
     // Nettoyer la connexion
@@ -420,7 +423,7 @@ const heartbeatInterval = setInterval(() => {
 }, 30000); // Toutes les 30 secondes
 
 // Gestion des erreurs Express
-app.use((error, req, res, next) => {
+app.use((error, req, res) => {
   console.error(`❌ [WEBSOCKET-MOCK] Erreur Express:`, error);
   res.status(500).json({
     error: 'Internal Server Error',
@@ -430,7 +433,7 @@ app.use((error, req, res, next) => {
 });
 
 // Démarrage du serveur
-server.listen(PORT, '127.0.0.1', () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 [WEBSOCKET-MOCK] Service démarré sur http://localhost:${PORT}`);
   console.log(`🔌 [WEBSOCKET-MOCK] WebSocket disponible sur ws://localhost:${PORT}`);
   console.log(`📊 [WEBSOCKET-MOCK] Configuration:`);
@@ -477,7 +480,7 @@ process.on('uncaughtException', (error) => {
   process.exit(1);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason) => {
   console.error('❌ [WEBSOCKET-MOCK] Unhandled Rejection:', reason);
   process.exit(1);
 });

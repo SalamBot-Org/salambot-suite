@@ -39,7 +39,11 @@
 - **Apprentissage continu** : Amélioration des performances via feedback utilisateur
 
 ### 🏗️ Architecture Enterprise Complète
-- **API Gateway** : Point d'entrée unifié avec authentification, rate limiting et monitoring
+- **API Gateway Enterprise** : Implémentation complète dans `apps/functions-run/src/gateway/`
+  - Serveur Express avec middleware sécurisé avancé
+  - Authentification JWT/API Keys, rate limiting intelligent
+  - Proxy avec load balancing et circuit breaker
+  - Monitoring Prometheus et logging structuré
 - **Widget Web** : Interface de chat fonctionnelle avec support multilingue
 - **Bibliothèques Partagées** : Système de design, authentification et configuration centralisée
 - **Infrastructure DevSecOps** : CI/CD automatisé, Terraform, monitoring et sécurité

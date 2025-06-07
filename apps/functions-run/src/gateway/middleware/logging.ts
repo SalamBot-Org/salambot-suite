@@ -82,7 +82,7 @@ export class GatewayLogger {
   /**
    * 📊 Log structuré avec métadonnées
    */
-  public log(level: LogLevel, message: string, metadata?: any) {
+  public log(level: LogLevel, message: string, metadata?: Record<string, unknown>) {
     if (this.shouldLog(level)) {
       const logEntry = {
         timestamp: new Date().toISOString(),
@@ -115,19 +115,19 @@ export class GatewayLogger {
     }
   }
 
-  debug(message: string, metadata?: any) {
+  debug(message: string, metadata?: Record<string, unknown>) {
     this.log(LogLevel.DEBUG, message, metadata);
   }
 
-  info(message: string, metadata?: any) {
+  info(message: string, metadata?: Record<string, unknown>) {
     this.log(LogLevel.INFO, message, metadata);
   }
 
-  warn(message: string, metadata?: any) {
+  warn(message: string, metadata?: Record<string, unknown>) {
     this.log(LogLevel.WARN, message, metadata);
   }
 
-  error(message: string, metadata?: any) {
+  error(message: string, metadata?: Record<string, unknown>) {
     this.log(LogLevel.ERROR, message, metadata);
   }
 }
@@ -168,8 +168,8 @@ export const loggingMiddleware = (req: Request, res: Response, next: NextFunctio
   const originalSend = res.send;
   let responseSize = 0;
 
-  res.send = function(data: any) {
-    responseSize = Buffer.byteLength(data || '', 'utf8');
+  res.send = function(data: unknown) {
+    responseSize = Buffer.byteLength(String(data || ''), 'utf8');
     return originalSend.call(this, data);
   };
 
@@ -179,7 +179,7 @@ export const loggingMiddleware = (req: Request, res: Response, next: NextFunctio
     const responseTime = Math.round(endTime - startTime);
 
     const metrics: RequestMetrics = {
-      requestId: req.requestId!,
+      requestId: req.requestId || 'unknown',
       method: req.method,
       path: req.path,
       statusCode: res.statusCode,
@@ -256,7 +256,7 @@ export const loggingMiddleware = (req: Request, res: Response, next: NextFunctio
 /**
  * 🧹 Nettoyage des headers sensibles pour le logging
  */
-function sanitizeHeaders(headers: any): any {
+function sanitizeHeaders(headers: Record<string, unknown>): Record<string, unknown> {
   const sanitized = { ...headers };
   
   // Masquer les informations sensibles

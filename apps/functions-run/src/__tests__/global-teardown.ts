@@ -9,6 +9,7 @@
  */
 
 import { ChildProcess } from 'child_process';
+import { stopRedisMemoryServer } from './redis-memory-setup';
 
 // Interface pour les services mock (doit correspondre à global-setup.ts)
 interface MockService {
@@ -99,82 +100,67 @@ function stopMockService(service: MockService): Promise<boolean> {
 /**
  * Nettoie les ressources Redis de test
  */
-function cleanupRedisTestData(): Promise<void> {
-  return new Promise(async (resolve) => {
-    try {
-      // Importer Redis seulement si nécessaire
-      const Redis = require('ioredis');
-      
-      const redis = new Redis({
-        host: 'localhost',
-        port: 6379,
-        db: 15, // Base de données de test
-        retryDelayOnFailover: 100,
-        maxRetriesPerRequest: 1,
-        lazyConnect: true
-      });
-      
-      // Nettoyer les clés de test
-      const keys = await redis.keys('salambot:test:gateway:*');
-      
-      if (keys.length > 0) {
-        await redis.del(...keys);
-        console.log(`🧹 Nettoyage Redis: ${keys.length} clé(s) supprimée(s)`);
-      } else {
-        console.log('🧹 Nettoyage Redis: Aucune clé de test trouvée');
-      }
-      
-      await redis.quit();
-      resolve();
-      
-    } catch (error) {
-      console.warn('⚠️  Erreur lors du nettoyage Redis (non critique):', (error as Error).message);
-      resolve(); // Ne pas faire échouer le teardown pour Redis
+async function cleanupRedisTestData(): Promise<void> {
+  try {
+    // Utiliser le client Redis en mémoire si disponible
+    const { getRedisTestClient, cleanRedisTestData } = await import('./redis-memory-setup');
+    
+    const redisClient = getRedisTestClient();
+    if (redisClient) {
+      await cleanRedisTestData();
+      console.log('🧹 Nettoyage Redis en mémoire terminé');
+    } else {
+      console.log('🧹 Aucun client Redis en mémoire à nettoyer');
     }
-  });
+      
+  } catch (error) {
+    console.warn('⚠️  Erreur lors du nettoyage Redis (non critique):', (error as Error).message);
+    // Ne pas faire échouer le teardown pour Redis
+  }
 }
 
 /**
  * Nettoie les fichiers temporaires de test
  */
-function cleanupTempFiles(): Promise<void> {
-  return new Promise(async (resolve) => {
+async function cleanupTempFiles(): Promise<void> {
+  try {
+    const { promises: fs } = await import('fs');
+    const path = await import('path');
+    
+    // Nettoyer les logs de test
+    const logPath = path.resolve(__dirname, '../../logs/test-gateway.log');
     try {
-      const fs = require('fs').promises;
-      const path = require('path');
-      
-      // Nettoyer les logs de test
-      const logPath = path.resolve(__dirname, '../../logs/test-gateway.log');
-      try {
-        await fs.unlink(logPath);
-        console.log('🧹 Fichier de log de test supprimé');
-      } catch (error) {
-        // Fichier n'existe pas, pas grave
-      }
-      
-      // Nettoyer les fichiers de couverture temporaires
-      const coveragePath = path.resolve(__dirname, '../../coverage');
-      try {
-        await fs.rmdir(coveragePath, { recursive: true });
-        console.log('🧹 Dossier de couverture temporaire supprimé');
-      } catch (error) {
-        // Dossier n'existe pas, pas grave
-      }
-      
-      resolve();
-      
+      await fs.unlink(logPath);
+      console.log('🧹 Fichier de log de test supprimé');
     } catch (error) {
-      console.warn('⚠️  Erreur lors du nettoyage des fichiers temporaires (non critique):', (error as Error).message);
-      resolve(); // Ne pas faire échouer le teardown
+      // Fichier n'existe pas, pas grave
     }
-  });
+    
+    // Nettoyer les fichiers de couverture temporaires
+    const coveragePath = path.resolve(__dirname, '../../coverage');
+    try {
+      await fs.rmdir(coveragePath, { recursive: true });
+      console.log('🧹 Dossier de couverture temporaire supprimé');
+    } catch (error) {
+      // Dossier n'existe pas, pas grave
+    }
+    
+  } catch (error) {
+    console.warn('⚠️  Erreur lors du nettoyage des fichiers temporaires (non critique):', (error as Error).message);
+    // Ne pas faire échouer le teardown
+  }
 }
 
 /**
  * Affiche un résumé des tests
  */
 function displayTestSummary(): void {
-  const testResults = (global as any).__TEST_RESULTS__;
+  const testResults = (global as Record<string, unknown>)['__TEST_RESULTS__'] as {
+    numPassedTests?: number;
+    numFailedTests?: number;
+    numPendingTests?: number;
+    testExecTime?: number;
+  } | undefined;
   
   if (testResults) {
     console.log('📊 === RÉSUMÉ DES TESTS ===');
@@ -195,7 +181,7 @@ export default async function globalTeardown(): Promise<void> {
   
   try {
     // Récupérer les services depuis le setup global
-    const mockServices: MockService[] = (global as any).__MOCK_SERVICES__ || [];
+    const mockServices: MockService[] = (global as Record<string, unknown>)['__MOCK_SERVICES__'] as MockService[] || [];
     
     if (mockServices.length === 0) {
       console.log('⚠️  Aucun service mock à arrêter');
@@ -221,6 +207,10 @@ export default async function globalTeardown(): Promise<void> {
     console.log('🧹 Nettoyage des données de test...');
     await cleanupRedisTestData();
     
+    // Arrêter Redis en mémoire
+    console.log('📦 Arrêt de Redis en mémoire...');
+    await stopRedisMemoryServer();
+    
     // Nettoyer les fichiers temporaires
     await cleanupTempFiles();
     
@@ -235,7 +225,7 @@ export default async function globalTeardown(): Promise<void> {
     console.error('❌ Erreur lors du teardown global:', error);
     
     // Tentative de nettoyage forcé en cas d'erreur
-    const mockServices: MockService[] = (global as any).__MOCK_SERVICES__ || [];
+    const mockServices: MockService[] = (global as Record<string, unknown>)['__MOCK_SERVICES__'] as MockService[] || [];
     for (const service of mockServices) {
       if (service.process && !service.process.killed) {
         try {
@@ -250,7 +240,7 @@ export default async function globalTeardown(): Promise<void> {
     throw error;
   } finally {
     // Nettoyer les références globales
-    delete (global as any).__MOCK_SERVICES__;
-    delete (global as any).__TEST_RESULTS__;
+    delete (global as Record<string, unknown>)['__MOCK_SERVICES__'];
+    delete (global as Record<string, unknown>)['__TEST_RESULTS__'];
   }
 }

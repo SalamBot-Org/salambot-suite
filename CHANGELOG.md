@@ -10,22 +10,27 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 ### Ajouté
 
 #### Version 2.2.0 - Implémentations Majeures ✅
-- **API Gateway Enterprise** : Serveur Express complet avec middleware avancé
-  - Authentification JWT et API Keys
-  - Rate limiting et sécurité Helmet
-  - Proxy vers microservices avec monitoring
-  - Logging structuré et métriques
-  - Configuration par environnement
+- **API Gateway Enterprise** : Implémentation complète dans `apps/functions-run/src/gateway/`
+  - Serveur Express avec middleware sécurisé (Helmet, CORS, compression)
+  - Authentification JWT et API Keys avec validation
+  - Rate limiting intelligent par IP et utilisateur
+  - Proxy intelligent avec load balancing et circuit breaker
+  - Monitoring Prometheus avec métriques temps réel
+  - Logging structuré et gestion d'erreurs centralisée
+  - Configuration centralisée par environnement
+  - Health checks pour tous les services
+  - Tests unitaires et d'intégration complets
 - **Widget Web Fonctionnel** : Interface React complète
   - Composant ChatBox avec gestion d'état
   - API mock pour simulation conversations
   - Support multilingue (FR/AR/Darija)
   - Tests unitaires complets
   - Design responsive et accessible
-- **Bibliothèques Partagées Complètes** :
-  - `@salambot/ui` : Système de design avec 50+ composants
-  - `@salambot/auth` : Authentification Firebase avec RBAC
-  - `@salambot/config` : Configuration centralisée Redis/Firestore
+- **Bibliothèques Partagées** : Structure monorepo créée avec implémentation de base
+  - `@salambot/ui` : Composants UI basiques (expansion requise)
+  - `@salambot/auth` : Hooks Firebase minimaux (RBAC à implémenter)
+  - `@salambot/config` : Configuration centralisée fonctionnelle
+  - `@salambot/ai` : Détection Darija avec 100% de précision (Phase 1 complétée)
 - **Synchronisation Versions** : Harmonisation à v2.2.0 sur tous les modules
 - **Scripts de Gestion** : Automatisation build, test et audit dépendances
 

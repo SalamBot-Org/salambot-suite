@@ -78,8 +78,10 @@ export class MetricsCollector {
     this.lastCpuUsage = process.cpuUsage();
     this.metrics = this.initializeMetrics();
     
-    // Mise à jour périodique des métriques système
-    this.systemMetricsInterval = setInterval(() => this.updateSystemMetrics(), 30000); // Toutes les 30 secondes
+    // Mise à jour périodique des métriques système (seulement en production)
+    if (process.env['NODE_ENV'] !== 'test') {
+      this.systemMetricsInterval = setInterval(() => this.updateSystemMetrics(), 30000) as NodeJS.Timeout; // Toutes les 30 secondes
+    }
   }
 
   static getInstance(): MetricsCollector {
@@ -395,4 +397,4 @@ export const metricsEndpoint = (req: Request, res: Response) => {
  */
 export const metrics = MetricsCollector.getInstance();
 
-export default metricsCollector;
+export default MetricsCollector;

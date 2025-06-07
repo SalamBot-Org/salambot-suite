@@ -6,16 +6,23 @@
  *              utilisé dans les tests d'intégration
  * @author SalamBot Platform Team
  * @created 2025-06-02
+ * @optimized 2025-01-27
  */
 
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
 
 // Configuration
 const PORT = process.env.PORT || process.env.MOCK_PROMETHEUS_PORT || 9090;
 const RESPONSE_DELAY = parseInt(process.env.MOCK_RESPONSE_DELAY_MS || '20');
 const ERROR_RATE = parseInt(process.env.MOCK_ERROR_RATE_PERCENT || '1');
 const TIMEOUT_RATE = parseInt(process.env.MOCK_TIMEOUT_RATE_PERCENT || '0');
+const CACHE_TTL = parseInt(process.env.MOCK_CACHE_TTL_MS || '5000'); // 5 secondes
+const LOG_LEVEL = process.env.MOCK_LOG_LEVEL || 'info'; // debug, info, warn, error
+
+// Cache pour les métriques
+let metricsCache = null;
+let cacheTimestamp = 0;
 
 // Données mock pour les métriques
 const mockMetrics = {
@@ -67,8 +74,21 @@ function shouldSimulateTimeout() {
   return Math.random() * 100 < TIMEOUT_RATE;
 }
 
+function log(level, message, ...args) {
+  const levels = { debug: 0, info: 1, warn: 2, error: 3 };
+  if (levels[level] >= levels[LOG_LEVEL]) {
+    console[level](`[PROMETHEUS-MOCK] ${message}`, ...args);
+  }
+}
+
 function generatePrometheusMetrics() {
-  const timestamp = Date.now();
+  // Vérifier le cache
+  const now = Date.now();
+  if (metricsCache && (now - cacheTimestamp) < CACHE_TTL) {
+    return metricsCache;
+  }
+
+  const timestamp = now;
   let metrics = [];
   
   // Ajouter des variations aléatoires aux métriques
@@ -77,26 +97,32 @@ function generatePrometheusMetrics() {
   // Counters
   Object.entries(mockMetrics.counters).forEach(([name, value]) => {
     const newValue = Math.max(0, Math.floor(value * (1 + variation())));
-    metrics.push(`# HELP ${name} Total number of ${name.replace(/_/g, ' ')}`);
-    metrics.push(`# TYPE ${name} counter`);
-    metrics.push(`${name} ${newValue} ${timestamp}`);
-    metrics.push('');
+    metrics.push(
+      `# HELP ${name} Total number of ${name.replace(/_/g, ' ')}`,
+      `# TYPE ${name} counter`,
+      `${name} ${newValue} ${timestamp}`,
+      ''
+    );
   });
   
   // Gauges
   Object.entries(mockMetrics.gauges).forEach(([name, value]) => {
     const newValue = Math.max(0, value * (1 + variation()));
     const formattedValue = name.includes('percent') ? newValue.toFixed(2) : Math.floor(newValue);
-    metrics.push(`# HELP ${name} Current ${name.replace(/_/g, ' ')}`);
-    metrics.push(`# TYPE ${name} gauge`);
-    metrics.push(`${name} ${formattedValue} ${timestamp}`);
-    metrics.push('');
+    metrics.push(
+      `# HELP ${name} Current ${name.replace(/_/g, ' ')}`,
+      `# TYPE ${name} gauge`,
+      `${name} ${formattedValue} ${timestamp}`,
+      ''
+    );
   });
   
   // Histograms
   Object.entries(mockMetrics.histograms).forEach(([name, buckets]) => {
-    metrics.push(`# HELP ${name} ${name.replace(/_/g, ' ')} histogram`);
-    metrics.push(`# TYPE ${name} histogram`);
+    metrics.push(
+      `# HELP ${name} ${name.replace(/_/g, ' ')} histogram`,
+      `# TYPE ${name} histogram`
+    );
     
     Object.entries(buckets).forEach(([le, count]) => {
       const newCount = Math.max(0, Math.floor(count * (1 + variation())));
@@ -104,25 +130,55 @@ function generatePrometheusMetrics() {
     });
     
     const totalCount = Math.max(0, Math.floor(buckets['+Inf'] * (1 + variation())));
-    const sum = (totalCount * 0.5 * Math.random()).toFixed(3); // Somme approximative
+    const sum = (totalCount * 0.5 * Math.random()).toFixed(3);
     
-    metrics.push(`${name}_sum ${sum} ${timestamp}`);
-    metrics.push(`${name}_count ${totalCount} ${timestamp}`);
-    metrics.push('');
+    metrics.push(
+      `${name}_sum ${sum} ${timestamp}`,
+      `${name}_count ${totalCount} ${timestamp}`,
+      ''
+    );
   });
   
-  // Métriques système supplémentaires
-  metrics.push('# HELP process_start_time_seconds Start time of the process since unix epoch in seconds');
-  metrics.push('# TYPE process_start_time_seconds gauge');
-  metrics.push(`process_start_time_seconds ${Math.floor((timestamp - process.uptime() * 1000) / 1000)} ${timestamp}`);
-  metrics.push('');
+  // Métriques système
+  metrics.push(
+    '# HELP process_start_time_seconds Start time of the process since unix epoch in seconds',
+    '# TYPE process_start_time_seconds gauge',
+    `process_start_time_seconds ${Math.floor((timestamp - process.uptime() * 1000) / 1000)} ${timestamp}`,
+    '',
+    '# HELP nodejs_version_info Node.js version info',
+    '# TYPE nodejs_version_info gauge',
+    `nodejs_version_info{version="${process.version}",major="${process.versions.node.split('.')[0]}"} 1 ${timestamp}`,
+    ''
+  );
   
-  metrics.push('# HELP nodejs_version_info Node.js version info');
-  metrics.push('# TYPE nodejs_version_info gauge');
-  metrics.push(`nodejs_version_info{version="${process.version}",major="${process.versions.node.split('.')[0]}"} 1 ${timestamp}`);
-  metrics.push('');
+  // Mettre en cache
+  metricsCache = metrics.join('\n');
+  cacheTimestamp = timestamp;
   
-  return metrics.join('\n');
+  return metricsCache;
+}
+
+function getHealthStatus() {
+  return {
+    status: 'healthy',
+    service: 'prometheus-mock',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    version: '2.40.0-mock',
+    cache: {
+      enabled: true,
+      ttl: CACHE_TTL,
+      lastUpdate: new Date(cacheTimestamp).toISOString()
+    },
+    metrics: {
+      total: Object.keys(mockMetrics.counters).length + 
+             Object.keys(mockMetrics.gauges).length + 
+             Object.keys(mockMetrics.histograms).length,
+      counters: Object.keys(mockMetrics.counters).length,
+      gauges: Object.keys(mockMetrics.gauges).length,
+      histograms: Object.keys(mockMetrics.histograms).length
+    }
+  };
 }
 
 // Créer l'application Express
@@ -134,15 +190,13 @@ app.use(express.json({ limit: '1mb' }));
 
 // Middleware de simulation d'erreurs
 app.use((req, res, next) => {
-  // Simuler timeout
   if (shouldSimulateTimeout()) {
-    console.log(`⏱️  [PROMETHEUS-MOCK] Simulation timeout pour ${req.method} ${req.path}`);
+    log('debug', `Simulation timeout pour ${req.method} ${req.path}`);
     return; // Ne pas répondre = timeout
   }
   
-  // Simuler erreur serveur
   if (shouldSimulateError()) {
-    console.log(`❌ [PROMETHEUS-MOCK] Simulation erreur 500 pour ${req.method} ${req.path}`);
+    log('debug', `Simulation erreur 500 pour ${req.method} ${req.path}`);
     return res.status(500).send('Internal Server Error (simulated)');
   }
   
@@ -151,89 +205,63 @@ app.use((req, res, next) => {
 
 // Middleware de logging
 app.use((req, res, next) => {
-  console.log(`📝 [PROMETHEUS-MOCK] ${req.method} ${req.path}`);
+  log('debug', `${req.method} ${req.path}`);
   next();
 });
 
-// Route principale des métriques Prometheus
+// Routes principales
 app.get('/metrics', async (req, res) => {
   await simulateDelay();
-  
   const metrics = generatePrometheusMetrics();
-  
   res.set('Content-Type', 'text/plain; version=0.0.4; charset=utf-8');
   res.send(metrics);
 });
 
-// Route de santé
 app.get('/health', async (req, res) => {
   await simulateDelay();
+  res.json(getHealthStatus());
+});
+
+// Endpoints Prometheus standards
+app.get('/-/healthy', async (req, res) => {
+  await simulateDelay();
+  res.status(200).send('Prometheus is Healthy.\n');
+});
+
+app.get('/-/ready', async (req, res) => {
+  await simulateDelay();
+  res.status(200).send('Prometheus is Ready.\n');
+});
+
+// Route racine simplifiée
+app.get('/', async (req, res) => {
+  await simulateDelay();
+  const health = getHealthStatus();
   res.json({
-    status: 'healthy',
-    service: 'prometheus-mock',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    version: '2.40.0-mock',
-    metrics: {
-      total: Object.keys(mockMetrics.counters).length + 
-             Object.keys(mockMetrics.gauges).length + 
-             Object.keys(mockMetrics.histograms).length,
-      counters: Object.keys(mockMetrics.counters).length,
-      gauges: Object.keys(mockMetrics.gauges).length,
-      histograms: Object.keys(mockMetrics.histograms).length
-    }
+    service: 'Prometheus Mock Server',
+    version: health.version,
+    status: 'running',
+    uptime: Math.floor(health.uptime),
+    endpoints: [
+      '/metrics - Prometheus metrics endpoint',
+      '/health - Health check endpoint',
+      '/api/v1/query - Query API (mock)',
+      '/api/v1/targets - Targets API (mock)',
+      '/-/healthy - Prometheus health endpoint',
+      '/-/ready - Prometheus ready endpoint'
+    ],
+    config: {
+      responseDelay: RESPONSE_DELAY,
+      errorRate: ERROR_RATE,
+      timeoutRate: TIMEOUT_RATE,
+      cacheTTL: CACHE_TTL,
+      logLevel: LOG_LEVEL
+    },
+    metrics: health.metrics
   });
 });
 
-// Route racine
-app.get('/', async (req, res) => {
-  await simulateDelay();
-  res.send(`
-    <html>
-      <head><title>Prometheus Mock Server</title></head>
-      <body>
-        <h1>🔥 Prometheus Mock Server</h1>
-        <p><strong>Service:</strong> SalamBot Functions-Run Metrics Mock</p>
-        <p><strong>Version:</strong> 2.40.0-mock</p>
-        <p><strong>Status:</strong> Running</p>
-        <p><strong>Uptime:</strong> ${Math.floor(process.uptime())} seconds</p>
-        
-        <h2>📊 Available Endpoints</h2>
-        <ul>
-          <li><a href="/metrics">/metrics</a> - Prometheus metrics endpoint</li>
-          <li><a href="/health">/health</a> - Health check endpoint</li>
-          <li><a href="/api/v1/query">/api/v1/query</a> - Query API (mock)</li>
-          <li><a href="/api/v1/targets">/api/v1/targets</a> - Targets API (mock)</li>
-        </ul>
-        
-        <h2>🎯 Mock Configuration</h2>
-        <ul>
-          <li><strong>Response Delay:</strong> ${RESPONSE_DELAY}ms</li>
-          <li><strong>Error Rate:</strong> ${ERROR_RATE}%</li>
-          <li><strong>Timeout Rate:</strong> ${TIMEOUT_RATE}%</li>
-        </ul>
-        
-        <h2>📈 Available Metrics</h2>
-        <h3>Counters</h3>
-        <ul>
-          ${Object.keys(mockMetrics.counters).map(name => `<li>${name}</li>`).join('')}
-        </ul>
-        
-        <h3>Gauges</h3>
-        <ul>
-          ${Object.keys(mockMetrics.gauges).map(name => `<li>${name}</li>`).join('')}
-        </ul>
-        
-        <h3>Histograms</h3>
-        <ul>
-          ${Object.keys(mockMetrics.histograms).map(name => `<li>${name}</li>`).join('')}
-        </ul>
-      </body>
-    </html>
-  `);
-});
-
-// API Query mock (pour compatibilité avec les clients Prometheus)
+// API Query mock
 app.get('/api/v1/query', async (req, res) => {
   await simulateDelay();
   
@@ -247,25 +275,22 @@ app.get('/api/v1/query', async (req, res) => {
     });
   }
   
-  // Simuler une réponse de requête Prometheus
   const mockResult = {
     status: 'success',
     data: {
       resultType: 'vector',
-      result: [
-        {
-          metric: {
-            __name__: query.split('{')[0] || query,
-            instance: 'localhost:3000',
-            job: 'salambot-gateway'
-          },
-          value: [Math.floor(Date.now() / 1000), (Math.random() * 100).toFixed(2)]
-        }
-      ]
+      result: [{
+        metric: {
+          __name__: query.split('{')[0] || query,
+          instance: 'localhost:3000',
+          job: 'salambot-gateway'
+        },
+        value: [Math.floor(Date.now() / 1000), (Math.random() * 100).toFixed(2)]
+      }]
     }
   };
   
-  console.log(`🔍 [PROMETHEUS-MOCK] Query: ${query}`);
+  log('debug', `Query: ${query}`);
   res.json(mockResult);
 });
 
@@ -276,25 +301,23 @@ app.get('/api/v1/targets', async (req, res) => {
   const mockTargets = {
     status: 'success',
     data: {
-      activeTargets: [
-        {
-          discoveredLabels: {
-            '__address__': 'localhost:3000',
-            '__job__': 'salambot-gateway'
-          },
-          labels: {
-            instance: 'localhost:3000',
-            job: 'salambot-gateway'
-          },
-          scrapePool: 'salambot-gateway',
-          scrapeUrl: 'http://localhost:3000/metrics',
-          globalUrl: 'http://localhost:3000/metrics',
-          lastError: '',
-          lastScrape: new Date().toISOString(),
-          lastScrapeDuration: 0.002,
-          health: 'up'
-        }
-      ],
+      activeTargets: [{
+        discoveredLabels: {
+          '__address__': 'localhost:3000',
+          '__job__': 'salambot-gateway'
+        },
+        labels: {
+          instance: 'localhost:3000',
+          job: 'salambot-gateway'
+        },
+        scrapePool: 'salambot-gateway',
+        scrapeUrl: 'http://localhost:3000/metrics',
+        globalUrl: 'http://localhost:3000/metrics',
+        lastError: '',
+        lastScrape: new Date().toISOString(),
+        lastScrapeDuration: 0.002,
+        health: 'up'
+      }],
       droppedTargets: []
     }
   };
@@ -302,56 +325,33 @@ app.get('/api/v1/targets', async (req, res) => {
   res.json(mockTargets);
 });
 
-// Route catch-all pour les endpoints non implémentés
+// Route catch-all
 app.all('*', async (req, res) => {
   await simulateDelay();
-  res.status(404).send(`
-    <html>
-      <head><title>404 - Prometheus Mock</title></head>
-      <body>
-        <h1>❌ Endpoint Not Found</h1>
-        <p><strong>Path:</strong> ${req.path}</p>
-        <p><strong>Method:</strong> ${req.method}</p>
-        
-        <h2>📋 Available Endpoints</h2>
-        <ul>
-          <li>GET /metrics</li>
-          <li>GET /health</li>
-          <li>GET /api/v1/query</li>
-          <li>GET /api/v1/targets</li>
-        </ul>
-        
-        <p><a href="/">← Back to home</a></p>
-      </body>
-    </html>
-  `);
+  res.status(404).json({
+    error: 'Endpoint Not Found',
+    path: req.path,
+    method: req.method,
+    availableEndpoints: [
+      'GET /metrics',
+      'GET /health',
+      'GET /api/v1/query',
+      'GET /api/v1/targets',
+      'GET /-/healthy',
+      'GET /-/ready'
+    ]
+  });
 });
 
-// Gestion des erreurs Express
-app.use((error, req, res, next) => {
-  console.error(`❌ [PROMETHEUS-MOCK] Erreur Express:`, error);
-  res.status(500).send('Internal Server Error');
-});
-
-// Démarrage du serveur
-app.listen(PORT, '127.0.0.1', () => {
-  console.log(`🚀 [PROMETHEUS-MOCK] Service démarré sur http://localhost:${PORT}`);
-  console.log(`📊 [PROMETHEUS-MOCK] Métriques disponibles sur http://localhost:${PORT}/metrics`);
-  console.log(`🔍 [PROMETHEUS-MOCK] API Query disponible sur http://localhost:${PORT}/api/v1/query`);
-  console.log(`📊 [PROMETHEUS-MOCK] Configuration:`);
-  console.log(`   - Délai de réponse: ${RESPONSE_DELAY}ms`);
-  console.log(`   - Taux d'erreur: ${ERROR_RATE}%`);
-  console.log(`   - Taux de timeout: ${TIMEOUT_RATE}%`);
-  console.log(`📈 [PROMETHEUS-MOCK] Métriques simulées:`);
-  console.log(`   - Counters: ${Object.keys(mockMetrics.counters).length}`);
-  console.log(`   - Gauges: ${Object.keys(mockMetrics.gauges).length}`);
-  console.log(`   - Histograms: ${Object.keys(mockMetrics.histograms).length}`);
-  console.log(`✅ [PROMETHEUS-MOCK] Prêt pour les tests d'intégration`);
+// Gestion des erreurs Express (AVANT app.listen)
+app.use((error, req, res) => {
+  log('error', 'Erreur Express:', error);
+  res.status(500).json({ error: 'Internal Server Error' });
 });
 
 // Gestion de l'arrêt propre
 function shutdown() {
-  console.log('🛑 [PROMETHEUS-MOCK] Arrêt en cours...');
+  log('info', 'Arrêt en cours...');
   process.exit(0);
 }
 
@@ -360,11 +360,28 @@ process.on('SIGINT', shutdown);
 
 // Gestion des erreurs non capturées
 process.on('uncaughtException', (error) => {
-  console.error('❌ [PROMETHEUS-MOCK] Uncaught Exception:', error);
+  log('error', 'Uncaught Exception:', error);
   process.exit(1);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ [PROMETHEUS-MOCK] Unhandled Rejection:', reason);
+process.on('unhandledRejection', (reason) => {
+  log('error', 'Unhandled Rejection:', reason);
   process.exit(1);
+});
+
+// Démarrage du serveur
+app.listen(PORT, '0.0.0.0', () => {
+  log('info', `Service démarré sur http://localhost:${PORT}`);
+  log('info', `Métriques disponibles sur http://localhost:${PORT}/metrics`);
+  log('info', `Configuration:`);
+  log('info', `  - Délai de réponse: ${RESPONSE_DELAY}ms`);
+  log('info', `  - Taux d'erreur: ${ERROR_RATE}%`);
+  log('info', `  - Taux de timeout: ${TIMEOUT_RATE}%`);
+  log('info', `  - Cache TTL: ${CACHE_TTL}ms`);
+  log('info', `  - Log level: ${LOG_LEVEL}`);
+  log('info', `Métriques simulées:`);
+  log('info', `  - Counters: ${Object.keys(mockMetrics.counters).length}`);
+  log('info', `  - Gauges: ${Object.keys(mockMetrics.gauges).length}`);
+  log('info', `  - Histograms: ${Object.keys(mockMetrics.histograms).length}`);
+  log('info', `Prêt pour les tests d'intégration`);
 });

@@ -8,12 +8,12 @@
  * @created 2025-06-02
  */
 
-const express = require('express');
-const cors = require('cors');
-const { v4: uuidv4 } = require('uuid');
+import express from 'express';
+import cors from 'cors';
+import { v4 as uuidv4 } from 'uuid';
 
 // Configuration
-const PORT = process.env.PORT || process.env.MOCK_REST_API_PORT || 3002;
+const PORT = parseInt(process.env.PORT || process.env.MOCK_REST_API_PORT || '3002', 10);
 const RESPONSE_DELAY = parseInt(process.env.MOCK_RESPONSE_DELAY_MS || '50');
 const ERROR_RATE = parseInt(process.env.MOCK_ERROR_RATE_PERCENT || '5');
 const TIMEOUT_RATE = parseInt(process.env.MOCK_TIMEOUT_RATE_PERCENT || '2');
@@ -121,7 +121,16 @@ app.use((req, res, next) => {
   // Simuler timeout
   if (shouldSimulateTimeout()) {
     console.log(`⏱️  [REST-API-MOCK] Simulation timeout pour ${req.method} ${req.path}`);
-    return; // Ne pas répondre = timeout
+    setTimeout(() => {
+      if (!res.headersSent) {
+        res.status(408).json({
+          error: 'Request Timeout (simulated)',
+          code: 'MOCK_TIMEOUT',
+          timestamp: new Date().toISOString()
+        });
+      }
+    }, 30000); // 30 secondes
+    return;
   }
   
   // Simuler erreur serveur
@@ -346,15 +355,18 @@ app.all('*', async (req, res) => {
 // Gestion des erreurs
 app.use((error, req, res, next) => {
   console.error(`❌ [REST-API-MOCK] Erreur:`, error);
-  res.status(500).json({
-    error: 'Internal Server Error',
-    code: 'INTERNAL_ERROR',
-    message: error.message
-  });
+  if (!res.headersSent) {
+    res.status(500).json({
+      error: 'Internal Server Error',
+      code: 'INTERNAL_ERROR',
+      message: error.message
+    });
+  }
+  next();
 });
 
 // Démarrage du serveur
-const server = app.listen(PORT, '127.0.0.1', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 [REST-API-MOCK] Service démarré sur http://localhost:${PORT}`);
   console.log(`📊 [REST-API-MOCK] Configuration:`);
   console.log(`   - Délai de réponse: ${RESPONSE_DELAY}ms`);
@@ -394,7 +406,7 @@ process.on('uncaughtException', (error) => {
   process.exit(1);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason) => {
   console.error('❌ [REST-API-MOCK] Unhandled Rejection:', reason);
   process.exit(1);
 });

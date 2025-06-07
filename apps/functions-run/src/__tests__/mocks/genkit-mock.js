@@ -8,9 +8,9 @@
  * @created 2025-06-02
  */
 
-const express = require('express');
-const cors = require('cors');
-const { v4: uuidv4 } = require('uuid');
+import express from 'express';
+import cors from 'cors';
+// import { v4 as uuidv4 } from 'uuid'; // Unused import
 
 // Configuration
 const PORT = process.env.PORT || process.env.MOCK_GENKIT_PORT || 3001;
@@ -323,7 +323,7 @@ app.all('*', async (req, res) => {
 });
 
 // Gestion des erreurs Express
-app.use((error, req, res, next) => {
+app.use((error, req, res) => {
   console.error(`❌ [GENKIT-MOCK] Erreur Express:`, error);
   res.status(500).json({
     error: 'Internal Server Error',
@@ -334,7 +334,7 @@ app.use((error, req, res, next) => {
 });
 
 // Démarrage du serveur
-app.listen(PORT, '127.0.0.1', () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 [GENKIT-MOCK] Service démarré sur http://localhost:${PORT}`);
   console.log(`🤖 [GENKIT-MOCK] Flows disponibles:`);
   console.log(`   - POST /lang-detect-flow (Détection de langue)`);
@@ -362,7 +362,7 @@ process.on('uncaughtException', (error) => {
   process.exit(1);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason) => {
   console.error('❌ [GENKIT-MOCK] Unhandled Rejection:', reason);
   process.exit(1);
 });

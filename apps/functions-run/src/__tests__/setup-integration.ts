@@ -11,6 +11,12 @@
 import { beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
 import axios from 'axios';
 import Redis from 'ioredis';
+import {
+  createRedisTestClient,
+  cleanRedisTestData,
+  startRedisMemoryServer,
+  isRedisMemoryServerRunning,
+} from './redis-memory-setup';
 
 // Configuration des timeouts
 jest.setTimeout(30000); // 30 secondes par test
@@ -68,7 +74,7 @@ async function checkServiceHealth(serviceName: string, url: string, endpoint: st
 /**
  * Vérifie que tous les services mock sont prêts
  */
-async function waitForServices(maxAttempts: number = 30): Promise<void> {
+async function waitForServices(maxAttempts = 30): Promise<void> {
   console.log('🔍 Vérification de la disponibilité des services mock...');
   
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -98,21 +104,31 @@ async function waitForServices(maxAttempts: number = 30): Promise<void> {
  */
 async function initializeRedis(): Promise<void> {
   try {
-    redisClient = new Redis({
-      host: 'localhost',
-      port: 6379,
-      db: 15, // Base de données de test
-      retryDelayOnFailover: 100,
-      maxRetriesPerRequest: 3,
-      lazyConnect: true
-    });
+    if (redisClient) {
+      await redisClient.quit();
+    }
     
-    await redisClient.ping();
-    console.log('✅ Connexion Redis établie pour les tests');
+    // Vérifier si Redis est déjà démarré par le global setup
+    if (!isRedisMemoryServerRunning()) {
+      // Démarrer le serveur Redis en mémoire si pas déjà fait
+      try {
+        await startRedisMemoryServer();
+        console.log('✅ Serveur Redis en mémoire démarré');
+      } catch (error) {
+        console.log('ℹ️ Erreur lors du démarrage Redis:', (error as Error).message);
+        throw error;
+      }
+    } else {
+      console.log('ℹ️ Serveur Redis en mémoire déjà démarré par le global setup');
+    }
+    
+    // Utiliser le client Redis en mémoire
+    redisClient = await createRedisTestClient();
+    console.log('✅ Redis en mémoire connecté pour les tests');
     
   } catch (error) {
-    console.warn('⚠️  Redis non disponible pour les tests:', (error as Error).message);
-    redisClient = null;
+    console.error('❌ Erreur de connexion Redis en mémoire:', (error as Error).message);
+    throw error;
   }
 }
 
@@ -120,16 +136,10 @@ async function initializeRedis(): Promise<void> {
  * Nettoie les données Redis entre les tests
  */
 async function cleanupRedisData(): Promise<void> {
-  if (!redisClient) return;
-  
   try {
-    const keys = await redisClient.keys('salambot:test:gateway:*');
-    if (keys.length > 0) {
-      await redisClient.del(...keys);
-      console.log(`🧹 ${keys.length} clé(s) Redis nettoyée(s)`);
-    }
+    await cleanRedisTestData();
   } catch (error) {
-    console.warn('⚠️  Erreur lors du nettoyage Redis:', (error as Error).message);
+    console.warn('⚠️ Erreur lors du nettoyage Redis:', (error as Error).message);
   }
 }
 
@@ -152,7 +162,7 @@ async function closeRedis(): Promise<void> {
  * Génère des données de test reproductibles
  */
 function generateTestData() {
-  const seed = parseInt(process.env.TEST_DATA_SEED || '12345');
+  const seed = parseInt(process.env['TEST_DATA_SEED'] || '12345');
   
   // Générateur de nombres pseudo-aléatoires basé sur le seed
   let currentSeed = seed;
@@ -177,7 +187,7 @@ const testUtils = {
   /**
    * Fait une requête HTTP avec retry automatique
    */
-  async makeRequest(url: string, options: any = {}, maxRetries: number = 3) {
+  async makeRequest(url: string, options: Record<string, unknown> = {}, maxRetries = 3) {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         const response = await axios(url, {
@@ -191,12 +201,14 @@ const testUtils = {
         await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
       }
     }
+    // This should never be reached, but TypeScript requires it
+    throw new Error('Max retries exceeded');
   },
   
   /**
    * Attend qu'une condition soit vraie
    */
-  async waitFor(condition: () => Promise<boolean>, timeout: number = 10000) {
+  async waitFor(condition: () => Promise<boolean>, timeout = 10000) {
     const start = Date.now();
     while (Date.now() - start < timeout) {
       if (await condition()) return true;
@@ -220,11 +232,21 @@ const testUtils = {
   /**
    * URLs des services mock
    */
-  services: MOCK_SERVICES
+  services: MOCK_SERVICES,
+  
+  /**
+   * URLs des services mock (alias pour compatibilité)
+   */
+  serviceUrls: {
+    genkit: MOCK_SERVICES.genkit.url,
+    restApi: MOCK_SERVICES.restApi.url,
+    websocket: MOCK_SERVICES.websocket.url,
+    prometheus: MOCK_SERVICES.prometheus.url
+  }
 };
 
 // Rendre les utilitaires disponibles globalement
-(global as any).testUtils = testUtils;
+(global as Record<string, unknown>)['testUtils'] = testUtils;
 
 // Setup avant tous les tests d'intégration
 beforeAll(async () => {
@@ -252,7 +274,7 @@ afterAll(async () => {
 // Setup avant chaque test
 beforeEach(async () => {
   // Nettoyer les données Redis si activé
-  if (process.env.TEST_DATA_RESET_BETWEEN_TESTS === 'true') {
+  if (process.env['TEST_DATA_RESET_BETWEEN_TESTS'] === 'true') {
     await cleanupRedisData();
   }
 });
@@ -260,13 +282,13 @@ beforeEach(async () => {
 // Cleanup après chaque test
 afterEach(async () => {
   // Nettoyer les données Redis si activé
-  if (process.env.TEST_DATA_CLEANUP_ENABLED === 'true') {
+  if (process.env['TEST_DATA_CLEANUP_ENABLED'] === 'true') {
     await cleanupRedisData();
   }
 });
 
 // Gestion des erreurs non capturées
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason) => {
   console.error('❌ Unhandled Rejection dans les tests:', reason);
 });
 
@@ -276,16 +298,22 @@ process.on('uncaughtException', (error) => {
 
 // Export des types pour TypeScript
 export interface TestUtils {
-  makeRequest: (url: string, options?: any, maxRetries?: number) => Promise<any>;
+  makeRequest: (url: string, options?: Record<string, unknown>, maxRetries?: number) => Promise<Record<string, unknown>>;
   waitFor: (condition: () => Promise<boolean>, timeout?: number) => Promise<boolean>;
-  generateTestData: () => any;
+  generateTestData: () => Record<string, unknown>;
   redis: Redis | null;
   services: typeof MOCK_SERVICES;
+  serviceUrls: {
+    genkit: string;
+    restApi: string;
+    websocket: string;
+    prometheus: string;
+  };
 }
 
 // Déclaration globale pour TypeScript
 declare global {
-  var testUtils: TestUtils;
+  const testUtils: TestUtils;
 }
 
 export {};

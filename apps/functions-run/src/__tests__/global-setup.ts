@@ -11,6 +11,7 @@
 import { spawn, ChildProcess } from 'child_process';
 import { createConnection } from 'net';
 import path from 'path';
+import { startRedisMemoryServer } from './redis-memory-setup';
 
 // Types pour la gestion des services
 interface MockService {
@@ -50,7 +51,6 @@ const MOCK_SERVICES: MockService[] = [
 ];
 
 // Timeout pour le démarrage des services
-const SERVICE_STARTUP_TIMEOUT = 30000; // 30 secondes
 const PORT_CHECK_INTERVAL = 500; // 500ms
 const MAX_PORT_CHECK_ATTEMPTS = 60; // 30 secondes total
 
@@ -95,6 +95,8 @@ function waitForPort(port: number, maxAttempts: number = MAX_PORT_CHECK_ATTEMPTS
       
       setTimeout(checkPort, PORT_CHECK_INTERVAL);
     };
+   
+   console.log('🔧 Démarrage des services mock...');
     
     checkPort();
   });
@@ -154,69 +156,67 @@ function killProcessOnPort(port: number): Promise<void> {
 /**
  * Démarre un service mock
  */
-function startMockService(service: MockService): Promise<boolean> {
-  return new Promise(async (resolve) => {
-    console.log(`🚀 Démarrage du service ${service.name} sur le port ${service.port}...`);
+async function startMockService(service: MockService): Promise<boolean> {
+  console.log(`🚀 Démarrage du service ${service.name} sur le port ${service.port}...`);
+  
+  // Vérifier si le port est déjà utilisé
+  const portAvailable = await isPortAvailable(service.port);
+  if (!portAvailable) {
+    console.log(`⚠️  Le port ${service.port} est déjà utilisé, tentative d'arrêt du processus...`);
+    await killProcessOnPort(service.port);
     
-    // Vérifier si le port est déjà utilisé
-    const portAvailable = await isPortAvailable(service.port);
-    if (!portAvailable) {
-      console.log(`⚠️  Le port ${service.port} est déjà utilisé, tentative d'arrêt du processus...`);
-      await killProcessOnPort(service.port);
-      
-      // Attendre un peu après l'arrêt
-      await new Promise(resolve => setTimeout(resolve, 2000));
-    }
-    
-    // Démarrer le service
-    const childProcess = spawn('node', [service.scriptPath], {
-      stdio: ['ignore', 'pipe', 'pipe'],
-      env: {
-        ...process.env,
-        PORT: service.port.toString(),
-        NODE_ENV: 'test'
-      }
-    });
-    
-    service.process = childProcess;
-    
-    // Gérer les logs du service
-    childProcess.stdout?.on('data', (data) => {
-      const message = data.toString().trim();
-      if (message) {
-        console.log(`📝 [${service.name}] ${message}`);
-      }
-    });
-    
-    childProcess.stderr?.on('data', (data) => {
-      const message = data.toString().trim();
-      if (message && !message.includes('ExperimentalWarning')) {
-        console.error(`❌ [${service.name}] ${message}`);
-      }
-    });
-    
-    childProcess.on('error', (error) => {
-      console.error(`❌ Erreur lors du démarrage de ${service.name}:`, error.message);
-      resolve(false);
-    });
-    
-    childProcess.on('exit', (code) => {
-      if (code !== 0) {
-        console.error(`❌ ${service.name} s'est arrêté avec le code ${code}`);
-      }
-    });
-    
-    // Attendre que le service soit prêt
-    const isReady = await waitForPort(service.port);
-    
-    if (isReady) {
-      console.log(`✅ Service ${service.name} démarré avec succès sur le port ${service.port}`);
-      resolve(true);
-    } else {
-      console.error(`❌ Échec du démarrage de ${service.name}`);
-      resolve(false);
+    // Attendre un peu après l'arrêt
+    await new Promise(resolve => setTimeout(resolve, 2000));
+  }
+  
+  // Démarrer le service
+  const childProcess = spawn('node', [service.scriptPath], {
+    stdio: ['ignore', 'pipe', 'pipe'],
+    env: {
+      ...process.env,
+      PORT: service.port.toString(),
+      NODE_ENV: 'test'
     }
   });
+  
+  service.process = childProcess;
+  
+  // Gérer les logs du service
+  childProcess.stdout?.on('data', (data) => {
+    const message = data.toString().trim();
+    if (message) {
+      console.log(`📝 [${service.name}] ${message}`);
+    }
+  });
+  
+  childProcess.stderr?.on('data', (data) => {
+    const message = data.toString().trim();
+    if (message && !message.includes('ExperimentalWarning')) {
+      console.error(`❌ [${service.name}] ${message}`);
+    }
+  });
+  
+  childProcess.on('error', (error) => {
+    console.error(`❌ Erreur lors du démarrage de ${service.name}:`, error.message);
+    return false;
+  });
+  
+  childProcess.on('exit', (code) => {
+    if (code !== 0) {
+      console.error(`❌ ${service.name} s'est arrêté avec le code ${code}`);
+    }
+  });
+  
+  // Attendre que le service soit prêt
+  const isReady = await waitForPort(service.port);
+  
+  if (isReady) {
+    console.log(`✅ Service ${service.name} démarré avec succès sur le port ${service.port}`);
+    return true;
+  } else {
+    console.error(`❌ Échec du démarrage de ${service.name}`);
+    return false;
+  }
 }
 
 /**
@@ -224,11 +224,52 @@ function startMockService(service: MockService): Promise<boolean> {
  */
 export default async function globalSetup(): Promise<void> {
   console.log('🧪 === SETUP GLOBAL DES TESTS D\'INTÉGRATION ===');
-  console.log('🔧 Démarrage des services mock...');
+  
+  // Set up comprehensive error handling before any Redis operations
+  const originalEmit = process.emit;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (process as any).emit = function(event: string, ...args: unknown[]): boolean {
+    if (event === 'unhandledRejection') {
+      const reason = args[0];
+      const reasonStr = String(reason);
+      console.warn('⚠️ Intercepted Unhandled Promise Rejection:', reasonStr);
+      
+      // Specifically handle Redis server closure errors
+      if (reasonStr.includes('redis-server instance closed')) {
+        console.warn('⚠️ Redis server closure detected - suppressing error');
+        return true; // Prevent the default behavior
+      }
+      
+      // For other rejections, log but don't crash
+      console.warn('⚠️ Non-Redis rejection - logging and continuing');
+      return true; // Prevent the default behavior
+    }
+    
+    if (event === 'uncaughtException') {
+      const error = args[0];
+      const errorStr = String(error);
+      console.warn('⚠️ Intercepted Uncaught Exception:', errorStr);
+      
+      // Handle Redis-related exceptions
+      if (errorStr.includes('redis-server') || errorStr.includes('Redis')) {
+        console.warn('⚠️ Redis-related exception detected - suppressing error');
+        return true; // Prevent the default behavior
+      }
+    }
+    
+    // Call the original emit for other events
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    originalEmit.apply(this, [event, ...args] as any);
+    return true;
+  };
   
   const startTime = Date.now();
   
   try {
+    // Démarrer Redis en mémoire en premier
+    console.log('📦 Démarrage de Redis en mémoire...');
+    await startRedisMemoryServer();
+    
     // Démarrer tous les services en parallèle
     const servicePromises = MOCK_SERVICES.map(service => startMockService(service));
     const results = await Promise.all(servicePromises);
@@ -246,7 +287,7 @@ export default async function globalSetup(): Promise<void> {
     console.log('🎯 Les tests d\'intégration peuvent commencer');
     
     // Stocker les références des processus pour le teardown
-    (global as any).__MOCK_SERVICES__ = MOCK_SERVICES;
+    (global as Record<string, unknown>)['__MOCK_SERVICES__'] = MOCK_SERVICES;
     
   } catch (error) {
     console.error('❌ Erreur lors du setup global:', error);

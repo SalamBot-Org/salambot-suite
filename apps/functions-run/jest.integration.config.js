@@ -8,7 +8,23 @@
  * @created 2025-06-02
  */
 
-const baseConfig = require('./jest.config.ts').default;
+// Configuration de base Jest
+const baseConfig = {
+  displayName: 'functions-run-functions-run',
+  preset: '../../jest.preset.js',
+  testEnvironment: 'node',
+  transform: {
+    '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+  },
+  moduleFileExtensions: ['ts', 'js', 'html'],
+  coverageDirectory: '../../coverage/apps/functions-run_tmp',
+  moduleNameMapper: {
+    '^genkit$': '<rootDir>/src/__mocks__/genkit.js',
+    '^cld3$': '<rootDir>/src/__mocks__/cld3.js',
+    '^genkit-vertexai$': '<rootDir>/src/__mocks__/genkit-vertexai.js',
+    '^genkit-openai$': '<rootDir>/src/__mocks__/genkit-openai.js',
+  },
+};
 
 module.exports = {
   ...baseConfig,
@@ -25,8 +41,8 @@ module.exports = {
   // Exclure les tests unitaires
   testPathIgnorePatterns: [
     '/node_modules/',
-    '\.unit\.test\.',
-    '\.spec\.',
+    '.unit.test.',
+    '.spec.',
     '/dist/'
   ],
   
@@ -34,6 +50,11 @@ module.exports = {
   setupFilesAfterEnv: [
     '<rootDir>/src/__tests__/setup-integration.ts'
   ],
+  
+  // Configuration pour éviter les fuites de mémoire
+  detectOpenHandles: true,
+  forceExit: true,
+  detectLeaks: true,
   
   // Setup et teardown globaux pour les services
   globalSetup: '<rootDir>/src/__tests__/global-setup.ts',
@@ -45,10 +66,17 @@ module.exports = {
   // Exécution séquentielle pour éviter les conflits de ports
   maxWorkers: 1,
   
+  // Isolation des tests
+  resetMocks: true,
+  resetModules: true,
+  restoreMocks: true,
+  
   // Variables d'environnement spécifiques aux tests
   setupFiles: [
     '<rootDir>/src/__tests__/env-setup.ts'
   ],
+  
+
   
   // Mapping des modules avec mocks spécifiques
   moduleNameMapper: {
@@ -82,30 +110,19 @@ module.exports = {
     }
   },
   
-  // Reporters spécifiques
+  // Configuration des reporters pour un meilleur debugging
   reporters: [
-    'default'
-    // TODO: Ajouter jest-junit après installation
-    // [
-    //   'jest-junit',
-    //   {
-    //     outputDirectory: './test-results/integration',
-    //     outputName: 'junit.xml',
-    //     suiteName: 'Integration Tests'
-    //   }
-    // ]
+    'default',
+    ['jest-junit', {
+      outputDirectory: './test-results',
+      outputName: 'integration-results.xml',
+      suiteName: 'Integration Tests'
+    }]
   ],
   
   // Configuration pour les tests longs
   verbose: true,
   
-  // Détection des fuites mémoire
-  detectLeaks: true,
-  
-  // Force la sortie en cas de fuite
-  forceExit: true,
-  
   // Nettoyage après chaque test
-  clearMocks: true,
-  restoreMocks: true
+  clearMocks: true
 };

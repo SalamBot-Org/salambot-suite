@@ -1,0 +1,10 @@
+
+# Test artifacts
+test-results/
+coverage/
+logs/
+*.log
+
+# Redis dumps
+dump.rdb
+*.rdb
