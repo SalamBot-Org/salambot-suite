@@ -10,7 +10,6 @@
 
 import { RedisMemoryServer } from 'redis-memory-server';
 import Redis from 'ioredis';
-import { createServer } from 'net';
 
 // Instance globale Redis en mémoire
 let redisServer: RedisMemoryServer | null = null;
@@ -19,25 +18,6 @@ let mockRedisPort: number | null = null;
 
 // Détection de l'OS
 const isWindows = process.platform === 'win32';
-
-/**
- * Trouve un port disponible
- */
-function findAvailablePort(): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const server = createServer();
-    server.listen(0, () => {
-      const port = (server.address() as any)?.port;
-      server.close(() => {
-        if (port) {
-          resolve(port);
-        } else {
-          reject(new Error('Unable to find available port'));
-        }
-      });
-    });
-  });
-}
 
 /**
  * Démarre une instance Redis en mémoire

@@ -55,9 +55,10 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": ["apps/functions-run/**/*.{ts,tsx,js,jsx}"]
+        "command": "eslint src/**/*.ts",
+        "cwd": "apps/functions-run"
       }
     },
     "test": {
