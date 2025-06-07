@@ -4,7 +4,8 @@
 
 param(
     [int]$MaxRetries = 3,
-    [int]$ServiceTimeout = 60
+    [int]$ServiceTimeout = 60,
+    [int]$InitialWait = 10
 )
 
 $ErrorActionPreference = "Stop"
@@ -34,6 +35,20 @@ function Wait-ForService {
     
     while ($attempt -le $MaxAttempts) {
         try {
+            # Check if process is still running
+            $pidFile = "logs\$($ServiceName.ToLower()).pid"
+            if (Test-Path $pidFile) {
+                $pid = Get-Content $pidFile -ErrorAction SilentlyContinue
+                if ($pid -and -not (Get-Process -Id $pid -ErrorAction SilentlyContinue)) {
+                    Write-Host "❌ Le processus $ServiceName (PID: $pid) s'est arrêté" -ForegroundColor Red
+                    if (Test-Path "logs\$($ServiceName.ToLower()).log") {
+                        Write-Host "📋 Dernières 20 lignes du log $ServiceName :" -ForegroundColor Yellow
+                        Get-Content "logs\$($ServiceName.ToLower()).log" -Tail 20
+                    }
+                    return $false
+                }
+            }
+            
             $response = Invoke-WebRequest -Uri "http://localhost:$Port/health" -Method GET -TimeoutSec 5 -ErrorAction SilentlyContinue
             if ($response.StatusCode -eq 200) {
                 Write-Host "✅ $ServiceName est prêt sur le port $Port" -ForegroundColor Green
@@ -47,7 +62,7 @@ function Wait-ForService {
         Write-Host "⏳ Tentative $attempt/$MaxAttempts : Attente de $ServiceName (délai: ${waitTime}s)" -ForegroundColor Yellow
         Start-Sleep -Seconds $waitTime
         
-        # Exponential backoff with max 5 seconds
+        # Exponential backoff with max 3 seconds
         $waitTime = [Math]::Min($waitTime + 1, 5)
         $attempt++
     }
@@ -133,17 +148,50 @@ foreach ($service in $services) {
     Start-Sleep -Seconds 3
 }
 
+# Wait initial delay for services to initialize
+Write-Host "⏳ Attente initiale de $InitialWait secondes pour l'initialisation des services..." -ForegroundColor Yellow
+Start-Sleep -Seconds $InitialWait
+
 # Wait for all services to be ready
-Write-Host "⏳ Attente de la disponibilité des services..." -ForegroundColor Yellow
+Write-Host "⏳ Vérification de la disponibilité des services..." -ForegroundColor Yellow
 $servicesFailed = 0
 
 foreach ($service in $services) {
     if ($service.Name -eq "WebSocket") {
-        # WebSocket check (no health endpoint)
-        if (-not (Test-PortAvailable -Port $service.Port)) {
-            Write-Host "✅ WebSocket service disponible" -ForegroundColor Green
-        } else {
-            Write-Host "❌ WebSocket service non disponible" -ForegroundColor Red
+        # WebSocket check (no health endpoint) - use port connectivity test
+        $wsReady = $false
+        for ($attempt = 1; $attempt -le 30; $attempt++) {
+            try {
+                $tcpClient = New-Object System.Net.Sockets.TcpClient
+                $connect = $tcpClient.BeginConnect("localhost", $service.Port, $null, $null)
+                $wait = $connect.AsyncWaitHandle.WaitOne(1000, $false)
+                
+                if ($wait) {
+                    try {
+                        $tcpClient.EndConnect($connect)
+                        $tcpClient.Close()
+                        Write-Host "✅ WebSocket service disponible sur le port $($service.Port)" -ForegroundColor Green
+                        $wsReady = $true
+                        break
+                    }
+                    catch {
+                        $tcpClient.Close()
+                    }
+                }
+                else {
+                    $tcpClient.Close()
+                }
+            }
+            catch {
+                # Port not ready yet
+            }
+            
+            Write-Host "⏳ Tentative $attempt/30 : Attente WebSocket..." -ForegroundColor Yellow
+            Start-Sleep -Seconds 2
+        }
+        
+        if (-not $wsReady) {
+            Write-Host "❌ WebSocket service non disponible après 30 tentatives" -ForegroundColor Red
             $servicesFailed++
         }
     } else {

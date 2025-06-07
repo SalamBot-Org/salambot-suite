@@ -19,7 +19,7 @@ import {
 } from './redis-memory-setup';
 
 // Configuration des timeouts
-jest.setTimeout(30000); // 30 secondes par test
+jest.setTimeout(20000); // Réduit à 20 secondes pour optimiser les tests CI
 
 // Configuration axios pour les tests
 axios.defaults.timeout = 10000; // 10 secondes

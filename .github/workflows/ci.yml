@@ -107,13 +107,22 @@ jobs:
 
       - name: Test
         run: |
-          echo "Starting tests with 10 minute timeout..."
-          timeout 900 pnpm test || {
-            echo "Tests failed or timed out after 15 minutes"
+          echo "Starting tests with 5 minute timeout..."
+          timeout 300 pnpm test || {
+            echo "Tests failed or timed out after 5 minutes"
             echo "Checking mock services status..."
             for port in 3001 3002 3003 3004; do
               curl -f http://localhost:$port/health 2>/dev/null && echo "Port $port: OK" || echo "Port $port: FAILED"
             done
+            echo "Displaying recent logs for debugging..."
+            cd apps/functions-run
+            for log_file in logs/*.log; do
+              if [ -f "$log_file" ]; then
+                echo "=== Last 10 lines of $log_file ==="
+                tail -n 10 "$log_file"
+              fi
+            done
+            cd ../..
             exit 1
           }
         env:
@@ -123,8 +132,8 @@ jobs:
           MOCK_REST_API_PORT: 3002
           MOCK_WEBSOCKET_PORT: 3003
           MOCK_PROMETHEUS_PORT: 3004
-          # Réduire le timeout Jest pour éviter les blocages
-          JEST_TIMEOUT: 30000
+          # Timeout Jest optimisé pour les tests CI
+        JEST_TIMEOUT: 20000
 
       - name: Stop Mock Services
         if: always()

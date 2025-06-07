@@ -36,8 +36,8 @@ const config: Config = {
     '<rootDir>/src/__tests__/env-setup.ts'
   ],
   
-  // Timeout augmenté pour le CI (30 secondes)
-  testTimeout: 30000,
+  // Timeout augmenté pour le CI (20 secondes)
+  testTimeout: 20000,
   
   // Mapper les modules pour les mocks
   moduleNameMapper: {

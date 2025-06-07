@@ -33,13 +33,13 @@ export default {
   
   // Transform TypeScript
   transform: {
-    '^.+\.ts$': ['ts-jest', {
+    '^.+.ts$': ['ts-jest', {
       tsconfig: '<rootDir>/tsconfig.spec.json'
     }]
   },
   
   // Timeout plus élevé pour les tests d'intégration
-  testTimeout: 30000,
+  testTimeout: 20000, // Réduit de 30s à 20s pour optimiser les tests CI
   
   // Exécution séquentielle pour éviter les conflits de ports
   maxWorkers: 1,

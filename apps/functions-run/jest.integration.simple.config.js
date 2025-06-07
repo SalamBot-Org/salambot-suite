@@ -24,7 +24,7 @@ module.exports = {
   
   // Transform TypeScript
   transform: {
-    '^.+\.(ts|tsx)$': ['ts-jest', {
+    '^.+.(ts|tsx)$': ['ts-jest', {
       tsconfig: '<rootDir>/tsconfig.spec.json'
     }]
   },
@@ -50,7 +50,7 @@ module.exports = {
   ],
   
   // Timeout plus élevé pour les tests d'intégration
-  testTimeout: 30000, // 30 secondes
+  testTimeout: 20000, // Réduit à 20 secondes pour optimiser les tests CI
   
   // Exécution séquentielle pour éviter les conflits de ports
   maxWorkers: 1,

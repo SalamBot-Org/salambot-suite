@@ -11,7 +11,7 @@ import axios from 'axios';
 import WebSocket from 'ws';
 
 // Configuration des timeouts pour les tests
-jest.setTimeout(15000);
+jest.setTimeout(10000); // Réduit à 10 secondes pour les tests unitaires
 
 describe('Services Mock', () => {
   const MOCK_SERVICES = {

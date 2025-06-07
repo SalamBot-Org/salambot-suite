@@ -13,28 +13,49 @@ cd "$(dirname "$0")/../apps/functions-run"
 # Create logs directory if it doesn't exist
 mkdir -p logs
 
-# Function to check if a service is ready
+# Function to check if a service is ready with enhanced retry logic
 check_service() {
   local port=$1
   local service_name=$2
-  local max_attempts=30
+  local max_attempts=60  # Increased from 30 to 60
   local attempt=1
+  local backoff_delay=1
   
   echo "🔍 Checking $service_name on port $port..."
   
   while [ $attempt -le $max_attempts ]; do
-    if curl -f -s "http://localhost:$port/health" > /dev/null 2>&1; then
-      echo "✅ $service_name is ready on port $port"
+    # Check if process is still running first
+    local pid_file="logs/${service_name,,}.pid"
+    if [ -f "$pid_file" ]; then
+      local pid=$(cat "$pid_file")
+      if ! kill -0 "$pid" 2>/dev/null; then
+        echo "❌ $service_name process (PID: $pid) has died"
+        echo "📋 Last 20 lines of $service_name log:"
+        tail -n 20 "logs/${service_name,,}.log" 2>/dev/null || echo "No log file found"
+        return 1
+      fi
+    fi
+    
+    # Check health endpoint
+    if curl -f -s --connect-timeout 2 --max-time 5 "http://localhost:$port/health" > /dev/null 2>&1; then
+      echo "✅ $service_name is ready on port $port (attempt $attempt)"
       return 0
     fi
+    
     echo "⏳ Attempt $attempt/$max_attempts: Waiting for $service_name on port $port..."
-    sleep 2
+    sleep $backoff_delay
+    
+    # Exponential backoff up to 3 seconds
+    if [ $backoff_delay -lt 3 ]; then
+      backoff_delay=$((backoff_delay + 1))
+    fi
+    
     attempt=$((attempt + 1))
   done
   
   echo "❌ $service_name failed to start on port $port after $max_attempts attempts"
-  echo "📋 Last 10 lines of $service_name log:"
-  tail -n 10 "logs/${service_name,,}.log" 2>/dev/null || echo "No log file found"
+  echo "📋 Last 20 lines of $service_name log:"
+  tail -n 20 "logs/${service_name,,}.log" 2>/dev/null || echo "No log file found"
   return 1
 }
 
@@ -42,22 +63,44 @@ check_service() {
 check_port() {
   local port=$1
   local service_name=$2
-  local max_attempts=30
+  local max_attempts=60  # Increased from 30 to 60
   local attempt=1
+  local backoff_delay=1
   
   echo "🔍 Checking $service_name on port $port..."
   
   while [ $attempt -le $max_attempts ]; do
+    # Check if process is still running first
+    local pid_file="logs/${service_name,,}.pid"
+    if [ -f "$pid_file" ]; then
+      local pid=$(cat "$pid_file")
+      if ! kill -0 "$pid" 2>/dev/null; then
+        echo "❌ $service_name process (PID: $pid) has died"
+        echo "📋 Last 20 lines of $service_name log:"
+        tail -n 20 "logs/${service_name,,}.log" 2>/dev/null || echo "No log file found"
+        return 1
+      fi
+    fi
+    
     if nc -z localhost "$port" 2>/dev/null; then
-      echo "✅ $service_name is ready on port $port"
+      echo "✅ $service_name is ready on port $port (attempt $attempt)"
       return 0
     fi
+    
     echo "⏳ Attempt $attempt/$max_attempts: Waiting for $service_name on port $port..."
-    sleep 2
+    sleep $backoff_delay
+    
+    # Exponential backoff up to 3 seconds
+    if [ $backoff_delay -lt 3 ]; then
+      backoff_delay=$((backoff_delay + 1))
+    fi
+    
     attempt=$((attempt + 1))
   done
   
   echo "❌ $service_name failed to start on port $port after $max_attempts attempts"
+  echo "📋 Last 20 lines of $service_name log:"
+  tail -n 20 "logs/${service_name,,}.log" 2>/dev/null || echo "No log file found"
   return 1
 }
 
@@ -84,8 +127,8 @@ echo "$REST_API_PID" > logs/rest-api.pid
 echo "$WEBSOCKET_PID" > logs/websocket.pid
 echo "$PROMETHEUS_PID" > logs/prometheus.pid
 
-echo "⏳ Waiting for services to start..."
-sleep 5
+echo "⏳ Waiting for services to initialize..."
+sleep 10  # Increased from 5 to 10 seconds for better stability
 
 # Check each service
 SERVICES_FAILED=0
