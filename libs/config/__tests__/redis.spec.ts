@@ -263,6 +263,7 @@ describe('Redis Client', () => {
           tls: expect.objectContaining({
             rejectUnauthorized: true,
           }),
+          retryStrategy: expect.any(Function),
         })
       );
     });
@@ -279,6 +280,29 @@ describe('Redis Client', () => {
       const client = await getRedisClient();
 
       expect(client).toBeDefined();
+    });
+
+    it('devrait configurer TLS avec rejectUnauthorized false en développement', async () => {
+      mockGetEnvConfig.mockReturnValue({
+        nodeEnv: 'development',
+        gcpProjectId: 'test-project',
+        googleApplicationCredentials: undefined,
+        redisUrl: 'rediss://localhost:6380',
+        redisTls: true,
+      });
+
+      const client = await getRedisClient();
+
+      expect(client).toBeDefined();
+      expect(MockedRedis).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({
+          tls: expect.objectContaining({
+            rejectUnauthorized: false,
+          }),
+          retryStrategy: expect.any(Function),
+        })
+      );
     });
   });
 

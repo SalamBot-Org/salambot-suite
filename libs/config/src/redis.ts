@@ -115,12 +115,19 @@ export async function getRedisClient(
       lazyConnect: true,
       maxRetriesPerRequest: options.retryAttempts || 3,
       enableReadyCheck: true,
+      retryStrategy: (times) => {
+        if (times > 5) {
+          return null; // Stop retrying after 5 attempts
+        }
+        return Math.min(times * 100, 2000); // Exponential backoff
+      },
     };
 
     // Configuration TLS
     if (config.tls) {
+      const envConfig = getEnvConfig();
       redisOptions.tls = {
-        rejectUnauthorized: true,
+        rejectUnauthorized: envConfig.nodeEnv === 'production',
       };
     }
 

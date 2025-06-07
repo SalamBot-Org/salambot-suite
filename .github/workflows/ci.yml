@@ -73,13 +73,15 @@ jobs:
       - name: Wait for Mock Services Health Check
         run: |
           echo "Waiting for mock services to be ready..."
-          sleep 5
+          sleep 10
           
-          # Vérifier que les services sont accessibles
+          # Vérifier que les services sont accessibles avec plus de timeout
           for port in 3001 3002 3003 3004; do
             echo "Checking service on port $port..."
-            timeout 30 bash -c "until curl -f http://localhost:$port/health 2>/dev/null; do sleep 1; done" || {
+            timeout 60 bash -c "until curl -f http://localhost:$port/health 2>/dev/null; do sleep 2; done" || {
               echo "Service on port $port failed to start or is not healthy"
+              echo "Checking logs for port $port..."
+              docker logs mock-service-$port 2>/dev/null || echo "No docker logs available"
               exit 1
             }
             echo "Service on port $port is healthy"
