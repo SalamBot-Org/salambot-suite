@@ -63,19 +63,19 @@ check_port() {
 
 # Start mock services in background with proper logging
 echo "📦 Starting Genkit mock service..."
-nohup pnpm run mock:genkit > logs/genkit.log 2>&1 &
+MOCK_GENKIT_PORT=3001 nohup pnpm run mock:genkit > logs/genkit.log 2>&1 &
 GENKIT_PID=$!
 
 echo "📦 Starting REST API mock service..."
-nohup pnpm run mock:rest-api > logs/rest-api.log 2>&1 &
+MOCK_REST_API_PORT=3002 nohup pnpm run mock:rest-api > logs/rest-api.log 2>&1 &
 REST_API_PID=$!
 
 echo "📦 Starting WebSocket mock service..."
-nohup pnpm run mock:websocket > logs/websocket.log 2>&1 &
+MOCK_WEBSOCKET_PORT=3003 nohup pnpm run mock:websocket > logs/websocket.log 2>&1 &
 WEBSOCKET_PID=$!
 
 echo "📦 Starting Prometheus mock service..."
-nohup pnpm run mock:prometheus > logs/prometheus.log 2>&1 &
+MOCK_PROMETHEUS_PORT=3004 nohup pnpm run mock:prometheus > logs/prometheus.log 2>&1 &
 PROMETHEUS_PID=$!
 
 # Store PIDs for cleanup
