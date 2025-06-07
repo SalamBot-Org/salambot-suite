@@ -60,6 +60,10 @@ describe('🔧 Tests des Améliorations Critiques', () => {
         monitoring: {
           ...GatewayConfigFactory.create('production').monitoring,
           prometheusEnabled: true
+        },
+        security: {
+          ...GatewayConfigFactory.create('production').security,
+          httpsOnly: false // Désactiver HTTPS enforcement pour les tests
         }
       };
       

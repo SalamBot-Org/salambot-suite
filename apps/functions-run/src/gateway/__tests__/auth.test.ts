@@ -53,12 +53,16 @@ describe('🔐 Authentication Middleware', () => {
   beforeEach(() => {
     // Configuration de test
     process.env['JWT_SECRET'] = 'test-secret';
-    process.env['API_KEYS'] = 'test-api-key-1,test-api-key-2';
+    process.env['API_KEYS'] = 'dev-api-key-1,dev-api-key-2';
     config = GatewayConfigFactory.create();
+    
+    // Force enable authentication for testing
+    config.security.authEnabled = true;
+    config.isDevelopment = false;
 
     mockRequest = {
       headers: {},
-      path: '/api/test',
+      path: '/protected/test',
       method: 'GET'
     };
 
@@ -69,6 +73,9 @@ describe('🔐 Authentication Middleware', () => {
     };
 
     nextFunction = jest.fn();
+    
+    // Reset all mocks
+    jest.clearAllMocks();
   });
 
   describe('🔑 JWT Authentication', () => {
@@ -150,7 +157,7 @@ describe('🔐 Authentication Middleware', () => {
   describe('🗝️ API Key Authentication', () => {
     it('should authenticate valid API key', async () => {
       mockRequest.headers = {
-        'x-api-key': 'test-api-key-1'
+        'x-api-key': 'dev-api-key-1'
       };
 
       const middleware = authMiddleware(config);
@@ -159,7 +166,7 @@ describe('🔐 Authentication Middleware', () => {
       expect(nextFunction).toHaveBeenCalled();
       expect(mockRequest.user).toEqual(expect.objectContaining({
         role: 'service',
-        apiKey: 'test-api-key-1'
+        apiKey: 'dev-api-key-1'
       }));
     });
 
@@ -267,10 +274,12 @@ describe('🔐 Authentication Middleware', () => {
 
   describe('⚙️ Configuration Options', () => {
     it('should bypass authentication when disabled', async () => {
-      config.security.authEnabled = false;
+      const testConfig = { ...config };
+      testConfig.security.authEnabled = false;
+      testConfig.isDevelopment = true;
       mockRequest.headers = {}; // Pas d'auth
 
-      const middleware = authMiddleware(config);
+      const middleware = authMiddleware(testConfig);
       await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
 
       expect(nextFunction).toHaveBeenCalled();
@@ -298,7 +307,7 @@ describe('🔐 Authentication Middleware', () => {
       const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
       
       mockRequest.headers = {
-        'x-api-key': 'test-api-key-1'
+        'x-api-key': 'dev-api-key-1'
       };
 
       const middleware = authMiddleware(config);
