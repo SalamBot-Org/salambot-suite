@@ -329,7 +329,7 @@ describe('Redis Client', () => {
       expect(MockedRedis).toHaveBeenCalledWith(
         expect.any(String),
         expect.objectContaining({
-          maxRetriesPerRequest: 3,
+          maxRetriesPerRequest: 1, // En environnement de test
         })
       );
     });

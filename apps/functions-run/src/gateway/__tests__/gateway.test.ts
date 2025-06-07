@@ -188,7 +188,7 @@ describe('⚙️ Gateway Configuration', () => {
   describe('🏭 Configuration Factory', () => {
     it('should create development configuration', () => {
       const originalEnv = process.env['NODE_ENV'];
-      (process.env as any).NODE_ENV = 'development';
+      (process.env as Record<string, string | undefined>)['NODE_ENV'] = 'development';
       
       try {
         const config = GatewayConfigFactory.create();
@@ -198,16 +198,16 @@ describe('⚙️ Gateway Configuration', () => {
         expect(config.monitoring.logLevel).toBe('debug');
       } finally {
         if (originalEnv !== undefined) {
-          (process.env as any).NODE_ENV = originalEnv;
+          (process.env as Record<string, string | undefined>)['NODE_ENV'] = originalEnv;
         } else {
-          delete (process.env as any).NODE_ENV;
+          delete (process.env as Record<string, string | undefined>)['NODE_ENV'];
         }
       }
     });
 
     it('should create production configuration', () => {
       const originalEnv = process.env['NODE_ENV'];
-      (process.env as any).NODE_ENV = 'production';
+      (process.env as Record<string, string | undefined>)['NODE_ENV'] = 'production';
       
       try {
         const config = GatewayConfigFactory.create();
@@ -217,9 +217,9 @@ describe('⚙️ Gateway Configuration', () => {
         expect(config.security.httpsOnly).toBe(true);
       } finally {
         if (originalEnv !== undefined) {
-          (process.env as any).NODE_ENV = originalEnv;
+          (process.env as Record<string, string | undefined>)['NODE_ENV'] = originalEnv;
         } else {
-          delete (process.env as any).NODE_ENV;
+          delete (process.env as Record<string, string | undefined>)['NODE_ENV'];
         }
       }
     });
@@ -229,8 +229,8 @@ describe('⚙️ Gateway Configuration', () => {
       const originalSecret = process.env['JWT_SECRET'];
       
       try {
-        (process.env as any).NODE_ENV = 'production';
-        delete (process.env as any).JWT_SECRET;
+        (process.env as Record<string, string | undefined>)['NODE_ENV'] = 'production';
+        delete (process.env as Record<string, string | undefined>)['JWT_SECRET'];
         
         // En production, la configuration devrait soit échouer soit utiliser des valeurs par défaut
         const config = GatewayConfigFactory.create();
@@ -243,12 +243,12 @@ describe('⚙️ Gateway Configuration', () => {
       } finally {
         // Restaurer les variables d'environnement
         if (originalEnv !== undefined) {
-          (process.env as any).NODE_ENV = originalEnv;
+          (process.env as Record<string, string | undefined>)['NODE_ENV'] = originalEnv;
         } else {
-          delete (process.env as any).NODE_ENV;
+          delete (process.env as Record<string, string | undefined>)['NODE_ENV'];
         }
         if (originalSecret !== undefined) {
-          (process.env as any).JWT_SECRET = originalSecret;
+          (process.env as Record<string, string | undefined>)['JWT_SECRET'] = originalSecret;
         }
       }
     });

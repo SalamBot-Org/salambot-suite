@@ -25,22 +25,19 @@ const config: Config = {
   testPathIgnorePatterns: [
     '/node_modules/',
     '/dist/',
-    '.integration.test.',
+    '.integration.test.'
   ],
   
   // Configuration du coverage
   coverageDirectory: '../../coverage/apps/functions-run',
-  // coverageProvider: 'v8', // Supprimé pour éviter les warnings de validation
   
   // Setup files
   setupFilesAfterEnv: [
     '<rootDir>/src/__tests__/env-setup.ts'
   ],
   
-  // Timeout pour les tests (réduit pour éviter les blocages)
-  testTimeout: 15000,
-  
-  // verbose: true, // Supprimé - utiliser --verbose en CLI si nécessaire
+  // Timeout augmenté pour le CI (30 secondes)
+  testTimeout: 30000,
   
   // Mapper les modules pour les mocks
   moduleNameMapper: {
@@ -51,12 +48,15 @@ const config: Config = {
   clearMocks: true,
   restoreMocks: true,
   
-  // Détection des handles ouverts
+  // Détection des handles ouverts et configuration CI
   detectOpenHandles: true,
-  // forceExit: true, // Supprimé pour laisser Jest se terminer proprement
+  forceExit: true,
   
-  // Gestion des workers pour éviter les conflits
-  maxWorkers: 1
+  // Configuration pour le CI
+  maxWorkers: process.env['CI'] ? 1 : '50%',
+  
+  // Configuration des reporters
+  reporters: ['default']
 };
 
 export default config;

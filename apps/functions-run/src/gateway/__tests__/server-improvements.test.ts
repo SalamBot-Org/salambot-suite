@@ -291,6 +291,12 @@ describe('🔧 Tests des Améliorations Critiques', () => {
     });
 
     it('devrait rejeter une configuration invalide', () => {
+      // Temporairement désactiver l'environnement de test pour ce test
+      const originalNodeEnv = process.env['NODE_ENV'];
+      const originalJestWorker = process.env['JEST_WORKER_ID'];
+      delete (process.env as Record<string, string | undefined>)['NODE_ENV'];
+      delete (process.env as Record<string, string | undefined>)['JEST_WORKER_ID'];
+      
       const invalidConfig = {
         ...GatewayConfigFactory.create('production'),
         security: {
@@ -300,7 +306,13 @@ describe('🔧 Tests des Améliorations Critiques', () => {
         }
       };
       
-      expect(GatewayConfigFactory.validate(invalidConfig)).toBe(false);
-    });
+      const result = GatewayConfigFactory.validate(invalidConfig);
+      
+      // Restaurer les variables d'environnement
+      if (originalNodeEnv) (process.env as Record<string, string | undefined>)['NODE_ENV'] = originalNodeEnv;
+      if (originalJestWorker) (process.env as Record<string, string | undefined>)['JEST_WORKER_ID'] = originalJestWorker;
+      
+      expect(result).toBe(false);
+     });
   });
 });

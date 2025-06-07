@@ -110,16 +110,21 @@ export async function getRedisClient(
 
   try {
     // Configuration du client Redis
+    const envConfig = getEnvConfig();
+    const isTestEnv = envConfig.nodeEnv === 'test' || process.env['NODE_ENV'] === 'test';
+    
     const redisOptions: RedisOptions = {
-      connectTimeout: options.connectTimeout || 10000,
+      connectTimeout: options.connectTimeout || (isTestEnv ? 5000 : 10000),
       lazyConnect: true,
-      maxRetriesPerRequest: options.retryAttempts || 3,
+      maxRetriesPerRequest: options.retryAttempts || (isTestEnv ? 1 : 3),
       enableReadyCheck: true,
+      commandTimeout: isTestEnv ? 3000 : 5000,
       retryStrategy: (times) => {
-        if (times > 5) {
-          return null; // Stop retrying after 5 attempts
+        const maxRetries = isTestEnv ? 2 : 5;
+        if (times > maxRetries) {
+          return null; // Stop retrying
         }
-        return Math.min(times * 100, 2000); // Exponential backoff
+        return Math.min(times * (isTestEnv ? 50 : 100), isTestEnv ? 1000 : 2000);
       },
     };
 
