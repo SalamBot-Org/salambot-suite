@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm install --frozen-lockfile && pnpm nx build agent-desk --configuration=production",
+  "buildCommand": "pnpm install --frozen-lockfile && pnpm nx build agent-desk --configuration=production --verbose --skip-nx-cache",
   "outputDirectory": "dist/apps/agent-desk",
   "framework": null,
   "env": {
