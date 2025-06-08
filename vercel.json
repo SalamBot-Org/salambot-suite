@@ -1,5 +1,12 @@
 {
-  "buildCommand": "pnpm nx build agent-desk --configuration=production",
+  "buildCommand": "pnpm install --frozen-lockfile && pnpm nx build agent-desk --configuration=production",
   "outputDirectory": "dist/apps/agent-desk",
-  "framework": null
+  "framework": null,
+  "env": {
+    "NODE_ENV": "production",
+    "NX_DAEMON": "false",
+    "NX_PARALLEL": "1"
+  },
+  "installCommand": "pnpm install --frozen-lockfile",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./apps/agent-desk"
 }
