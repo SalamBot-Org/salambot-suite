@@ -69,31 +69,145 @@ function shouldSimulateTimeout() {
   return Math.random() * 100 < TIMEOUT_RATE;
 }
 
-function detectLanguage(text) {
-  if (!text || typeof text !== 'string') {
+// Configuration avancée pour la détection de langue
+const LANGUAGE_CONFIG = {
+  patterns: {
+    ary: {
+      keywords: /\b(كيفاش|راك|ديال|بزاف|واخا|مزيان|هاد|داك|هادي|ديك|فين|علاش|إمتى|شنو|شكون|كيداير|كيدايرة|واش|ولا|غير|حتى|بلا|ماشي|أيوا|لا|نعم|بصح|صافي|زوين|قبيح|كبير|صغير|جديد|قديم|سخون|بارد|حلو|مر|ملح|حامض|أبيض|أسود|أحمر|أخضر|أزرق|أصفر|بني|وردي|بنفسجي|رمادي|برتقالي|دابا|غدا|البارح|اليوم|هاد|الأسبوع|هاد|الشهر|هاد|العام|الوقت|الساعة|الدقيقة|الثانية|الصباح|الظهر|العصر|المغرب|العشاء|الليل|الاثنين|الثلاثاء|الأربعاء|الخميس|الجمعة|السبت|الأحد)\b/gi,
+      weight: 1.2,
+      baseConfidence: 0.4
+    },
+    ar: {
+      keywords: /\b(مرحبا|أهلا|كيف|حالك|شكرا|من|فضلك|نعم|لا|أين|متى|ماذا|كيف|لماذا|مع|السلامة|صباح|الخير|مساء|الله|يعطيك|العافية|تسلم|الحمد|لله|إن|شاء|الله|ما|شاء|الله|سبحان|الله|استغفر|الله|لا|إله|إلا|الله|محمد|رسول|الله|صلى|الله|عليه|وسلم|رضي|الله|عنه|رحمه|الله|بارك|الله|فيك|جزاك|الله|خيرا|أعوذ|بالله|من|الشيطان|الرجيم|بسم|الله|الرحمن|الرحيم|اليوم|غدا|أمس|الأسبوع|الشهر|السنة|الوقت|الساعة|الدقيقة|الثانية|الصباح|الظهر|العصر|المساء|الليل|الاثنين|الثلاثاء|الأربعاء|الخميس|الجمعة|السبت|الأحد)\b/gi,
+      weight: 1.0,
+      baseConfidence: 0.3
+    },
+    fr: {
+      keywords: /\b(bonjour|salut|comment|allez|vous|merci|beaucoup|oui|non|où|quand|quoi|comment|pourquoi|avec|au|revoir|bonne|journée|bonsoir|bonne|nuit|s'il|vous|plaît|excusez|moi|pardon|désolé|ça|va|très|bien|mal|peut|être|certainement|probablement|jamais|toujours|souvent|parfois|rarement|maintenant|hier|demain|aujourd'hui|semaine|mois|année|temps|heure|minute|seconde|matin|midi|après|soir|nuit|lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche|alors|donc|mais|cependant|néanmoins|toutefois|pourtant|ainsi|ensuite|puis|enfin|d'abord|premièrement|deuxièmement|finalement)\b/gi,
+      weight: 1.0,
+      baseConfidence: 0.3
+    },
+    en: {
+      keywords: /\b(hello|hi|how|are|you|thank|thanks|yes|no|where|when|what|how|why|with|goodbye|good|morning|afternoon|evening|night|please|excuse|me|sorry|fine|well|bad|maybe|certainly|probably|never|always|often|sometimes|rarely|now|yesterday|tomorrow|today|week|month|year|time|hour|minute|second|morning|noon|afternoon|evening|night|monday|tuesday|wednesday|thursday|friday|saturday|sunday|then|so|but|however|nevertheless|yet|thus|next|finally|first|firstly|secondly|lastly|actually|really|basically|generally|specifically|particularly|especially|obviously|clearly|definitely|absolutely|probably|possibly|maybe|perhaps)\b/gi,
+      weight: 1.0,
+      baseConfidence: 0.3
+    }
+  },
+  characterSets: {
+    arabic: /[\u0600-\u06FF]/g,
+    latin: /[a-zA-Z]/g,
+    french: /[àâäéèêëïîôöùûüÿç]/g
+  },
+  minConfidence: 0.1,
+  maxConfidence: 0.98
+};
+
+// Fonction améliorée pour détecter la langue
+function detectLanguage(text, options = {}) {
+  if (!text || typeof text !== 'string' || text.trim().length === 0) {
+    return mockResponses.langDetect.default;
+  }
+
+  const startTime = Date.now();
+  const { includeDialects = true, confidenceThreshold = 0.5 } = options;
+  
+  const normalizedText = text.toLowerCase().trim();
+  const candidates = [];
+
+  // Analyse par mots-clés
+  for (const [lang, config] of Object.entries(LANGUAGE_CONFIG.patterns)) {
+    if (!includeDialects && lang === 'ary') continue;
+    
+    const matches = normalizedText.match(config.keywords);
+    if (matches) {
+      const keywordScore = Math.min(matches.length * 0.15 * config.weight, 0.7);
+      const confidence = Math.min(
+        LANGUAGE_CONFIG.maxConfidence,
+        config.baseConfidence + keywordScore
+      );
+      
+      candidates.push({ language: lang, confidence, method: 'keyword_analysis' });
+    }
+  }
+
+  // Analyse par jeu de caractères
+  const arabicChars = text.match(LANGUAGE_CONFIG.characterSets.arabic);
+  const latinChars = text.match(LANGUAGE_CONFIG.characterSets.latin);
+  const frenchChars = text.match(LANGUAGE_CONFIG.characterSets.french);
+  
+  if (arabicChars) {
+    const arabicRatio = arabicChars.length / text.length;
+    if (arabicRatio > 0.3) {
+      const confidence = Math.min(0.85, arabicRatio * 0.8 + 0.2);
+      
+      // Distinguer entre arabe standard et darija
+      const existingArabic = candidates.find(c => c.language === 'ar');
+      const existingDarija = candidates.find(c => c.language === 'ary');
+      
+      if (!existingArabic || existingArabic.confidence < confidence) {
+        candidates.push({ 
+          language: includeDialects && (!existingDarija || existingDarija.confidence < confidence * 1.1) ? 'ar' : 'ar', 
+          confidence, 
+          method: 'character_analysis' 
+        });
+      }
+    }
+  }
+  
+  if (frenchChars && frenchChars.length > 0) {
+    const frenchRatio = frenchChars.length / text.length;
+    const confidence = Math.min(0.9, frenchRatio * 2 + 0.4);
+    candidates.push({ language: 'fr', confidence, method: 'character_analysis' });
+  }
+  
+  if (latinChars && latinChars.length > text.length * 0.5) {
+    const latinRatio = latinChars.length / text.length;
+    const confidence = Math.min(0.7, latinRatio * 0.6 + 0.2);
+    
+    // Favoriser le français si des caractères français sont détectés
+    const language = frenchChars && frenchChars.length > 0 ? 'fr' : 'en';
+    candidates.push({ language, confidence, method: 'character_analysis' });
+  }
+
+  // Trier les candidats par confiance
+  candidates.sort((a, b) => b.confidence - a.confidence);
+  
+  // Fusionner les scores pour la même langue
+  const languageScores = {};
+  candidates.forEach(candidate => {
+    if (!languageScores[candidate.language]) {
+      languageScores[candidate.language] = { confidence: 0, methods: [] };
+    }
+    languageScores[candidate.language].confidence = Math.max(
+      languageScores[candidate.language].confidence,
+      candidate.confidence
+    );
+    languageScores[candidate.language].methods.push(candidate.method);
+  });
+
+  // Sélectionner le meilleur candidat
+  const finalCandidates = Object.entries(languageScores)
+    .map(([lang, data]) => ({ language: lang, confidence: data.confidence, methods: data.methods }))
+    .sort((a, b) => b.confidence - a.confidence);
+
+  const bestMatch = finalCandidates[0];
+  const processingTime = Date.now() - startTime;
+  
+  // Appliquer le seuil de confiance
+  if (!bestMatch || bestMatch.confidence < confidenceThreshold) {
     return mockResponses.langDetect.default;
   }
   
-  const lowerText = text.toLowerCase();
+  // Retourner le format attendu par le mock avec métadonnées
+  const result = mockResponses.langDetect[bestMatch.language] || mockResponses.langDetect.default;
   
-  // Détection simple basée sur des mots-clés
-  if (/[أ-ي]/.test(text)) {
-    // Contient des caractères arabes
-    if (/\b(كيفاش|شنو|بغيتي|راك|واش|ديال|فين)\b/.test(lowerText)) {
-      return mockResponses.langDetect['ary']; // Darija
-    }
-    return mockResponses.langDetect['ar']; // Arabe standard
+  // Ajouter les métadonnées de traitement si disponibles
+  if (result && typeof result === 'object') {
+    result.processingTime = processingTime;
+    result.methods = bestMatch.methods;
   }
   
-  if (/\b(bonjour|salut|comment|merci|au revoir|bonsoir)\b/.test(lowerText)) {
-    return mockResponses.langDetect['fr'];
-  }
-  
-  if (/\b(hello|hi|how|thank|goodbye|good)\b/.test(lowerText)) {
-    return mockResponses.langDetect['en'];
-  }
-  
-  return mockResponses.langDetect.default;
+  return result;
 }
 
 function generateReply(language, context = {}) {
@@ -145,7 +259,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Route de santé
+// Routes de santé
 app.get('/health', async (req, res) => {
   await simulateDelay();
   res.json({
@@ -159,29 +273,51 @@ app.get('/health', async (req, res) => {
   });
 });
 
+// Routes legacy (rétrocompatibilité)
+app.post('/langDetect', async (req, res) => {
+  await simulateDelay();
+  
+  if (shouldSimulateError()) {
+    return res.status(500).json({ error: 'Simulated error' });
+  }
+  
+  const { text } = req.body;
+  const result = detectLanguage(text);
+  res.json(result);
+});
+
+app.post('/generateReply', async (req, res) => {
+  await simulateDelay();
+  
+  if (shouldSimulateError()) {
+    return res.status(500).json({ error: 'Simulated error' });
+  }
+  
+  const { message, language } = req.body;
+  // Utiliser le message pour enrichir la réponse
+  const result = generateReply(language);
+  if (result && typeof result === 'object') {
+    result.originalMessage = message;
+  }
+  res.json(result);
+});
+
 app.get('/', async (req, res) => {
   await simulateDelay();
-  res.json({
-    message: 'SalamBot Genkit Mock Service',
-    status: 'running',
-    flows: {
-      'lang-detect-flow': {
-        endpoint: '/lang-detect-flow',
-        method: 'POST',
-        description: 'Détection de langue avec support Darija'
-      },
-      'reply-flow': {
-        endpoint: '/reply-flow',
-        method: 'POST',
-        description: 'Génération de réponses multilingues'
-      }
+  
+  if (shouldSimulateError()) {
+    return res.status(500).json({ error: 'Simulated error' });
+  }
+  
+  res.json({ 
+    message: 'Genkit Mock Service',
+    endpoints: {
+      legacy: ['/langDetect', '/generateReply'],
+      standardized: ['/lang-detect-flow', '/reply-flow'],
+      health: ['/health']
     },
-    supportedLanguages: ['ar', 'ary', 'fr', 'en'],
-    endpoints: [
-      'GET /health',
-      'POST /lang-detect-flow',
-      'POST /reply-flow'
-    ]
+    version: '1.0.0',
+    timestamp: new Date().toISOString()
   });
 });
 

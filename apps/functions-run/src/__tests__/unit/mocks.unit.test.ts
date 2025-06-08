@@ -10,8 +10,16 @@
 import axios from 'axios';
 import WebSocket from 'ws';
 
-// Configuration des timeouts pour les tests
-jest.setTimeout(10000); // Réduit à 10 secondes pour les tests unitaires
+// Configuration optimisée des timeouts pour les tests
+jest.setTimeout(15000); // Augmenté à 15 secondes pour les tests d'intégration améliorés
+
+// Configuration avancée pour les tests de performance
+const PERFORMANCE_THRESHOLDS = {
+  healthCheck: 1000, // 1 seconde max pour health check
+  languageDetection: 2000, // 2 secondes max pour détection langue
+  replyGeneration: 3000, // 3 secondes max pour génération réponse
+  integration: 5000 // 5 secondes max pour tests d'intégration
+};
 
 describe('Services Mock', () => {
   const MOCK_SERVICES = {
@@ -21,13 +29,53 @@ describe('Services Mock', () => {
     prometheus: 'http://localhost:9090'
   };
 
-  // Helper pour vérifier qu'un service est disponible
-  const isServiceAvailable = async (url: string): Promise<boolean> => {
+  // Helper amélioré pour vérifier qu'un service est disponible avec retry
+  const isServiceAvailable = async (url: string, maxRetries = 3): Promise<boolean> => {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await axios.get(`${url}/health`, { 
+          timeout: 3000,
+          validateStatus: (status) => status === 200
+        });
+        return response.status === 200;
+      } catch (error) {
+        if (attempt === maxRetries) {
+          console.warn(`⚠️ Service ${url} indisponible après ${maxRetries} tentatives`);
+          return false;
+        }
+        // Attendre avant la prochaine tentative avec backoff exponentiel
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt - 1) * 1000));
+      }
+    }
+    return false;
+  };
+
+  // Types pour les réponses des services
+  interface MockServiceResponse {
+    result: {
+      reply?: string;
+      language?: string;
+      confidence?: number;
+    };
+    metadata?: {
+      timestamp?: string;
+      processingTime?: number;
+    };
+    status?: string;
+  }
+
+  // Helper pour tester la performance des services
+  const measureServicePerformance = async (url: string, endpoint: string, payload?: unknown): Promise<{ responseTime: number; success: boolean }> => {
+    const startTime = Date.now();
     try {
-      const response = await axios.get(`${url}/health`, { timeout: 5000 });
-      return response.status === 200;
+      const response = payload 
+        ? await axios.post(`${url}${endpoint}`, payload, { timeout: 5000 })
+        : await axios.get(`${url}${endpoint}`, { timeout: 5000 });
+      const responseTime = Date.now() - startTime;
+      return { responseTime, success: response.status === 200 };
     } catch {
-      return false;
+      const responseTime = Date.now() - startTime;
+      return { responseTime, success: false };
     }
   };
 
@@ -47,7 +95,7 @@ describe('Services Mock', () => {
       expect(response.data).toHaveProperty('service', 'genkit-mock');
     });
 
-    test('devrait détecter la langue d\'un texte', async () => {
+    test('devrait détecter la langue d\'un texte avec API standardisée', async () => {
       const available = await isServiceAvailable(serviceUrl);
       if (!available) {
         console.warn('⚠️ Genkit mock service non disponible, test ignoré');
@@ -55,42 +103,77 @@ describe('Services Mock', () => {
       }
 
       const testCases = [
-        { text: 'مرحبا كيف حالك؟', expectedLang: 'ar' },
-        { text: 'Bonjour comment allez-vous?', expectedLang: 'fr' },
-        { text: 'Hello how are you?', expectedLang: 'en' },
-        { text: 'أهلا كيفاش راك؟', expectedLang: 'ary' }
+        { text: 'مرحبا كيف حالك؟', expectedLang: 'ar', minConfidence: 0.9 },
+        { text: 'Bonjour comment allez-vous?', expectedLang: 'fr', minConfidence: 0.85 },
+        { text: 'Hello how are you?', expectedLang: 'en', minConfidence: 0.85 },
+        { text: 'أهلا كيفاش راك؟', expectedLang: 'ary', minConfidence: 0.95 },
+        { text: 'كيفاش دايرة الحال؟', expectedLang: 'ary', minConfidence: 0.95 },
+        { text: 'واش نتا مزيان؟', expectedLang: 'ary', minConfidence: 0.95 }
       ];
 
       for (const testCase of testCases) {
-        const response = await axios.post(`${serviceUrl}/langDetect`, {
-          text: testCase.text
+        const response = await axios.post(`${serviceUrl}/lang-detect-flow`, {
+          data: {
+            text: testCase.text,
+            options: {
+              includeDialects: true,
+              confidenceThreshold: 0.7
+            }
+          }
         });
 
         expect(response.status).toBe(200);
-        expect(response.data).toHaveProperty('language', testCase.expectedLang);
-        expect(response.data).toHaveProperty('confidence');
-        expect(response.data.confidence).toBeGreaterThan(0);
+        expect(response.data).toHaveProperty('result');
+        expect(response.data.result).toHaveProperty('language', testCase.expectedLang);
+        expect(response.data.result).toHaveProperty('confidence');
+        expect(response.data.result.confidence).toBeGreaterThanOrEqual(testCase.minConfidence);
+        expect(response.data).toHaveProperty('metadata');
+        expect(response.data.metadata).toHaveProperty('flowName', 'lang-detect-flow');
       }
     });
 
-    test('devrait générer une réponse appropriée', async () => {
+    test('devrait générer une réponse appropriée avec API standardisée', async () => {
       const available = await isServiceAvailable(serviceUrl);
       if (!available) {
         console.warn('⚠️ Genkit mock service non disponible, test ignoré');
         return;
       }
 
-      const response = await axios.post(`${serviceUrl}/generateReply`, {
-        message: 'مرحبا',
-        language: 'ar',
-        context: { userId: 'test-user' }
-      });
+      const testCases = [
+        { message: 'مرحبا', language: 'ar', expectedPattern: /مرحبا|أهلا|السلام/ },
+        { message: 'أهلا كيفاش راك؟', language: 'ary', expectedPattern: /أهلا|مرحبا|السلام/ },
+        { message: 'Bonjour', language: 'fr', expectedPattern: /Bonjour|Salut|Bonsoir/ },
+        { message: 'Hello', language: 'en', expectedPattern: /Hello|Hi|Good/ }
+      ];
 
-      expect(response.status).toBe(200);
-      expect(response.data).toHaveProperty('reply');
-      expect(response.data).toHaveProperty('language', 'ar');
-      expect(response.data).toHaveProperty('confidence');
-      expect(typeof response.data.reply).toBe('string');
+      for (const testCase of testCases) {
+        const response = await axios.post(`${serviceUrl}/reply-flow`, {
+          data: {
+            message: testCase.message,
+            language: testCase.language,
+            context: { 
+              userId: 'test-user',
+              conversationId: 'test-conv-123',
+              timestamp: new Date().toISOString()
+            },
+            options: {
+              maxLength: 200,
+              tone: 'friendly',
+              includeEmoji: false
+            }
+          }
+        });
+
+        expect(response.status).toBe(200);
+        expect(response.data).toHaveProperty('result');
+        expect(response.data.result).toHaveProperty('reply');
+        expect(response.data.result).toHaveProperty('language', testCase.language);
+        expect(response.data.result).toHaveProperty('confidence');
+        expect(response.data.result.confidence).toBeGreaterThan(0.8);
+        expect(response.data.result.reply).toMatch(testCase.expectedPattern);
+        expect(response.data).toHaveProperty('metadata');
+        expect(response.data.metadata).toHaveProperty('flowName', 'reply-flow');
+      }
     });
   });
 
@@ -292,7 +375,7 @@ describe('Services Mock', () => {
     });
   });
 
-  describe('Services Integration', () => {
+  describe('Services Integration & Performance', () => {
     test('tous les services devraient être disponibles simultanément', async () => {
       const healthChecks = await Promise.allSettled([
         isServiceAvailable(MOCK_SERVICES.genkit),
@@ -312,27 +395,158 @@ describe('Services Mock', () => {
       expect(availableServices).toBeGreaterThanOrEqual(0);
     });
 
-    test('les services devraient répondre dans un délai raisonnable', async () => {
-      const startTime = Date.now();
+    test('les services devraient répondre dans les seuils de performance', async () => {
+      const performanceResults = await Promise.allSettled([
+        measureServicePerformance(MOCK_SERVICES.genkit, '/health'),
+        measureServicePerformance(MOCK_SERVICES.restApi, '/health'),
+        measureServicePerformance(MOCK_SERVICES.websocket, '/health'),
+        measureServicePerformance(MOCK_SERVICES.prometheus, '/-/healthy')
+      ]);
+
+      const successfulTests = performanceResults.filter(
+        (result) => result.status === 'fulfilled' && result.value.success
+      );
+
+      console.log(`⚡ Tests de performance réussis: ${successfulTests.length}/${performanceResults.length}`);
       
-      const promises = Object.values(MOCK_SERVICES).map(async (url) => {
-        try {
-          await axios.get(`${url}/health`, { 
-            timeout: 5000, // Réduit le timeout
-            validateStatus: () => true // Accept any status code
-          });
-          return true;
-        } catch (error) {
-           console.warn(`Service ${url} not responding:`, error instanceof Error ? error.message : String(error));
-           return false;
-         }
+      // Vérifier que les services qui répondent le font dans les temps
+      successfulTests.forEach((result) => {
+        if (result.status === 'fulfilled') {
+          expect(result.value.responseTime).toBeLessThan(PERFORMANCE_THRESHOLDS.healthCheck);
+        }
+      });
+    });
+
+    test('détection de langue multilingue en parallèle', async () => {
+      const available = await isServiceAvailable(MOCK_SERVICES.genkit);
+      if (!available) {
+        console.warn('⚠️ Genkit mock service non disponible, test ignoré');
+        return;
+      }
+
+      const multilingualTexts = [
+        { text: 'مرحبا كيف حالك؟', expectedLang: 'ar' },
+        { text: 'أهلا كيفاش راك؟', expectedLang: 'ary' },
+        { text: 'Bonjour comment ça va?', expectedLang: 'fr' },
+        { text: 'Hello how are you?', expectedLang: 'en' },
+        { text: 'كيفاش دايرة الحال ديالك؟', expectedLang: 'ary' },
+        { text: 'Salut ça roule?', expectedLang: 'fr' }
+      ];
+
+      const startTime = Date.now();
+      const detectionPromises = multilingualTexts.map(async (testCase) => {
+        const response = await axios.post(`${MOCK_SERVICES.genkit}/lang-detect-flow`, {
+          data: {
+            text: testCase.text,
+            options: {
+              includeDialects: true,
+              confidenceThreshold: 0.7
+            }
+          }
+        });
+        return { ...testCase, response: response.data };
       });
 
-      await Promise.allSettled(promises);
-      
-      const duration = Date.now() - startTime;
-      // Test plus tolérant - accepte jusqu'à 10 secondes en mode développement
-      expect(duration).toBeLessThan(10000);
+      const results = await Promise.all(detectionPromises);
+      const totalTime = Date.now() - startTime;
+
+      // Vérifier que toutes les détections sont correctes
+      results.forEach((result) => {
+        expect(result.response.result.language).toBe(result.expectedLang);
+        expect(result.response.result.confidence).toBeGreaterThan(0.7);
+      });
+
+      // Vérifier la performance globale
+      expect(totalTime).toBeLessThan(PERFORMANCE_THRESHOLDS.integration);
+      console.log(`🚀 Détection multilingue en parallèle: ${totalTime}ms pour ${results.length} textes`);
+    });
+
+    test('génération de réponses contextuelles avancées', async () => {
+      const available = await isServiceAvailable(MOCK_SERVICES.genkit);
+      if (!available) {
+        console.warn('⚠️ Genkit mock service non disponible, test ignoré');
+        return;
+      }
+
+      const conversationFlow = [
+        {
+          message: 'مرحبا',
+          language: 'ar',
+          context: { userId: 'user-123', conversationId: 'conv-456', step: 1 }
+        },
+        {
+          message: 'كيفاش راك؟',
+          language: 'ary',
+          context: { userId: 'user-123', conversationId: 'conv-456', step: 2 }
+        },
+        {
+          message: 'Merci beaucoup',
+          language: 'fr',
+          context: { userId: 'user-123', conversationId: 'conv-456', step: 3 }
+        }
+      ];
+
+      const responses: MockServiceResponse[] = [];
+       for (const turn of conversationFlow) {
+         const response = await axios.post(`${MOCK_SERVICES.genkit}/reply-flow`, {
+           data: {
+             message: turn.message,
+             language: turn.language,
+             context: {
+               ...turn.context,
+               previousResponses: responses.map(r => r.result?.reply || ''),
+               timestamp: new Date().toISOString()
+             },
+             options: {
+               maxLength: 150,
+               tone: 'friendly',
+               maintainContext: true
+             }
+           }
+         });
+ 
+         expect(response.status).toBe(200);
+         expect(response.data.result.language).toBe(turn.language);
+         expect(response.data.result.confidence).toBeGreaterThan(0.8);
+         expect(response.data.result.reply).toBeTruthy();
+         
+         responses.push(response.data as MockServiceResponse);
+       }
+
+      console.log(`💬 Conversation contextuelle: ${responses.length} échanges traités`);
+    });
+
+    test('robustesse et récupération d\'erreurs', async () => {
+      const available = await isServiceAvailable(MOCK_SERVICES.genkit);
+      if (!available) {
+        console.warn('⚠️ Genkit mock service non disponible, test ignoré');
+        return;
+      }
+
+      // Test avec données invalides
+      const invalidRequests = [
+        { data: { text: '' } }, // Texte vide
+        { data: { text: null } }, // Texte null
+        { data: {} }, // Pas de texte
+        { invalidField: 'test' } // Structure incorrecte
+      ];
+
+      for (const invalidRequest of invalidRequests) {
+        try {
+          const response = await axios.post(`${MOCK_SERVICES.genkit}/lang-detect-flow`, invalidRequest);
+          // Si la requête passe, vérifier qu'elle gère gracieusement l'erreur
+          if (response.status === 200) {
+            expect(response.data.result.language).toBe('unknown');
+          }
+        } catch (error) {
+          // Les erreurs 400 sont acceptables pour des données invalides
+          if (axios.isAxiosError(error)) {
+            expect([400, 422]).toContain(error.response?.status);
+          }
+        }
+      }
+
+      console.log('🛡️ Tests de robustesse: gestion d\'erreurs validée');
     });
   });
 });
