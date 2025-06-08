@@ -5,7 +5,11 @@
   "env": {
     "NODE_ENV": "production",
     "NX_DAEMON": "false",
-    "NX_PARALLEL": "1"
+    "NX_PARALLEL": "1",
+    "NX_CACHE": "false",
+    "NX_SKIP_NX_CACHE": "true",
+    "NX_VERBOSE_LOGGING": "true",
+    "CI": "true"
   },
   "installCommand": "pnpm install --frozen-lockfile"
 }
