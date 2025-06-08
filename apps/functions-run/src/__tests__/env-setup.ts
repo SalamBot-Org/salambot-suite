@@ -42,6 +42,15 @@ process.env['CIRCUIT_BREAKER_TEST_MODE'] = 'true';
 // Configuration Redis pour les tests
 process.env['REDIS_DB'] = '15'; // Base de données de test
 process.env['REDIS_KEY_PREFIX'] = 'salambot:test:gateway:';
+process.env['REDIS_TLS'] = 'false'; // Désactiver TLS pour les tests
+process.env['REDIS_REJECT_UNAUTHORIZED'] = 'false';
+process.env['REDIS_ENABLE_TLS'] = 'false';
+
+// Configuration Redis optimisée pour CI/CD
+process.env['REDIS_CONNECT_TIMEOUT'] = '2000';
+process.env['REDIS_COMMAND_TIMEOUT'] = '1000';
+process.env['REDIS_RETRY_ATTEMPTS'] = '2';
+process.env['REDIS_RETRY_DELAY'] = '100';
 
 // Configuration des mocks
 process.env['USE_MOCK_SERVICES'] = 'true';
@@ -87,6 +96,11 @@ process.env['LOG_FILE_ENABLED'] = 'false';
 process.env['JWT_SECRET'] = 'test-jwt-secret-for-integration-tests-only';
 process.env['API_KEYS'] = 'test-api-key-1,test-api-key-2';
 process.env['ENCRYPTION_KEY'] = 'test-32-character-encryption-key';
+
+// Configuration Redis Mock pour éviter les erreurs de connexion
+process.env['USE_REDIS_MOCK'] = 'true';
+process.env['REDIS_MOCK_MODE'] = 'memory';
+process.env['REDIS_FALLBACK_ENABLED'] = 'true';
 
 // Affichage de confirmation (uniquement en mode verbose)
 if (process.env['JEST_VERBOSE'] === 'true') {

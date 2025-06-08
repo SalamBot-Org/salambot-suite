@@ -54,6 +54,9 @@ describe('🔐 Authentication Middleware', () => {
     // Configuration de test
     process.env['JWT_SECRET'] = 'test-secret';
     process.env['API_KEYS'] = 'dev-api-key-1,dev-api-key-2';
+    process.env['NODE_ENV'] = 'test';
+    process.env['USE_REDIS_MOCK'] = 'true';
+    
     config = GatewayConfigFactory.create();
     
     // Force enable authentication for testing

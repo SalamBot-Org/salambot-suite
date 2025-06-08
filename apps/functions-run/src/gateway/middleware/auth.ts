@@ -284,7 +284,11 @@ function logAuthSuccess(req: Request, method: string) {
  * 🚨 Logging des échecs d'authentification
  */
 function logAuthFailure(req: Request, reason: string, details?: Record<string, unknown>) {
-  console.warn(`❌ Auth Failure [${req.requestId}]:`, {
+  // Réduire le niveau de log en mode test pour éviter le bruit
+  const isTestEnv = process.env['NODE_ENV'] === 'test';
+  const logLevel = isTestEnv ? 'debug' : 'warn';
+  
+  const logData = {
     reason,
     details,
     path: req.path,
@@ -296,7 +300,13 @@ function logAuthFailure(req: Request, reason: string, details?: Record<string, u
       'x-api-key': req.headers['x-api-key'] ? '[REDACTED]' : 'missing'
     },
     timestamp: new Date().toISOString()
-  });
+  };
+  
+  if (isTestEnv) {
+    console.debug(`🔍 Auth Debug [${req.requestId}]:`, logData);
+  } else {
+    console.warn(`❌ Auth Failure [${req.requestId}]:`, logData);
+  }
 }
 
 /**
