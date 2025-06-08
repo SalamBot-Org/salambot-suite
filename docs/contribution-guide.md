@@ -56,7 +56,7 @@ cp .env.example .env.local
 pnpm dev
 
 # 5. Vérification
-curl http://localhost:3000/health
+curl https://api.salambot.ma/v1/health -H "Authorization: Bearer YOUR_TOKEN"
 # Réponse attendue: {"status":"ok","version":"2.1.0"}
 ```
 
@@ -87,7 +87,7 @@ salambot-suite/
 ├── apps/                    # Applications déployables
 │   ├── widget-web/         # Widget client (React + Vite)
 │   ├── agent-desk/         # Interface agent (Next.js)
-│   └── functions-run/      # API Backend (Express + Cloud Functions)
+│   └── functions-run/      # API Backend (simplifié via Kong)
 ├── libs/                    # Bibliothèques partagées
 │   ├── ui/                 # Composants UI réutilisables
 │   ├── auth/               # Authentification JWT
@@ -123,7 +123,7 @@ graph TD
 | Domaine | Fichiers Clés | Technologies |
 |---------|---------------|-------------|
 | **Frontend** | `apps/widget-web/src/main.tsx`<br>`apps/agent-desk/pages/index.tsx` | React, Next.js, TailwindCSS |
-| **Backend** | `apps/functions-run/src/main.ts`<br>`libs/auth/src/jwt.service.ts` | Express, TypeScript, JWT |
+| **Backend** | `apps/functions-run/src/main.ts`<br>`libs/auth/src/jwt.service.ts` | Kong Gateway, TypeScript, JWT |
 | **IA** | `libs/ai/lang-detect/src/detector.ts`<br>`libs/ai/lang-detect/src/gemini.client.ts` | Gemini API, TensorFlow.js |
 | **Infrastructure** | `infra/terraform/main.tf`<br>`infra/docker/Dockerfile.functions` | Terraform, Docker, GCP |
 
@@ -836,10 +836,10 @@ export class DarijaDetector {
    - **Technologies** : Gemini API, TensorFlow.js
    - **Difficulté** : ⭐⭐⭐⭐
 
-2. **🚪 Implémentation API Gateway**
-   - **Objectif** : Centraliser les APIs avec rate limiting
-   - **Fichiers** : `apps/functions-run/src/gateway/`
-   - **Technologies** : Express, Cloud Armor
+2. **🚪 Migration Kong Gateway**
+   - **Objectif** : Remplacer API Gateway custom par Kong
+   - **Fichiers** : Configuration déclarative Kong
+   - **Technologies** : Kong Enterprise, Plugins
    - **Difficulté** : ⭐⭐⭐
 
 3. **🧪 Augmentation Coverage Tests**

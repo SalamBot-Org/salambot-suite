@@ -7,7 +7,7 @@
  */
 
 import { langDetectFlow } from './lang-detect-flow';
-// import { replyFlow } from './reply-flow'; // À décommenter après implémentation
+import { replyFlow } from './reply-flow';
 
 /**
  * Configuration des flows Genkit pour SalamBot
@@ -21,10 +21,10 @@ export const flowsConfig = {
       "Détecte la langue d'un texte (fr, ar, darija) avec CLD3 et fallback LLM",
   },
 
-  // Flow de génération de réponse (à implémenter)
+  // Flow de génération de réponse
   reply: {
-    // flow: replyFlow,
-    enabled: false,
+    flow: replyFlow,
+    enabled: true,
     description:
       'Génère une réponse adaptée à la langue détectée (Gemini pour fr/ar, Llama pour darija)',
   },
@@ -35,11 +35,11 @@ export const flowsConfig = {
  */
 export const flows = {
   langDetect: langDetectFlow,
-  // reply: replyFlow, // À décommenter après implémentation
+  reply: replyFlow,
 };
 
 /**
  * Exporte les fonctions d'aide pour l'exécution des flows
  */
 export { detectLanguage } from './lang-detect-flow';
-// export { generateReply } from './reply-flow'; // À décommenter après implémentation
+export { generateReply } from './reply-flow';

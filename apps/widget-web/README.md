@@ -32,7 +32,7 @@ graph TD
 - Interface de chat responsive avec design moderne
 - Support des messages utilisateur et réponses bot
 - Indicateur de chargement pendant le traitement
-- API mock pour simuler les réponses en français, arabe et darija
+- Intégration prévue avec Kong Gateway pour le routage des requêtes
 - Intégration prête pour la détection Darija bi-script (70% précision)
 - Tests unitaires complets
 
@@ -63,7 +63,7 @@ Le widget sera disponible pour intégration via un script ou un iframe dans les 
 
 - `src/components/ChatBox.tsx` - Composant principal de l'interface de chat
 - `src/pages/index.tsx` - Page de démonstration du widget
-- `src/pages/api/chat.ts` - API mock pour simuler les réponses (sera remplacée par l'intégration Genkit)
+- `src/pages/api/chat.ts` - Endpoint API pour l'intégration avec Kong Gateway
 
 ## Tests
 

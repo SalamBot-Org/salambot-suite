@@ -47,7 +47,7 @@ export const ChatBox: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Appel à l'API mock (à remplacer par l'API réelle plus tard)
+      // Appel à l'API via Kong Gateway
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
