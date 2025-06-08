@@ -12,8 +12,15 @@ import { config } from 'dotenv';
 import path from 'path';
 
 // Charger les variables d'environnement de test
+// En CI, charger d'abord .env.ci puis .env.test pour override
+if (process.env['CI']) {
+  const envCiPath = path.resolve(__dirname, '../../.env.ci');
+  config({ path: envCiPath });
+  console.log('🔧 Configuration CI chargée depuis .env.ci');
+}
+
 const envPath = path.resolve(__dirname, '../../.env.test');
-config({ path: envPath });
+config({ path: envPath, override: false }); // Ne pas override les variables CI
 
 // Configuration spécifique aux tests
 process.env['NODE_ENV'] = 'test';
@@ -26,14 +33,18 @@ process.env['NODE_NO_WARNINGS'] = '1';
 // Configuration Jest Worker
 process.env['JEST_WORKER_ID'] = process.env['JEST_WORKER_ID'] || '1';
 
-// Configuration des timeouts pour les tests
-process.env['REQUEST_TIMEOUT'] = '5000';
-process.env['HEALTH_CHECK_TIMEOUT'] = '2000';
+// Configuration des timeouts pour les tests - optimisés pour CI Ubuntu
+process.env['REQUEST_TIMEOUT'] = process.env['CI'] ? '10000' : '5000';
+process.env['HEALTH_CHECK_TIMEOUT'] = process.env['CI'] ? '5000' : '2000';
 
-// Timeouts spécifiques optimisés
-process.env['TEST_REQUEST_TIMEOUT'] = '3000';
-process.env['TEST_CONNECTION_TIMEOUT'] = '1000';
-process.env['TEST_RESPONSE_TIMEOUT'] = '2000';
+// Timeouts spécifiques optimisés pour cross-platform
+process.env['TEST_REQUEST_TIMEOUT'] = process.env['CI'] ? '8000' : '3000';
+process.env['TEST_CONNECTION_TIMEOUT'] = process.env['CI'] ? '3000' : '1000';
+process.env['TEST_RESPONSE_TIMEOUT'] = process.env['CI'] ? '5000' : '2000';
+
+// Timeouts spécifiques pour les services mock
+process.env['MOCK_SERVICE_STARTUP_TIMEOUT'] = process.env['MOCK_SERVICE_STARTUP_TIMEOUT'] || (process.env['CI'] ? '30000' : '15000');
+process.env['MOCK_SERVICE_HEALTH_TIMEOUT'] = process.env['MOCK_SERVICE_HEALTH_TIMEOUT'] || (process.env['CI'] ? '10000' : '5000');
 
 // Désactivation des circuit breakers
 process.env['CIRCUIT_BREAKER_ENABLED'] = 'false';
@@ -46,8 +57,17 @@ process.env['REDIS_TLS'] = 'false'; // Désactiver TLS pour les tests
 process.env['REDIS_REJECT_UNAUTHORIZED'] = 'false';
 process.env['REDIS_ENABLE_TLS'] = 'false';
 
-// Configuration Redis optimisée pour CI/CD
-process.env['REDIS_CONNECT_TIMEOUT'] = '2000';
+// Configuration Redis optimisée pour CI/CD cross-platform
+process.env['REDIS_CONNECT_TIMEOUT'] = process.env['CI'] ? '5000' : '2000';
+process.env['REDIS_COMMAND_TIMEOUT'] = process.env['CI'] ? '3000' : '1000';
+process.env['REDIS_RETRY_DELAY_ON_FAILOVER'] = process.env['CI'] ? '200' : '100';
+
+// Configuration spécifique pour Ubuntu CI
+if (process.env['CI'] && process.env['CI_PLATFORM'] === 'ubuntu') {
+  process.env['REDIS_FAMILY'] = '4'; // Force IPv4
+  process.env['REDIS_KEEP_ALIVE'] = '30000';
+  process.env['REDIS_LAZY_CONNECT'] = 'true';
+}
 process.env['REDIS_COMMAND_TIMEOUT'] = '1000';
 process.env['REDIS_RETRY_ATTEMPTS'] = '2';
 process.env['REDIS_RETRY_DELAY'] = '100';

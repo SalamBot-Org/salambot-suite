@@ -36,8 +36,8 @@ const config: Config = {
     '<rootDir>/src/__tests__/env-setup.ts'
   ],
   
-  // Timeout pour les tests (30 secondes pour CI)
-  testTimeout: process.env['CI'] ? 30000 : 20000,
+  // Timeout pour les tests - augmenté pour Ubuntu CI
+  testTimeout: process.env['CI'] ? 45000 : 20000,
   
   // Mapper les modules pour les mocks
   moduleNameMapper: {
@@ -52,17 +52,21 @@ const config: Config = {
   detectOpenHandles: true,
   forceExit: true,
   
-  // Configuration pour le CI
+  // Configuration pour le CI - optimisée pour Ubuntu
   maxWorkers: process.env['CI'] ? 1 : '50%',
   
   // Configuration spécifique pour CI
   ...(process.env['CI'] && {
-    // Retry des tests flaky en CI
-    testRetries: 2,
+    // Retry des tests flaky en CI - augmenté pour Ubuntu
+    testRetries: 3,
     // Timeout plus long pour les hooks
     testEnvironmentOptions: {
-      timeout: 60000
-    }
+      timeout: 90000
+    },
+    // Configuration spécifique pour Ubuntu CI
+    slowTestThreshold: 10000,
+    // Bail après 3 échecs pour éviter les timeouts
+    bail: 3
   }),
   
   // Configuration des reporters

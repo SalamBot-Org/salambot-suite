@@ -132,9 +132,9 @@ jobs:
 
       - name: Test
         run: |
-          echo "Starting tests with 5 minute timeout..."
-          timeout 300 pnpm test || {
-            echo "Tests failed or timed out after 5 minutes"
+          echo "Starting tests with 8 minute timeout..."
+          timeout 480 pnpm test || {
+            echo "Tests failed or timed out after 8 minutes"
             echo "Checking mock services status..."
             for port in 3001 3002 3003 3004; do
               curl -f http://localhost:$port/health 2>/dev/null && echo "Port $port: OK" || echo "Port $port: FAILED"
@@ -143,8 +143,8 @@ jobs:
             cd apps/functions-run
             for log_file in logs/*.log; do
               if [ -f "$log_file" ]; then
-                echo "=== Last 10 lines of $log_file ==="
-                tail -n 10 "$log_file"
+                echo "=== Last 20 lines of $log_file ==="
+                tail -n 20 "$log_file"
               fi
             done
             cd ../..
@@ -157,8 +157,14 @@ jobs:
           MOCK_REST_API_PORT: 3002
           MOCK_WEBSOCKET_PORT: 3003
           MOCK_PROMETHEUS_PORT: 3004
-          # Timeout Jest optimisé pour les tests CI
-          JEST_TIMEOUT: 20000
+          # Timeout Jest optimisé pour les tests CI - augmenté pour Ubuntu
+          JEST_TIMEOUT: 30000
+          # Variables d'environnement pour compatibilité cross-platform
+          CI_PLATFORM: ubuntu
+          NODE_OPTIONS: "--max-old-space-size=4096"
+          # Timeouts spécifiques pour les services mock
+          MOCK_SERVICE_STARTUP_TIMEOUT: 30000
+          MOCK_SERVICE_HEALTH_TIMEOUT: 10000
 
       - name: Stop Mock Services
         if: always()

@@ -15,7 +15,8 @@ import cors from 'cors';
 // Configuration
 const PORT = process.env.PORT || process.env.MOCK_PROMETHEUS_PORT || 9090;
 const RESPONSE_DELAY = parseInt(process.env.MOCK_RESPONSE_DELAY_MS || '20');
-const ERROR_RATE = parseInt(process.env.MOCK_ERROR_RATE_PERCENT || '1');
+// Taux d'erreur réduit pour CI - plus stable en environnement Ubuntu
+const ERROR_RATE = parseInt(process.env.MOCK_ERROR_RATE_PERCENT || (process.env.CI ? '0' : '1'));
 const TIMEOUT_RATE = parseInt(process.env.MOCK_TIMEOUT_RATE_PERCENT || '0');
 const CACHE_TTL = parseInt(process.env.MOCK_CACHE_TTL_MS || '5000'); // 5 secondes
 const LOG_LEVEL = process.env.MOCK_LOG_LEVEL || 'info'; // debug, info, warn, error

@@ -139,7 +139,13 @@ echo "$WEBSOCKET_PID" > logs/websocket.pid
 echo "$PROMETHEUS_PID" > logs/prometheus.pid
 
 echo "⏳ Waiting for services to initialize..."
-sleep 15  # Increased from 10 to 15 seconds for better stability
+# Attente adaptative selon l'environnement
+if [ "$CI" = "true" ]; then
+  echo "🔧 CI environment detected - using extended startup time"
+  sleep 25  # Plus long en CI pour Ubuntu
+else
+  sleep 15  # Local development
+fi
 
 # Check each service
 SERVICES_FAILED=0

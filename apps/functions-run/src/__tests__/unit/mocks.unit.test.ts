@@ -10,8 +10,8 @@
 import axios from 'axios';
 import WebSocket from 'ws';
 
-// Configuration optimisée des timeouts pour les tests
-jest.setTimeout(15000); // Augmenté à 15 secondes pour les tests d'intégration améliorés
+// Configuration optimisée des timeouts pour les tests - augmentée pour CI Ubuntu
+jest.setTimeout(process.env['CI'] ? 30000 : 15000); // 30s en CI, 15s en local
 
 // Configuration avancée pour les tests de performance
 const PERFORMANCE_THRESHOLDS = {
@@ -29,22 +29,33 @@ describe('Services Mock', () => {
     prometheus: 'http://localhost:9090'
   };
 
-  // Helper amélioré pour vérifier qu'un service est disponible avec retry
-  const isServiceAvailable = async (url: string, maxRetries = 3): Promise<boolean> => {
+  // Helper amélioré pour vérifier qu'un service est disponible avec retry - optimisé pour CI
+  const isServiceAvailable = async (url: string, maxRetries = (process.env['CI'] ? 5 : 3)): Promise<boolean> => {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         const response = await axios.get(`${url}/health`, { 
-          timeout: 3000,
-          validateStatus: (status) => status === 200
+          timeout: process.env['CI'] ? 8000 : 3000,
+          validateStatus: (status) => status === 200,
+          // Configuration spécifique pour Ubuntu CI
+          ...(process.env['CI'] && {
+            headers: {
+              'User-Agent': 'SalamBot-Test-CI/1.0',
+              'Accept': 'application/json'
+            }
+          })
         });
         return response.status === 200;
       } catch (error) {
         if (attempt === maxRetries) {
           console.warn(`⚠️ Service ${url} indisponible après ${maxRetries} tentatives`);
+          if (process.env['CI']) {
+          console.warn(`CI Environment: ${process.env['CI_PLATFORM'] || 'unknown'}`);
+        }
           return false;
         }
-        // Attendre avant la prochaine tentative avec backoff exponentiel
-        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt - 1) * 1000));
+        // Attendre avant la prochaine tentative avec backoff exponentiel - plus long en CI
+        const baseDelay = process.env['CI'] ? 2000 : 1000;
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt - 1) * baseDelay));
       }
     }
     return false;
@@ -64,17 +75,37 @@ describe('Services Mock', () => {
     status?: string;
   }
 
-  // Helper pour tester la performance des services
+  // Helper pour tester la performance des services - optimisé pour CI
   const measureServicePerformance = async (url: string, endpoint: string, payload?: unknown): Promise<{ responseTime: number; success: boolean }> => {
     const startTime = Date.now();
+    const timeout = process.env['CI'] ? 10000 : 5000; // Timeout plus long en CI
+    
     try {
+      const config = {
+        timeout,
+        validateStatus: (status: number) => status >= 200 && status < 300,
+        // Configuration spécifique pour Ubuntu CI
+        ...(process.env['CI'] && {
+          headers: {
+            'User-Agent': 'SalamBot-Test-CI/1.0',
+            'Accept': 'application/json'
+          },
+          // Retry automatique en cas d'échec réseau
+          retry: 2,
+          retryDelay: 1000
+        })
+      };
+      
       const response = payload 
-        ? await axios.post(`${url}${endpoint}`, payload, { timeout: 5000 })
-        : await axios.get(`${url}${endpoint}`, { timeout: 5000 });
+        ? await axios.post(`${url}${endpoint}`, payload, config)
+        : await axios.get(`${url}${endpoint}`, config);
       const responseTime = Date.now() - startTime;
       return { responseTime, success: response.status === 200 };
-    } catch {
+    } catch (error) {
       const responseTime = Date.now() - startTime;
+      if (process.env['CI']) {
+        console.warn(`Performance test failed for ${url}${endpoint}:`, error instanceof Error ? error.message : String(error));
+      }
       return { responseTime, success: false };
     }
   };

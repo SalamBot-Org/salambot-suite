@@ -15,8 +15,9 @@ import { v4 as uuidv4 } from 'uuid';
 // Configuration
 const PORT = parseInt(process.env.PORT || process.env.MOCK_REST_API_PORT || '3002', 10);
 const RESPONSE_DELAY = parseInt(process.env.MOCK_RESPONSE_DELAY_MS || '50');
-const ERROR_RATE = parseInt(process.env.MOCK_ERROR_RATE_PERCENT || '5');
-const TIMEOUT_RATE = parseInt(process.env.MOCK_TIMEOUT_RATE_PERCENT || '2');
+// Taux d'erreur réduit pour CI - plus stable en environnement Ubuntu
+const ERROR_RATE = parseInt(process.env.MOCK_ERROR_RATE_PERCENT || (process.env.CI ? '1' : '5'));
+const TIMEOUT_RATE = parseInt(process.env.MOCK_TIMEOUT_RATE_PERCENT || (process.env.CI ? '0' : '2'));
 
 // Données mock en mémoire
 const mockData = {

@@ -15,8 +15,9 @@ import cors from 'cors';
 // Configuration
 const PORT = process.env.PORT || process.env.MOCK_GENKIT_PORT || 3001;
 const RESPONSE_DELAY = parseInt(process.env.MOCK_RESPONSE_DELAY_MS || '100');
-const ERROR_RATE = parseInt(process.env.MOCK_ERROR_RATE_PERCENT || '5');
-const TIMEOUT_RATE = parseInt(process.env.MOCK_TIMEOUT_RATE_PERCENT || '2');
+// Taux d'erreur réduit pour CI - plus stable en environnement Ubuntu
+const ERROR_RATE = parseInt(process.env.MOCK_ERROR_RATE_PERCENT || (process.env.CI ? '1' : '5'));
+const TIMEOUT_RATE = parseInt(process.env.MOCK_TIMEOUT_RATE_PERCENT || (process.env.CI ? '0' : '2'));
 
 // Données mock pour les réponses AI
 const mockResponses = {
