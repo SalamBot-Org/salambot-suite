@@ -12,7 +12,7 @@
     "types": ["node"],
     "composite": true
   },
-  "files": ["src/index.ts"],
+  "files": ["src/main.tsx"],
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.jsx"],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

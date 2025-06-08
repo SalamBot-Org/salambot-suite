@@ -10,7 +10,13 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/agent-desk"
+        "outputPath": "dist/apps/agent-desk",
+        "main": "apps/agent-desk/src/main.tsx",
+        "tsConfig": "apps/agent-desk/tsconfig.app.json",
+        "assets": [
+          "apps/agent-desk/src/favicon.ico",
+          "apps/agent-desk/src/assets"
+        ]
       },
       "configurations": {
         "development": {
