@@ -7,6 +7,5 @@
     "NX_DAEMON": "false",
     "NX_PARALLEL": "1"
   },
-  "installCommand": "pnpm install --frozen-lockfile",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./apps/agent-desk"
+  "installCommand": "pnpm install --frozen-lockfile"
 }
