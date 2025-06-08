@@ -302,7 +302,7 @@ function logAuthFailure(req: Request, reason: string, details?: Record<string, u
     timestamp: new Date().toISOString()
   };
   
-  if (isTestEnv) {
+  if (logLevel === 'debug') {
     console.debug(`🔍 Auth Debug [${req.requestId}]:`, logData);
   } else {
     console.warn(`❌ Auth Failure [${req.requestId}]:`, logData);
