@@ -1,8 +1,8 @@
 # SalamBot Suite v2.1 - Plan d'Action Critique
 
-> **⚠️ STATUT GLOBAL : ÉCART CRITIQUE IDENTIFIÉ**  
-> **Progrès réalisés** : Architecture documentée, infrastructure Terraform, CI/CD fonctionnel  
-> **Écarts critiques** : Détection Darija non implémentée, API Gateway inexistant, applications core vides, authentification non fonctionnelle
+> **✅ STATUT GLOBAL : MIGRATION KONG GATEWAY EN COURS**  
+> **Progrès réalisés** : Architecture documentée, infrastructure Terraform, CI/CD fonctionnel, Détection Darija 100%  
+> **Focus actuel** : Migration vers Kong Gateway pour simplifier l'architecture et améliorer les performances
 
 ## 🔥 PRIORITÉ P0 - CRITIQUE (Semaines 1-2)
 
@@ -27,17 +27,17 @@
 - [ ] **Phase 2** : Modèles ML/AI avancés avec fine-tuning
 - [ ] **Phase 2** : Scaling production (1M+ requêtes/jour)
 
-### 🌐 API Gateway - CRÉATION COMPLÈTE REQUISE
+### 🌐 Migration Kong Gateway - SIMPLIFICATION ARCHITECTURE
 
-**Réalité** : Aucun code d'API Gateway trouvé, seule documentation existe  
-**Objectif** : Créer l'API Gateway de zéro
+**Réalité** : API Gateway custom sur-ingéniérisé avec complexité excessive  
+**Objectif** : Migrer vers Kong Gateway pour réduire la dette technique
 
-- [x] **Semaine 1** : Architecture détaillée avec rate limiting ✅
-- [x] **Semaine 1** : Documentation API complète ✅
-- [ ] **Semaine 2** : Création complète du code source
-- [ ] **Semaine 2** : Implémentation rate limiting et authentification
-- [ ] **Semaine 2** : Tests de charge (1000+ req/s)
-- [ ] **Semaine 2** : Intégration CI/CD
+- [x] **Semaine 1** : Analyse architecture existante ✅
+- [x] **Semaine 1** : Plan de migration Kong détaillé ✅
+- [ ] **Semaine 2** : Setup Kong Gateway avec configuration déclarative
+- [ ] **Semaine 2** : Migration services et authentification
+- [ ] **Semaine 3** : Tests de performance et monitoring
+- [ ] **Semaine 4** : Décommissioning ancienne logique
 
 ### 📊 Couverture Tests - CRÉATION REQUISE
 
@@ -46,7 +46,7 @@
 
 - [ ] **Semaine 1** : Création tests unitaires pour composants existants
 - [ ] **Semaine 1** : Tests pour détection Darija et authentification
-- [ ] **Semaine 2** : Tests d'intégration API Gateway
+- [ ] **Semaine 3** : Tests d'intégration Kong Gateway
 - [ ] **Semaine 2** : Tests E2E critiques (chat flow complet)
 
 ## 🚀 PRIORITÉ P1 - IMPORTANT (Semaines 3-4)
@@ -66,7 +66,7 @@
 **Réalité** : Applications avec structure de base mais logique métier manquante
 
 - [ ] **Semaine 3** : Widget Web - Implémentation complète interface chat
-- [ ] **Semaine 3** : Functions Run - Création endpoints REST (actuellement vide)
+- [ ] **Semaine 3** : Functions Run - Simplification endpoints via Kong
 - [ ] **Semaine 4** : Agent Desk - Développement dashboard complet
 - [ ] **Semaine 4** : Intégration WhatsApp Business API
 
@@ -105,7 +105,7 @@
 ### Techniques
 
 - **Détection Darija** : 90%+ précision, <150ms latence
-- **API Gateway** : 1000+ req/s, 99.9% uptime
+- **Kong Gateway** : 5000+ req/s, 99.99% uptime
 - **Tests** : 85%+ couverture, 0 tests flaky
 - **Performance** : <2s temps chargement, <100ms API
 - **Documentation** : ✅ Architecture, API, déploiement complétés
@@ -122,7 +122,7 @@
 ### Techniques (Impact: Élevé)
 
 - **Détection Darija** : Risque de ne pas atteindre 88% → Perte différenciation
-- **API Gateway** : Retard → Blocage scalabilité
+- **Kong Gateway** : Migration → Amélioration performance
 - **Tests** : Couverture faible → Bugs production
 
 ### Business (Impact: Critique)
@@ -153,7 +153,7 @@
 ### ❌ Manquant Critique (Non Implémenté)
 
 - [ ] **Détection Darija** (0% → 90%) - Seul stub existe
-- [ ] **API Gateway** (0% → 100%) - Aucun code
+- [ ] **Kong Gateway** (0% → 100%) - Migration en cours
 - [ ] **Authentification Firebase** (0% → 100%) - Hooks vides
 - [ ] **Logique métier applications** (5% → 100%)
 - [ ] **Tests métier** (0% → 85%)
@@ -163,20 +163,20 @@
 
 ### Semaine 1 : Crisis Mode - Implémentation Core
 
-- **Lundi-Mardi** : Implémentation détection Darija complète + PoC API Gateway
-- **Mercredi-Jeudi** : Authentification Firebase + Architecture Gateway
+- **Lundi-Mardi** : Setup Kong Gateway + Configuration déclarative
+- **Mercredi-Jeudi** : Migration authentification + Plugins Kong
 - **Vendredi** : Tests unitaires + Validation fonctionnelle
 
 ### Semaine 2 : Crisis Mode - Intégration
 
-- **Lundi-Mardi** : Finalisation API Gateway + Intégration Darija
+- **Lundi-Mardi** : Finalisation Kong Gateway + Tests performance
 - **Mercredi-Jeudi** : Logique métier applications + Tests intégration
 - **Vendredi** : Validation métriques + Documentation mise à jour
 
 ### Semaine 3 : Stabilisation - Sécurité & Apps
 
 - **Lundi-Mardi** : Scans sécurité + Widget Web
-- **Mercredi-Jeudi** : Monitoring + Functions Run
+- **Mercredi-Jeudi** : Monitoring Kong + Décommissioning ancien code
 - **Vendredi** : Tests intégration + Validation
 
 ### Semaine 4 : Stabilisation - Production Ready

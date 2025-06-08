@@ -116,7 +116,7 @@ graph TB
 | Couche             | Technologies                                   | Justification                          |
 | ------------------ | ---------------------------------------------- | -------------------------------------- |
 | **Frontend**       | Next.js 15, React 19, TypeScript, Tailwind CSS | Performance, SEO, Developer Experience |
-| **API Gateway**    | Kong/Tyk, Rate Limiting, JWT Auth              | Scalabilité, Sécurité, Monitoring      |
+| **Kong Gateway**   | Kong Enterprise, Plugins, JWT Auth             | Scalabilité, Performance, Simplicité   |
 | **Backend**        | Node.js, Genkit, TypeScript, WebSockets        | Orchestration IA, Temps réel           |
 | **IA/ML**          | Gemini Pro, Llama 4, CLD3, TensorFlow.js       | Détection Darija, Génération réponses  |
 | **Data**           | Firestore, Redis Cluster, Secret Manager       | NoSQL flexible, Cache distribué        |
@@ -137,19 +137,20 @@ graph TB
 - [ ] **Tests précision** avec dataset Darija authentique
 - [ ] **Métriques temps réel** (<200ms latence, 88%+ précision)
 
-#### 🌐 API Gateway Enterprise
+#### 🌐 Migration Kong Gateway
 
-- [ ] **PoC Kong vs Tyk** (performance, coût, intégration)
-- [ ] **Architecture détaillée** avec rate limiting intelligent
-- [ ] **MVP avec authentification** JWT + OAuth2
-- [ ] **Tests de charge** (1000+ req/s sustained)
-- [ ] **Documentation OpenAPI** complète
+- [x] **Analyse architecture existante** avec identification sur-ingénierie ✅
+- [x] **Plan migration détaillé** 4 semaines avec jalons ✅
+- [ ] **Setup Kong Gateway** avec configuration déclarative
+- [ ] **Migration services** et authentification JWT + OAuth2
+- [ ] **Tests performance** (5000+ req/s sustained)
+- [ ] **Décommissioning** ancienne logique custom
 
 #### 📊 Qualité & Tests
 
 - [x] **Configuration Jest** pour tests unitaires
 - [ ] **Sprint tests** (focus Darija + Auth) → 75% couverture
-- [ ] **Tests d'intégration** API Gateway
+- [ ] **Tests d'intégration** Kong Gateway
 - [ ] **Tests E2E critiques** (flow chat complet)
 
 ### 🚀 Phase Stabilisation (Semaines 3-4)
@@ -158,7 +159,7 @@ graph TB
 
 - [ ] **Widget Web** - Interface chat responsive + thèmes
 - [ ] **Agent Desk** - Dashboard temps réel + notifications
-- [ ] **Functions Run** - Endpoints REST complets + rate limiting
+- [ ] **Functions Run** - Simplification via Kong Gateway
 - [ ] **Chrome Extension** - MVP injection widget
 
 #### 🔐 Sécurité Renforcée
@@ -241,7 +242,7 @@ pnpm dev
 | ----------------- | --------------------- | --------------------- |
 | **Widget Web**    | http://localhost:3000 | Interface chat client |
 | **Agent Desk**    | http://localhost:4200 | Dashboard opérateur   |
-| **Functions Run** | http://localhost:3001 | API Backend + IA      |
+| **Functions Run** | Kong Gateway | API Backend + IA (via Kong) |
 
 ### 🧪 Tests et Qualité
 

@@ -268,7 +268,7 @@ gantt
 
 - ✅ Lang-detect-flow (96%+ précision globale, 88%+ Darija)
 - ✅ Reply-flow avec sélection auto modèle
-- ✅ Widget web intégrable + API mock
+- ✅ Widget web intégrable + intégration Kong Gateway prévue
 - ✅ CI/CD 4 jobs parallèles
 
 ### 🚀 Phase 2: Go-to-Market (🔄 En Cours - v0.3.x)
@@ -1551,7 +1551,8 @@ pnpm nx run-many --target=build --all
 
 # 5. Test détection Darija
 echo "🧠 Test détection Darija..."
-curl -X POST http://localhost:3000/api/detect-language \
+curl -X POST https://api.salambot.ma/v1/detect-language \
+  -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"text": "واش كاين شي مشكل؟"}'
 

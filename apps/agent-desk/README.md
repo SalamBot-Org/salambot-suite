@@ -85,8 +85,8 @@ cp .env.example .env.local
 # Configurer les variables
 VITE_FIREBASE_API_KEY=your_api_key
 VITE_FIREBASE_PROJECT_ID=salambot-prod
-VITE_WEBSOCKET_URL=ws://localhost:3001
-VITE_API_BASE_URL=http://localhost:3000
+VITE_WEBSOCKET_URL=wss://api.salambot.ma/ws
+VITE_API_BASE_URL=https://api.salambot.ma/v1
 ```
 
 ### Démarrage rapide

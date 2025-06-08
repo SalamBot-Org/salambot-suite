@@ -44,7 +44,7 @@ graph TB
     end
 
     subgraph "Functions Run - Genkit API"
-        GW[API Gateway<br/>Express + Genkit]
+        GW[Kong Gateway<br/>Genkit Functions]
         LDF[lang-detect-flow<br/>CLD3 + Gemini]
         RF[reply-flow<br/>Contextual AI]
         VF[validation-flow<br/>Content Safety]
@@ -220,7 +220,7 @@ pnpm install
 # Démarrage en développement
 pnpm nx serve functions-run
 
-# API disponible sur http://localhost:3000
+# Genkit functions disponibles via Kong Gateway
 ```
 
 ## 📡 API Reference
@@ -233,7 +233,7 @@ Toutes les requêtes nécessitent un token Firebase valide :
 curl -H "Authorization: Bearer $FIREBASE_TOKEN" \
      -H "Content-Type: application/json" \
      -d '{"text":"salam khouya"}' \
-     http://localhost:3000/api/detect-language
+     https://api.salambot.ma/v1/detect-language
 ```
 
 ### Endpoints Disponibles
@@ -318,8 +318,9 @@ pnpm nx serve functions-run --prof
 ### Métriques Prometheus
 
 ```bash
-# Endpoint métriques
-curl http://localhost:3000/api/metrics
+# Endpoint métriques (via Kong Gateway)
+curl https://api.salambot.ma/v1/metrics \
+  -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
 **Métriques disponibles :**
@@ -350,11 +351,13 @@ curl http://localhost:3000/api/metrics
 ### Health Checks
 
 ```bash
-# Status général
-curl http://localhost:3000/api/health
+# Status général (via Kong Gateway)
+curl https://api.salambot.ma/v1/health \
+  -H "Authorization: Bearer YOUR_TOKEN"
 
-# Status détaillé
-curl http://localhost:3000/api/health/detailed
+# Status détaillé (via Kong Gateway)
+curl https://api.salambot.ma/v1/health/detailed \
+  -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
 ## 🔧 Configuration Avancée

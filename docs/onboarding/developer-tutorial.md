@@ -163,7 +163,7 @@ pnpm nx serve agent-desk
 
 - **Widget Web** : http://localhost:4200
 - **Agent Desk** : http://localhost:4201
-- **API Backend** : http://localhost:3001/health
+- **API Backend** : https://api.salambot.ma/v1/health (via Kong Gateway)
 
 ### Étape 3 : Première modification
 
